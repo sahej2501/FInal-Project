@@ -132,15 +132,11 @@ class accounts{
                 cout<<"Account not open!";
             }
         }
-<<<<<<< HEAD
-=======
-
+        
         virtual void closeAcc()
         {
             open = false;
         }
-
->>>>>>> 098fa8f0dbd781efd5ed873b271dc3cbe72d2a33
 
     Date getCurrentTime(){
         time_t now = time(0);
@@ -201,8 +197,4 @@ class accounts{
         return formattedDate;
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 098fa8f0dbd781efd5ed873b271dc3cbe72d2a33
 };
