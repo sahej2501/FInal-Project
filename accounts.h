@@ -132,7 +132,6 @@ class accounts{
                 cout<<"Account not open!";
             }
         }
-<<<<<<< HEAD
 
     Date getCurrentTime(){
         time_t now = time(0);
@@ -193,6 +192,4 @@ class accounts{
         return formattedDate;
     }
 
-=======
->>>>>>> a19d57aafa4660895c5a60dabedd3b89902867f3
 };
