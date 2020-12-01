@@ -4,7 +4,7 @@
 using namespace std;
 
 class accounts{
-    private:
+    protected:
         string accountNumber;
         double accountBalance;
         bool open; //bool to see if the account is accessible 
@@ -122,5 +122,10 @@ class accounts{
             else{
                 cout<<"Account not open!";
             }
+        }
+
+        virtual void closeAcc()
+        {
+            open = false;
         }
 };
