@@ -36,15 +36,48 @@ public:
         ofstream file;
         file.open("checkings.txt");
         file.close();
-        file.open("Savings.txt");
+        file.open("savings.txt");
         file.close();
-        file.open("CD.txt");
+        file.open("cd.txt");
         file.close();
-        file.open("Info.txt");
+        file.open("info.txt");
         file.close();
-        file.open("Transactions.txt");
+        file.open("transactions.txt");
         file.close();
     }
 
-    
+    void writeToFile(string username, char fileType, string info){
+        ofstream outFile;
+        chdir(basePath.data());
+        string newPath = basePath.data()+'/'+username;
+        if(chdir(newPath.data())==0){
+            switch(fileType){
+                case 's':
+                    outFile.open("savings.txt",ios::app);
+                    cout << info << endl;
+                    break;
+                case 'i':
+                    outFile.open("info.txt",ios::app);
+                    cout << info << endl;
+                    break;
+                case 'c':
+                    outFile.open("info.txt",ios::app);
+                    cout << info << endl;
+                    break;
+                case 't':
+                    outFile.open("transactions.txt",ios::app);
+                    cout << info << endl;
+                    break;
+                case 'd':
+                    outFile.open("cd.txt",ios::app);
+                    cout << info << endl;
+                    break;
+                default:
+                    cout<<"File not found error!"<<endl;
+            }
+        }
+        else{
+            cout<<"Could not change directories!"<<endl;
+        }
+    }
 };
