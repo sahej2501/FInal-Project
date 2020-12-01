@@ -98,7 +98,7 @@ class accounts{
         }
 
 
-        double withdrawl(double amount){
+        virtual double withdrawl(double amount){
             if(open){
                 if(amount>accountBalance){
                     cout<<"Withdrawl unsuccessful, insufficient amount!";
@@ -114,7 +114,7 @@ class accounts{
             return accountBalance;
         }
 
-        void deposit(double amount){
+        virtual void deposit(double amount){
             if(open){
                 accountBalance+=amount;
                 cout<<"Deposit successful! Current balance: "<< accountBalance;
