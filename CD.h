@@ -48,5 +48,6 @@ public:
     {
         accountBalance -= penalty;
         withdraw(accountBalance);
+        closeAcc();
     }
 };
