@@ -9,6 +9,7 @@ class Savings : public accounts{
     private:
         string status;                      //a way to see if the account is active or inactive 
         double serviceCharge;           //if the account is inactive(balance is below 50) a service charge of 5 dollars is applied
+        double dailyInterest;
     public:
         Savings() : accounts()
         {
@@ -29,9 +30,10 @@ class Savings : public accounts{
             status = s;
         }
 
-        void setInterestRate(double aI) 
+        void setInterestRate(double dI) 
         {
-            annualInterestRate = aI;
+
+            dailyInterest = dI;
         }
 
         double withdraw(double amount)
@@ -89,6 +91,17 @@ class Savings : public accounts{
                 cout<<"Account not open!";
             }
             return accountBalance;
+        }
+
+        void addInterest(Date dt1, Date dt2)
+        {
+            double dailyInterestRate;
+            for(int i = 0; i < getDifference(dt1, dt2); i++)
+            {
+                dailyInterestRate = accountBalance * dailyInterestRate;
+                accountBalance += dailyInterestRate;
+            }
+            
         }
 
 
