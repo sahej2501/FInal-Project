@@ -132,7 +132,6 @@ class accounts{
                 cout<<"Account not open!";
             }
         }
-
         virtual void closeAcc()
         {
             open = false;
@@ -197,6 +196,5 @@ class accounts{
             string formattedDate= "d/"+to_string(date.d)+"/"+to_string(date.m)+"/"+to_string(date.y);
             return formattedDate;
         }
-
 
 };
