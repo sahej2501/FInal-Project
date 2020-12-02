@@ -6,13 +6,17 @@
 #include <cmath>
 using namespace std;
 
-class timeHandler{
-
-public:
-    struct Date{
+struct Date{
         int d,m,y;
     };
+
+class timeHandler{
+
+protected:
+    
     const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+public:
     
     Date getCurrentTime(){
             time_t now = time(0);
