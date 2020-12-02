@@ -54,23 +54,23 @@ public:
             switch(fileType){
                 case 's':
                     outFile.open("savings.txt",ios::app);
-                    cout << info << endl;
+                    outFile << info << endl;
                     break;
                 case 'i':
                     outFile.open("info.txt",ios::app);
-                    cout << info << endl;
+                    outFile << info << endl;
                     break;
                 case 'c':
                     outFile.open("info.txt",ios::app);
-                    cout << info << endl;
+                    outFile << info << endl;
                     break;
                 case 't':
                     outFile.open("transactions.txt",ios::app);
-                    cout << info << endl;
+                    outFile << info << endl;
                     break;
                 case 'd':
                     outFile.open("cd.txt",ios::app);
-                    cout << info << endl;
+                    outFile << info << endl;
                     break;
                 default:
                     cout<<"File not found error!"<<endl;

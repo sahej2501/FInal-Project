@@ -4,13 +4,17 @@
 #include <ctime>
 #include <cmath>
 #include "timeHandler.h"
+#include "directoryHandler.h"
 using namespace std;
 
 int main(){
     timeHandler t1;
+    directory dir;
 
     cout<<"Date 1:"<<t1.formatDate(t1.getCurrentTime())<<endl;
-    
+    chdir(dir.basePath.data());
+    dir.createFiles("ae87");
+    dir.writeToFile("ae87",'t',"+$1000 d/1/12/2020");
     timeHandler::Date d1;
     timeHandler::Date d2;
     d1=t1.getCurrentTime();
