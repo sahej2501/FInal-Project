@@ -6,12 +6,14 @@
 #include <cmath>
 using namespace std;
 
+struct Date{
+        int d,m,y;
+    };
+
 class timeHandler{
 
 protected:
-    struct Date{
-        int d,m,y;
-    };
+    
     const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     
 public:
