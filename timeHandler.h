@@ -16,8 +16,6 @@ protected:
     
     const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     
-public:
-
     Date getCurrentTime(){
             time_t now = time(0);
             Date tempDate;
