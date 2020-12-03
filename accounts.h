@@ -208,4 +208,13 @@ class accounts{
         
     }
 
+    //this function is strictly for testing for jay so that he can pass in future dates to test his interest
+    void yearsPassedTester(Date newDate){ 
+        int daysDifferent = getDifference(openedDate, newDate);
+        int yearsPassed = daysDifferent/365;
+        if(yearsPassed>1&&yearsPassed>maturity){
+            maturity = yearsPassed-maturity;
+        }
+        
+    }
 };
