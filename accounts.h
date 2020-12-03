@@ -198,16 +198,12 @@ class accounts{
             return formattedDate;
         }
 
-    int yearsPassed(){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
+    void yearsPassed(){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
     // for jay
         int daysDifferent = getDifference(openedDate, getCurrentTime());
         int yearsPassed = daysDifferent/365;
-        if(yearsPassed>maturity){
-            return yearsPassed-maturity;
-        }
-        else
-        {
-            return 0;
+        if(yearsPassed>1&&yearsPassed>maturity){
+            maturity = yearsPassed-maturity;
         }
         
     }
