@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BANK_H
+#define BANK_H
 #include <string>
 #include <iostream>
 #include "savings.h"
@@ -42,10 +43,10 @@ class BankTree
         void searchAcc(int);
         void removeAcc(int);
 
-        void displayAllTenants()
-        {
-            displayAllTenants(root);
-        }
+        // void displayAllTenants()
+        // {
+        //     displayAllTenants(root);
+        // }
 };
 
 BankTree::BankTree()
@@ -57,19 +58,19 @@ BankTree::~BankTree()
 {
 }
 
-void BankTree::displayAllAccounts(bankAcc *nodePtr) const
-{
-   if (nodePtr)
-   {
-      if(nodePtr->acc.key != -1)
-      {
+// void BankTree::displayAllAccounts(bankAcc *nodePtr) const
+// {
+//    if (nodePtr)
+//    {
+//       if(nodePtr->acc.key != -1)
+//       {
          
-         displayAllAccounts(nodePtr->left);
-         cout<<nodePtr->acc.save.getAccountNumber()<<endl;
-         displayAllAccounts(nodePtr->right);
-      }
-   }
-}
+//          displayAllAccounts(nodePtr->left);
+//          cout<<nodePtr->acc.save.getAccountNumber()<<endl;
+//          displayAllAccounts(nodePtr->right);
+//       }
+//    }
+// }
 
 //**********************************************************
 // insertUnit creates a new node to hold newAcc as its value, *
@@ -81,10 +82,10 @@ void BankTree::insertAcc(AllAccounts newAcc)
    bankAcc *newNode = new bankAcc; // Pointer to a new node.
    // Store num in new node.
    newNode->acc = newAcc;
-   newNode->left = nullptr; 
-   newNode->right = nullptr;
+
 
 
    // Insert the node.
    insert(root, newNode);
 }
+#endif
