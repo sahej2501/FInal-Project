@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <string>
 #include "accounts.h"
 #include "savings.h"
 #include "checking.h"
@@ -14,12 +15,14 @@ using namespace std;
 
 class AllAccounts
 {
-    public: 
+    protected: 
         int key;
+        string accountNumber;
         Savings save;
         Checking check;
         CD cd;
 
+    public:
         //constructors
         AllAccounts()
         {
@@ -30,6 +33,11 @@ class AllAccounts
         int getKey()
         {
             return key;
+        }
+
+        string getAccountNumber()
+        {
+            return accountNumber;
         }
 
         int getSavingsBalance()
@@ -51,6 +59,11 @@ class AllAccounts
         void setKey(int k)
         {
             key = k;
+        }
+
+        void setAccountNumber(string s)
+        {
+            accountNumber = s;
         }
 
         void savingsDeposit(int d)
