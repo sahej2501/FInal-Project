@@ -18,16 +18,16 @@ class accounts{
         string password;
         string timeOpened;
         const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        double maturity;
+        int maturity;
         bool closed;
         struct Date{
             int d,m,y;
         };
-
+        Date openedDate;
 
     public:
         //contructor
-        accounts(string aN="0000000000", double aB=0.0, bool o=true, double aI=0.0, double aS=0.0, string aT="0001", string uN = "N/A", string pW = "N/A",double mat=0.0, bool close=false){
+        accounts(string aN="0000000000", double aB=0.0, bool o=true, double aI=0.0, double aS=0.0, string aT="0001", string uN = "N/A", string pW = "N/A",int mat=0.0, bool close=false){
             //default Number is 0000000, account Balance is 0, its closed, 0.0 interest rate, 0.0 annual charge
             //it starts at a low risk, it has N for none account type, and 0 annual service charge.
             accountNumber=aN;
@@ -38,6 +38,7 @@ class accounts{
             accountType=aT;
             closed = close;
             maturity=mat;
+            openedDate = getCurrentTime();
         }
 
         //getters
@@ -197,4 +198,23 @@ class accounts{
             return formattedDate;
         }
 
+    void yearsPassed(){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
+    // for jay
+        int daysDifferent = getDifference(openedDate, getCurrentTime());
+        int yearsPassed = daysDifferent/365;
+        if(yearsPassed>1&&yearsPassed>maturity){
+            maturity = yearsPassed-maturity;
+        }
+        
+    }
+
+    //this function is strictly for testing for jay so that he can pass in future dates to test his interest
+    void yearsPassedTester(Date newDate){ 
+        int daysDifferent = getDifference(openedDate, newDate);
+        int yearsPassed = daysDifferent/365;
+        if(yearsPassed>1&&yearsPassed>maturity){
+            maturity = yearsPassed-maturity;
+        }
+        
+    }
 };
