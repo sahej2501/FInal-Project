@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SAVINGS_H
+#define SAVINGS_H
 #include <string>
 #include <iostream>
 #include "accounts.h"
@@ -104,5 +105,5 @@ class Savings : public accounts{
             
         }
 
-
 };
+#endif

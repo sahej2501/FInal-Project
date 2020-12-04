@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ACCOUNTS_H
+#define ACCOUNTS_H
 #include <string>
 #include <iostream>
 #include <vector>
@@ -218,3 +219,4 @@ class accounts{
         
     }
 };
+#endif

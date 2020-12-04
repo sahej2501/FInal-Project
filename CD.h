@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CD_H
+#define CD_H
 #include <string>
 #include <iostream>
 #include "accounts.h"
@@ -51,3 +52,4 @@ public:
         closeAcc();
     }
 };
+#endif

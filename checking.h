@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CHECKING_H
+#define CHECKING_H
 #include <string>
 #include <iostream>
 #include "accounts.h"
@@ -48,3 +49,4 @@ public:
         }
     }
 };
+#endif
