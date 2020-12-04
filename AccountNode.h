@@ -14,13 +14,12 @@ using namespace std;
 
 class AllAccounts
 {
-    private: 
+    public: 
         int key;
         Savings save;
         Checking check;
         CD cd;
 
-    public:
         //constructors
         AllAccounts()
         {
