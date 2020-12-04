@@ -27,6 +27,7 @@ class AllAccounts
         AllAccounts()
         {
             key = 000;
+            accountNumber = "0000000000";
         }
 
         //getters
