@@ -50,9 +50,9 @@ public:
             cout << "A $" << amount << " deposit has been made" << endl;
         }
         else
-        {
             cout << "Account not open!";
-        }
+        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" CD";
+        transactionHistory.push_back(info);
     }
     
     double withdraw(double amount)
@@ -64,6 +64,8 @@ public:
         }
         else
             cout << "Account not open!";
+        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" CD";
+        transactionHistory.push_back(info);
      return accountBalance;
     }
 

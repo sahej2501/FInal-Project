@@ -17,8 +17,10 @@ int main(){
     cout<<"Account number: "<<actN<<endl;
     d.createFiles(account1.getAccountNumber());
     account1.savingsDeposit(100);
-    for(int i =0; i <account1.getTransactionHistory().size();i++){
-
+    account1.savingsDeposit(20);
+    vector <string> transactions= account1.getTransactionHst();
+    for(int i =0; i <transactions.size();i++){
+        d.writeToFile(actN,'t',transactions[i]);
     }
     return 0;
 }

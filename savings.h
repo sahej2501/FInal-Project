@@ -79,7 +79,7 @@ class Savings : public accounts{
             {
                 cout<<"Account not open, cannot withdraw at this time"<<endl;
             }
-            string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime());
+            string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Saving";
             transactionHistory.push_back(info);
             return accountBalance;
         }
@@ -97,7 +97,7 @@ class Savings : public accounts{
             else{
                 cout<<"Account not open!";
             }
-            string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime());
+            string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime())+" Savings";
             transactionHistory.push_back(info);
             return accountBalance;
         }
