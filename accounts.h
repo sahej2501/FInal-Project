@@ -40,7 +40,7 @@ class accounts{
             accountType=aT;
             closed = close;
             maturity=mat;
-            openedDate = t.getCurrentTime();
+            openedDate;
         }
 
         //getters
@@ -153,7 +153,7 @@ class accounts{
 
 
 
-    void yearsPassed(){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
+    void yearsPassed(Date openedDate){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
     // for jay
         int daysDifferent = t.getDifference(openedDate, t.getCurrentTime());
         int yearsPassed = daysDifferent/365;

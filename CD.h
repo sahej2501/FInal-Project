@@ -5,15 +5,14 @@
 #include "timeHandler.h"
 using namespace std;
 
+
 class CD : public accounts
 {
 private:
     string status;
     double penalty = 5.0;
     double ogAmount;
-    string withdrawDate;
-    string creationDate;
-    int numYears = 5;
+    Date creationDate;
 
 public:
     //Default constructor
@@ -25,7 +24,7 @@ public:
         ogAmount = amount;
     }
 
-    void setCreationDate(string date)
+    void setCreationDate(Date date)
     {
         creationDate = date;
     }
@@ -36,7 +35,7 @@ public:
         return ogAmount;
     }
 
-    string getCreationDate()
+    Date getCreationDate()
     {
         return creationDate;
     }
@@ -47,6 +46,7 @@ public:
         if(open == true)
         {
             accountBalance += amount;
+            setCreationDate(t.getCurrentTime());
             cout << "A $" << amount << " deposit has been made, Current Balance: " <<accountBalance<< endl;
         }
         else
