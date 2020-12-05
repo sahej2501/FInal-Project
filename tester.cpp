@@ -10,17 +10,15 @@ int main(){
     directory d;
     Date d1 = t.getCurrentTime();
     Date d2;
-    d2.d=8;
-    d2.m=12;
-    d2.y=2020;
-    cout<<t.getDifference(d1,d2)<<endl;
     BankTree tree;
     AllAccounts account1;
-    account1.setAccountNumber("ae87");
-    cout<<account1.getAccountNumber()<<endl;
+    account1.setAccountNumber("0000000000");
+    string actN=account1.getAccountNumber();
+    cout<<"Account number: "<<actN<<endl;
     d.createFiles(account1.getAccountNumber());
-    account1.savingsDeposit(100000);
-    tree.insertAcc(account1);
-    tree.searchAcc(0);
+    account1.savingsDeposit(100);
+    for(int i =0; i <account1.getTransactionHistory().size();i++){
+
+    }
     return 0;
 }

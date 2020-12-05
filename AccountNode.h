@@ -17,10 +17,10 @@ class AllAccounts
 {
     protected: 
         int key;
-        string accountNumber;
         Savings save;
         Checking check;
         CD cd;
+        string accountNumber, firstName, lastName, phoneNum, address;
 
     public:
         //constructors
@@ -34,6 +34,16 @@ class AllAccounts
         int getKey()
         {
             return key;
+        }
+
+        vector<string> getTransactionHst()
+        {
+            return save.getTransactionHistory();
+        }
+
+        void printName()
+        {
+            cout<<firstName<<" "<<lastName<<endl;
         }
 
         string getAccountNumber()
@@ -60,6 +70,22 @@ class AllAccounts
         void setKey(int k)
         {
             key = k;
+        }
+
+        void setFirstLastName(string f, string l)
+        {
+            firstName = f;
+            lastName = l;
+        }
+
+        void setAddress(string a)
+        {
+            address = a;
+        }
+
+        void setPhone(string p)
+        {
+            phoneNum = p;
         }
 
         void setAccountNumber(string s)
