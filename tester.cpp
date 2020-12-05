@@ -3,7 +3,12 @@
 #include "AccountNode.h"
 #include "Bank.h"
 #include "directoryHandler.h"
+#include <ctime>
 using namespace std;
+
+int key=3000;
+
+string generateAC(int keyPassed);
 
 int main(){
     timeHandler t;
@@ -28,5 +33,26 @@ int main(){
         }
     }       
     
+    cout<<generateAC(key)<<endl;
+    cout<<d.getKey(generateAC(key))<<endl;
     return 0;
+}
+
+void encrypt(string line){
+
+
+}
+
+
+string generateAC(int keyPassed){
+    srand(time(0));
+    const char alphanum[] = "0123456789" "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int len = sizeof(alphanum) - 1;
+    string actN;
+    actN+=to_string(keyPassed);
+    for(int i =0; i<=10;i++){
+        actN+=alphanum[rand()%len];
+    }
+    return actN;
+    key++;
 }

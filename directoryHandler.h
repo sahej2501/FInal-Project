@@ -19,10 +19,11 @@ public:
 
     const string basePath= getCurrentDir();
     const string accountsPath = basePath+"/accounts";
+    int accountCount=0;
 
-    void changePath(string path){
+    void changePath(string actN){
         string newPath;
-        newPath+=basePath+"/"+path;
+        newPath+=basePath+"/"+accountsPath+"/"+actN;
         const char* changedPath=newPath.data();
         chdir(changedPath);
     }
@@ -90,7 +91,7 @@ public:
         }
     }
 
-    //gets a line passed in and returns  the key aka the  first n digits
+    //gets a line passed in and returns the key aka the first n digits
     int getKey(string line){
         regex keyFinder("^\\d*");
         smatch s;
