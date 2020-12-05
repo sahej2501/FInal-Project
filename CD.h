@@ -11,7 +11,6 @@ private:
     string status;
     double penalty = 5.0;
     double ogAmount;
-    int interestRate;
     string withdrawDate;
     string creationDate;
     int numYears = 5;
@@ -40,12 +39,6 @@ public:
     string getCreationDate()
     {
         return creationDate;
-    }
-
-    double getInterestRate()
-    {
-        interestRate = 0.05 * accountBalance;
-        return interestRate;
     }
 
     //functions
