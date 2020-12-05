@@ -47,7 +47,7 @@ public:
         if(open == true)
         {
             accountBalance += amount;
-            cout << "A $" << amount << " deposit has been made" << endl;
+            cout << "A $" << amount << " deposit has been made, Current Balance: " <<accountBalance<< endl;
         }
         else
             cout << "Account not open!";
@@ -60,7 +60,7 @@ public:
         if (open == true)
         {
             accountBalance -= amount;
-            cout << "A $" << amount << " withdrawal has been made" << endl;
+            cout << "A $" << amount << " withdrawal has been made, Current Balance: " <<accountBalance<< endl;
         }
         else
             cout << "Account not open!";
