@@ -16,7 +16,9 @@ private:
 
 public:
     //Default constructor
-    CD() : accounts(){}
+    CD() : accounts(){
+        creationDate = t.getCurrentTime();
+    }
 
     //setters
     void setOgAmount(double amount)
@@ -61,7 +63,7 @@ public:
         if (open == true)
         {
             accountBalance -= amount;
-            cout << "A $" << amount << " withdrawal has been made, Current Balance: " <<accountBalance<< endl;
+            cout << "A $" << amount << " withdrawal has been made" << endl;
         }
         else
             cout << "Account not open!";
