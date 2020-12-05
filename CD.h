@@ -57,6 +57,7 @@ public:
     
     double withdraw(double amount)
     {
+        //check maturity in main, if it is not 5, cout timelength not met, continue
         if (open == true)
         {
             accountBalance -= amount;
