@@ -20,6 +20,7 @@ int main(){
     account1.savingsDeposit(100);
     account1.savingsDeposit(20);
     account1.checkingDeposit(50);
+    account1.CDDeposit(200);
     transactions= account1.getTransactionHst();
     for(int i=0; i<transactions.size();i++){
         for(int j=0;j<transactions[i].size();j++){

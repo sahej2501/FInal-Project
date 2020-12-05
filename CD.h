@@ -51,7 +51,7 @@ public:
         }
         else
             cout << "Account not open!";
-        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" CD";
+        string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime())+" CD";
         transactionHistory.push_back(info);
     }
     
@@ -65,7 +65,7 @@ public:
         }
         else
             cout << "Account not open!";
-        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" CD";
+        string info ="-" + to_string(amount) +" " +t.formatDate(t.getCurrentTime())+" CD";
         transactionHistory.push_back(info);
      return accountBalance;
     }
