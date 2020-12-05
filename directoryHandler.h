@@ -113,4 +113,26 @@ public:
     }
 
 
+    string encrypt(string msg, int shift){
+        shift = ((shift%26)+26)%26;
+
+        string final;
+
+        for(int i =0;i<msg.length();i++){
+            if(msg[i]>='a' && msg[i]<='z')
+                final+=((msg[i]-'a'+shift)%26+'a');
+            else if(msg[i]>='A' && msg[i]<='Z')
+                final+=((msg[i]-'A'+shift)%26+'A');
+            else
+                final+=msg[i];
+        }
+        return final;
+    }
+
+    string decrypt(string msg, int shift){
+        return encrypt(msg,26-shift%26);
+    }
+
+
+
 };

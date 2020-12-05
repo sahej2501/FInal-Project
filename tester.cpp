@@ -12,8 +12,8 @@ const int a=17;
 const int b=20;
 
 string generateAC(int keyPassed);
-string encryptMessage(string m);
-string decryptCipher(string c);
+string encrypt(string msg, int shift);
+string decrypt(string msg, int shift);
 void saveTransactions(vector< vector<string> > transactions,string actN);
 timeHandler t;
 directory d;
@@ -33,34 +33,20 @@ int main(){
     account1.checkingDeposit(50);
     account1.CDDeposit(200);
     transactions= account1.getTransactionHst();
-    saveTransactions(transactions,actN)      ;
+    d.saveTransactions(transactions,actN);
     
-    // string ac1=generateAC(key);
-    // cout<<key<<endl;
-    // cout<<d.getKey(ac1)<<endl;
+    string test="Mike Gegg";
+    int shift=1;
+    string encrypted= encrypt(test,shift);
+    string decrypted = decrypt(encrypted,shift);
 
-    // string msg = "mike"; 
-      
-    // //Calling encryption function 
-    // string cipherText = encryptMessage(msg.toupp; 
-    // cout << "Encrypted Message is : " << cipherText<<endl; 
-      
-    // //Calling Decryption function 
-    // cout << "Decrypted Message is: " << decryptCipher(encryptMessage(msg))<<endl;
+    cout<<"Encrypted: "<<encrypted<<endl;
+    cout<<"Decrypted: "<<decrypted<<endl;
+
+
     return 0;
 }
 
-
-
-
-
-void saveTransactions(vector< vector<string> > transactions,string actN){
-    for(int i=0; i<transactions.size();i++){
-        for(int j=0;j<transactions[i].size();j++){
-            d.writeToFile(actN,'t',transactions[i][j]);
-        }
-    }
-}
 
 
 string generateAC(int keyPassed){
