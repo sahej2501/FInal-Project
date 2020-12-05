@@ -24,6 +24,8 @@ class accounts{
         struct Date{
             int d,m,y;
         };
+
+
         Date openedDate;
 
     public:

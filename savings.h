@@ -3,7 +3,8 @@
 #include <string>
 #include <iostream>
 #include "accounts.h"
-
+#include "directoryHandler.h"
+#include "timeHandler.h"
 using namespace std;
 
 class Savings : public accounts{
@@ -12,6 +13,10 @@ class Savings : public accounts{
         double serviceCharge;           //if the account is inactive(balance is below 50) a service charge of 5 dollars is applied
         double dailyInterest;
     public:
+
+        timeHandler t;
+        directory dir;
+
         Savings() : accounts()
         {
             if(accountBalance >= 50)
@@ -74,7 +79,8 @@ class Savings : public accounts{
             {
                 cout<<"Account not open, cannot withdraw at this time"<<endl;
             }
-
+            string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime());
+            dir.writeToFile(username,'t',info);
             return accountBalance;
         }
 
@@ -91,6 +97,8 @@ class Savings : public accounts{
             else{
                 cout<<"Account not open!";
             }
+            string info ="+" + to_string(amount) + t.formatDate(t.getCurrentTime());
+            dir.writeToFile(username,'t',info);
             return accountBalance;
         }
 

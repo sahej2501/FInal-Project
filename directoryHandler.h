@@ -31,6 +31,7 @@ public:
     }
 
     void createFiles(string username){
+        chdir(basePath.data());
         mkdir(username.data(), S_IRWXU | S_IRWXG);
         changePath(username);
         ofstream file;

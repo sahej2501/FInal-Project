@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include "accounts.h"
+#include "directoryHandler.h"
+#include "timeHandler.h"
 using namespace std;
 
 //paste jay stuff
@@ -11,6 +13,10 @@ class Checking : public accounts
 public:
     //Default constructor
     Checking() : accounts(){}
+
+    //directory handler object, and time handler object for transaction history handling
+    directory dir;
+    timeHandler t;
 
     //withdraw function
     double withdraw(double amount)
@@ -33,6 +39,10 @@ public:
         {
             cout << "Account not open!";
         }
+        //
+        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime());
+        dir.writeToFile(username,'t',info);
+        
         return accountBalance;
     }
 
@@ -47,6 +57,8 @@ public:
         {
             cout << "Account not open!";
         }
+        string info ="+" + to_string(amount) + t.formatDate(t.getCurrentTime());
+        dir.writeToFile(username,'t',info);
     }
 };
 #endif
