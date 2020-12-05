@@ -80,7 +80,7 @@ class Savings : public accounts{
                 cout<<"Account not open, cannot withdraw at this time"<<endl;
             }
             string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime());
-            dir.writeToFile(username,'t',info);
+            transactionHistory.push_back(info);
             return accountBalance;
         }
 
@@ -97,15 +97,15 @@ class Savings : public accounts{
             else{
                 cout<<"Account not open!";
             }
-            string info ="+" + to_string(amount) + t.formatDate(t.getCurrentTime());
-            dir.writeToFile(username,'t',info);
+            string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime());
+            transactionHistory.push_back(info);
             return accountBalance;
         }
 
         void addInterest(Date dt1, Date dt2)
         {
             double dailyInterestRate;
-            for(int i = 0; i < getDifference(dt1, dt2); i++)
+            for(int i = 0; i < t.getDifference(dt1, dt2); i++)
             {
                 dailyInterestRate = accountBalance * dailyInterestRate;
                 accountBalance += dailyInterestRate;

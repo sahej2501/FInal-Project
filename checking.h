@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include "accounts.h"
-#include "directoryHandler.h"
+
 #include "timeHandler.h"
 using namespace std;
 
@@ -15,7 +15,6 @@ public:
     Checking() : accounts(){}
 
     //directory handler object, and time handler object for transaction history handling
-    directory dir;
     timeHandler t;
 
     //withdraw function
@@ -41,7 +40,7 @@ public:
         }
         //
         string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime());
-        dir.writeToFile(username,'t',info);
+        transactionHistory.push_back(info);
         
         return accountBalance;
     }
@@ -58,7 +57,7 @@ public:
             cout << "Account not open!";
         }
         string info ="+" + to_string(amount) + t.formatDate(t.getCurrentTime());
-        dir.writeToFile(username,'t',info);
+        transactionHistory.push_back(info);
     }
 };
 #endif
