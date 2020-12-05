@@ -1,8 +1,13 @@
 {
     "files.associations": {
         "iosfwd": "cpp",
+<<<<<<< Updated upstream
         "iostream": "cpp",
         "ostream": "cpp",
         "vector": "cpp"
+=======
+        "vector": "cpp",
+        "iostream": "cpp"
+>>>>>>> Stashed changes
     }
 }

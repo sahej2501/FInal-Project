@@ -3,6 +3,7 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
+<<<<<<< Updated upstream
 			"label": "C/C++: clang build active file",
 			"command": "/usr/bin/clang",
 			"args": [
@@ -22,6 +23,8 @@
 		},
 		{
 			"type": "cppbuild",
+=======
+>>>>>>> Stashed changes
 			"label": "C/C++: clang++ build active file",
 			"command": "/usr/bin/clang++",
 			"args": [
@@ -31,7 +34,11 @@
 				"${fileDirname}/${fileBasenameNoExtension}"
 			],
 			"options": {
+<<<<<<< Updated upstream
 				"cwd": "/usr/bin"
+=======
+				"cwd": "${workspaceFolder}"
+>>>>>>> Stashed changes
 			},
 			"problemMatcher": [
 				"$gcc"
