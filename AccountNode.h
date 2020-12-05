@@ -121,6 +121,7 @@ class AllAccounts
 
         void CDDeposit(int d)
         {
+            cd.setOgAmount = d;
             cd.deposit(d);
         }
 
@@ -137,6 +138,11 @@ class AllAccounts
         void CDWithdraw(int w)
         {
             cd.withdraw(w);
+        }
+
+        void cdCancel()
+        {
+            cd.cancellation();
         }
 
         //functions for bank officials
