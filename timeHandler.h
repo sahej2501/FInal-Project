@@ -76,6 +76,4 @@ public:
             return formattedDate;
         }
 
-
-
 };
