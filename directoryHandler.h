@@ -39,7 +39,6 @@ public:
         chdir(accountsPath.data());
         mkdir(actN.data(), S_IRWXU | S_IRWXG);
         string newDirPath= accountsPath+"/"+actN;
-        cout<<newDirPath<<endl;
         chdir(newDirPath.data());
         ofstream file;
         file.open("checkings.txt");
@@ -59,11 +58,8 @@ public:
         chdir(basePath.data());
         chdir(accountsPath.data());
         string slice = "/";
-        cout<<"Account number in writeToFile: "<<accountNumber;
         string newPath = accountsPath.data()+slice+accountNumber;
-        cout<<newPath<<endl;
         if(chdir(newPath.data())==0){
-            cout<<"Was able to switch path"<<endl;
             switch(fileType){
                 case 's':
                     outFile.open("savings.txt",ios::app);
@@ -80,8 +76,6 @@ public:
                 case 't':
                     outFile.open("transactions.txt",ios::app);
                     outFile << info << endl;
-                    cout<<"Info: "<<info<<endl;
-                    cout<<"Writing transaction successful!"<<endl;
                     break;
                 case 'd':
                     outFile.open("cd.txt",ios::app);

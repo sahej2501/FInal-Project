@@ -8,7 +8,7 @@ using namespace std;
 void createAccounts();
 void loginAccounts();
 
-Checking tempChecking;
+checking tempChecking;
 //CD tempCD;
 
 int main(){

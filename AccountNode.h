@@ -38,7 +38,7 @@ class AllAccounts
 
         vector<string> getTransactionHst()
         {
-            return save.getTransactionHistory();
+            return check.getTransactionHistory();
         }
 
         void printName()

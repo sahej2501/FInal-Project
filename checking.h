@@ -58,6 +58,7 @@ public:
         }
         string info ="+" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Checking";
         transactionHistory.push_back(info);
+        cout<<"Transaction size after checkings deposit: "<<transactionHistory.size()<<endl;
     }
 };
 #endif
