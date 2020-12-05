@@ -55,6 +55,10 @@ class accounts{
             return accountBalance;
         }
 
+        Date getOpenedDate(){
+            return openedDate;
+        }
+
         bool getOpenStatus(){
             return open;
         }
@@ -94,6 +98,10 @@ class accounts{
 
         void setAccountBalance(double aB){
             accountBalance=aB;
+        }
+
+        void setOpenedDate(Date openDate){
+            openedDate = openDate;
         }
 
         void setOpenStatus(bool o){
