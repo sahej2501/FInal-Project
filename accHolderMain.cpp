@@ -234,25 +234,137 @@ void depOrWidth()
 
     int tempKey = getKey(accountNum);
     tree.searchAcc(tempKey);
+    tree.modifi(currAcount);
     
 
     bool run2 = true;
     while(run2)
     {
-        cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<"[3] Quit"<<endl;
+        cout<<"[1] Savings"<<'\n'<<"[2] Checkings"<<'\n'<<"[3] CD"<<'\n'<<"[4] Quit"<<endl;
         int choose;
         cin>>choose;
         switch(choose)
         {
         case 1:
-            
+            cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+            "[3] Check Balance"<<'\n'<<"[4] Back"<<endl;
+            int check;
+            bool run = true;
+            cin>>check;
+            while(run)
+            {
+                 if(check == 1)
+                {
+                    int dep;
+                    cout<<"Enter deposit ammount"<<endl;
+                    cin>>dep;
+                    currAcount.savingsDeposit(dep);
+                    cout<<"Done"<<endl;
+                }
+                else if(check == 2)
+                {
+                    int dep;
+                    cout<<"Enter withdraw ammount"<<endl;
+                    cin>>dep;
+                    currAcount.savingsWithdraw(dep);
+                    cout<<"Done"<<endl;
+                }
+                else if (check == 3)
+                {
+                    currAcount.getSavingsBalance();
+                }
+                else if(check == 4)
+                {
+                    run = false;
+                    break;
+                }
+            }
+            break;
+        case 2:
+            cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+            "[3] Check Balance"<<'\n'<<"[4] Back"<<endl;
+            int check;
+            bool run = true;
+            cin>>check;
+            while(run)
+            {
+                 if(check == 1)
+                {
+                    int dep;
+                    cout<<"Enter deposit ammount"<<endl;
+                    cin>>dep;
+                    currAcount.checkingDeposit(dep);
+                    cout<<"Done"<<endl;
+                }
+                else if(check == 2)
+                {
+                    int dep;
+                    cout<<"Enter withdraw ammount"<<endl;
+                    cin>>dep;
+                    currAcount.checkingWithdraw(dep);
+                    cout<<"Done"<<endl;
+                }
+                else if (check == 3)
+                {
+                    currAcount.getCheckingBalance();
+                }
+                else if(check == 4)
+                {
+                    run = false;
+                    break;
+                }
+            }
+            break;
+        case 3:
+            cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+            "[3] Check Balance"<<'\n'<<"[4] Cancel"<<'\n'<<"[5] Back"<<endl;
+            int check;
+            bool run = true;
+            cin>>check;
+            while(run)
+            {
+                 if(check == 1)
+                {
+                    int dep;
+                    cout<<"Enter deposit ammount"<<endl;
+                    cin>>dep;
+                    currAcount.CDDeposit(dep);
+                    cout<<"Done"<<endl;
+                }
+                else if(check == 2)
+                {
+                    int dep;
+                    cout<<"Enter withdraw ammount"<<endl;
+                    cin>>dep;
+                    currAcount.savingsWithdraw(dep);
+                    cout<<"Done"<<endl;
+                }
+                else if (check == 3)
+                {
+                    currAcount.getSavingsBalance();
+                }
+                else if(check = 4)
+                {
+                    currAcount.cdCancel();
+                    cout<<"Done"<<endl;
+                }
+                else if(check == 5)
+                {
+                    run = false;
+                    break;
+                }
+            }
+            break;
+        case 4:
+            run2 = false;
             break;
         
         default:
+            cout<<"Please Enter a Valid choice"<<endl;
             break;
         }
-
-    }
+    tree.upadteAcc(currAcount.getKey(), currAcount);
+}
    
 
 

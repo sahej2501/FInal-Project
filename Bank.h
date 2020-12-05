@@ -29,6 +29,7 @@ class BankTree
         bankAcc* removeTraversal(bankAcc *&, int);       //function that removes a given key
         bankAcc* minimumKey(bankAcc* curr);
         void displayAllAccounts(bankAcc *&) const;
+        bool upadte(bankAcc *&, int num, AllAccounts);
 
     public:
       BankTree();
@@ -41,6 +42,7 @@ class BankTree
       void insertAcc(AllAccounts);
       void searchAcc(int);
       void removeAcc(int);
+      void upadteAcc(int, AllAccounts);
 
       void closeAccount(bankAcc *&nodePtr)
       {
@@ -49,6 +51,8 @@ class BankTree
          nodePtr->acc->getPhone() + " " + nodePtr->acc->getAddress() + " ";
          closeInfo = close;
       }
+
+      void modifi(AllAccounts &);
    
 
       void setCurrNode(AllAccounts &, bankAcc *&);
@@ -66,6 +70,64 @@ BankTree::BankTree()
 
 BankTree::~BankTree()
 {
+}
+
+//*****************************************
+// Allows for modfication such as deposit
+//*****************************************
+
+void BankTree::modifi(AllAccounts &temp)
+{
+   string name, fName, lName;
+   AllAccounts temp;
+   //messes up interest
+   temp.setBalance(currAccount.acc->getSavingsBalance(), currAccount.acc->getCheckingBalance(), currAccount.acc->getCDBalance());
+   name = currAccount.acc->getName();
+   fName = name.substr(0, name.find(" "));
+   lName = name.substr(name.find(" ") + 1, name.length());
+   temp.setFirstLastName(fName, lName);
+   temp.setAccountNumber(currAccount.acc->getAccountNumber());
+   temp.setAddress(currAccount.acc->getAddress());
+   temp.setPhone(currAccount.acc->getPhone());
+   temp.setKey(currAccount.acc->getKey());
+
+}
+
+//************************************************
+// Helper function that helps the update function
+//************************************************
+
+void BankTree::upadteAcc(int k, AllAccounts c)
+{
+   upadte(root, k, c);
+   cout<<"Done"<<endl;
+}
+
+//************************************************************
+// Used to update the node with changes made by user
+//***********************************************************
+
+bool BankTree::upadte(bankAcc *&nodePtr, int num, AllAccounts temp)
+{
+   if (nodePtr == nullptr)
+   {
+      return false;
+   }
+   else if (nodePtr->acc->getKey() == num)
+   {
+      cout<<"Found"<<endl;
+      nodePtr->acc->setBalance(temp.getSavingsBalance(), temp.getCheckingBalance(), temp.getCDBalance());
+      return true;
+   }
+   // recur on left subtree
+   if (upadte(nodePtr->left, num, temp))
+      return true;
+   
+   //recur on right subtree
+   bool rightFind = upadte(nodePtr->right, num, temp);
+
+   //recur on right allows overall return booleen variable, avoids errors
+   return rightFind;
 }
 
 // void BankTree::displayAllAccounts(bankAcc *&nodePtr) const
