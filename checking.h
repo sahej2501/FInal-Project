@@ -25,13 +25,13 @@ public:
         {
             if (accountBalance - amount < 0)   //if the withdrawal amount will cause a negative, just deduct the $25 fundCharge from the balance.
             {
-                accountBalance = fundCharge;
+                accountBalance += fundCharge;
                 cout << "You withdrew more than you had, fund charge has been applied!" << endl;
             }
             else
             {
                 accountBalance -= amount;
-                cout << "withdraw Successful!" << endl;
+                cout <<"A $" <<amount << " Withdraw Successful! Your account balance is " <<accountBalance <<endl;
             }
         }
         else
@@ -39,7 +39,7 @@ public:
             cout << "Account not open!";
         }
         //
-        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime());
+        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Checking";
         transactionHistory.push_back(info);
         
         return accountBalance;
@@ -50,13 +50,13 @@ public:
         if(open == true)
         {
             accountBalance += amount;
-            cout << "A $" << amount << " deposit has been made" << endl;
+            cout << "A $" << amount << " deposit has been made, the current balance is: " << accountBalance << endl;
         }
         else
         {
             cout << "Account not open!";
         }
-        string info ="+" + to_string(amount) + t.formatDate(t.getCurrentTime());
+        string info ="+" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Checking";
         transactionHistory.push_back(info);
     }
 };

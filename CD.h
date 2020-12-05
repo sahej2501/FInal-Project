@@ -11,7 +11,6 @@ private:
     string status;
     double penalty = 5.0;
     double ogAmount;
-    int interestRate;
     string withdrawDate;
     string creationDate;
     int numYears = 5;
@@ -42,35 +41,32 @@ public:
         return creationDate;
     }
 
-    double getInterestRate()
-    {
-        interestRate = 0.05 * accountBalance;
-        return interestRate;
-    }
-
     //functions
     void deposit(double amount)
     {
         if(open == true)
         {
             accountBalance += amount;
-            cout << "A $" << amount << " deposit has been made" << endl;
+            cout << "A $" << amount << " deposit has been made, Current Balance: " <<accountBalance<< endl;
         }
         else
-        {
             cout << "Account not open!";
-        }
+        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" CD";
+        transactionHistory.push_back(info);
     }
     
     double withdraw(double amount)
     {
+        //check maturity in main, if it is not 5, cout timelength not met, continue
         if (open == true)
         {
             accountBalance -= amount;
-            cout << "A $" << amount << " withdrawal has been made" << endl;
+            cout << "A $" << amount << " withdrawal has been made, Current Balance: " <<accountBalance<< endl;
         }
         else
             cout << "Account not open!";
+        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" CD";
+        transactionHistory.push_back(info);
      return accountBalance;
     }
 

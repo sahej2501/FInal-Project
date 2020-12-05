@@ -9,6 +9,7 @@
 #include <fstream>
 #include "accounts.h"
 #include "AccountNode.h"
+#include "regex"
 #define GetCurrentDir getcwd
 using namespace std;
 
@@ -93,5 +94,14 @@ public:
         else{
             cout<<"writing to file failed"<<endl;
         }
+    }
+
+    //gets a line passed in and returns  the key aka the  first n digits
+    int getKey(string line){
+        regex keyFinder("^\\d*");
+        smatch s;
+
+        regex_search(line, s, keyFinder);
+        return stoi(s[0]);
     }
 };

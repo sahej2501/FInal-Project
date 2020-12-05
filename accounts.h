@@ -149,7 +149,7 @@ class accounts{
     // for jay
         int daysDifferent = t.getDifference(openedDate, t.getCurrentTime());
         int yearsPassed = daysDifferent/365;
-        if(yearsPassed>1&&yearsPassed>maturity){
+        if(yearsPassed>0&&yearsPassed>maturity){
             maturity = yearsPassed-maturity;
         }
         
@@ -159,7 +159,7 @@ class accounts{
     void yearsPassedTester(Date newDate){ 
         int daysDifferent = t.getDifference(openedDate, newDate);
         int yearsPassed = daysDifferent/365;
-        if(yearsPassed>1&&yearsPassed>maturity){
+        if(yearsPassed>0&&yearsPassed>maturity){
             maturity = yearsPassed-maturity;
         }
         
