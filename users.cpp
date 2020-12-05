@@ -32,6 +32,7 @@ vector<User> usersVec;
 
 void createOfficial(string, string, vector<Official> &officialsVec);
 void createUser(string, string, string, vector<User> &usersVec);
+bool LoginPasswordMatch(string, string, vector<User> &usersVec);
 void enableOfficial(string, vector<Official> &officialsVec);
 void disableOfficial(string, vector<Official> &officialsVec);
 void readAdminLogin(vector<Admin> &adminsVec);
@@ -97,6 +98,17 @@ void createUser(string id, string pswd, string accntNum, vector<User> &usersVec)
     newUser.password = pswd;
     newUser.accntNum = accntNum;
     usersVec.push_back(newUser);
+}
+
+bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec)
+{
+    for(int i = 0; i < usersVec.size(); i++)
+    {
+        if(id == usersVec[i].username || pswd == usersVec[i].password)
+            return true;
+        else
+            return false;
+    }
 }
 
 void enableOfficial(string id, vector<Official> &officialsVec)
