@@ -5,7 +5,9 @@
 #include "AccountNode.h"
 #include "savings.h"
 #include "checking.h"
+#include "timeHandler.h"
 #include "CD.h"
+
 
 
 struct bankAcc
@@ -19,22 +21,37 @@ class BankTree
 {
     private:
         bankAcc *root;  //root
-        bankAcc *currAccount;
+        
         //functions methods for public method manipulation 
         void insert(bankAcc *&, bankAcc *&);
         void deleteNode(AllAccounts, bankAcc *&);
-        bool search(bankAcc *&, int, bankAcc *&);
+        bool search(bankAcc *&, int, bankAcc &);
         bankAcc* removeTraversal(bankAcc *&, int);       //function that removes a given key
         bankAcc* minimumKey(bankAcc* curr);
         void displayAllAccounts(bankAcc *&) const;
 
     public:
-        BankTree();
-        ~BankTree();
+      BankTree();
+      ~BankTree();
 
-        void insertAcc(AllAccounts);
-        void searchAcc(int);
-        void removeAcc(int);
+      timeHandler t;
+      string closeInfo;
+      bankAcc currAccount;
+
+      void insertAcc(AllAccounts);
+      void searchAcc(int);
+      void removeAcc(int);
+
+      void closeAccount(bankAcc *&nodePtr)
+      {
+         string close;
+         close = nodePtr->acc->getAccountNumber() + " " + nodePtr->acc->getName() + " " + 
+         nodePtr->acc->getPhone() + " " + nodePtr->acc->getAddress() + " ";
+         closeInfo = close;
+      }
+   
+
+      void setCurrNode(AllAccounts &, bankAcc *&);
 
       //   void displayAllTenants()
       //   {
@@ -63,6 +80,19 @@ BankTree::~BankTree()
 //          displayAllAccounts(nodePtr->right);
 //       }
 //    }
+// }
+
+//*********************************************
+// returns string of all closing information to
+// be saved later
+//*********************************************
+
+// void closeAccount(bankAcc *&nodePtr)
+// {
+//    string close;
+//    close = nodePtr->acc->getAccountNumber() + " " + nodePtr->acc->getName() + " " + 
+//    nodePtr->acc->getPhone() + " " + nodePtr->acc->getAddress() + " ";
+//    closeInfo = close;
 // }
 
 //**********************************************************
@@ -97,7 +127,7 @@ void BankTree::insert(bankAcc *&nodePtr, bankAcc *&newNode)
    else if (newNode->acc->getKey() > nodePtr->acc->getKey())
       insert(nodePtr->right, newNode); // Search the right branch
    else
-      cout<<"key already has a tenant"<<endl;
+      cout<<"key already has in use"<<endl;
 }
 
 //**********************************************************
@@ -117,6 +147,19 @@ void BankTree::searchAcc(int num)
    }
 }
 
+//**************************************************
+// Set the the values from current node so it can be displayed
+//*********************************************************
+
+// void BankTree::getCurrentAcc(AllAccounts &curr, bankAcc *&nodePtr)
+// {
+//    currAccount.setFirstLastName(nodePtr->acc->getName());
+//    currAccount.setAccountNumber(nodePtr->acc->getAccountNumber());
+//    currAccount.setKey(nodePtr->acc->getKey());
+//    currAccount.setAddress(nodePtr->acc->getAddress());
+
+// }
+
 //*************************************************************
 // search accepts a bankAcc pointer and an integer value as the 
 // key number.     *
@@ -126,7 +169,7 @@ void BankTree::searchAcc(int num)
 // when the key number cannot be found in the Tree          *
 //*************************************************************
 
-bool BankTree::search(bankAcc *&nodePtr, int num, bankAcc *&currAccount)
+bool BankTree::search(bankAcc *&nodePtr, int num, bankAcc &currAccount)
 {
    if (nodePtr == nullptr)
    {
@@ -135,7 +178,7 @@ bool BankTree::search(bankAcc *&nodePtr, int num, bankAcc *&currAccount)
    else if (nodePtr->acc->getKey() == num)
    {
       cout<<"Found"<<endl;
-      currAccount = nodePtr;
+      currAccount = *nodePtr;
       return true;
    }
    // recur on left subtree
@@ -197,6 +240,7 @@ bankAcc* BankTree::removeTraversal(bankAcc *&nodePtr, int num)
    }
    else if(num == nodePtr->acc->getKey())
    {
+      closeAccount(nodePtr);
       //case 1: deleting node does not have any children
       if(nodePtr->left == nullptr && nodePtr->right == nullptr)
       {
