@@ -10,6 +10,7 @@ using namespace std;
 
 class accounts{
     protected:
+        timeHandler t;
         string accountNumber;
         double accountBalance;
         bool open; //bool to see if the account is accessible 
@@ -38,7 +39,7 @@ class accounts{
             accountType=aT;
             closed = close;
             maturity=mat;
-            openedDate = getCurrentTime();
+            openedDate = t.getCurrentTime();
         }
 
         //getters
@@ -142,7 +143,7 @@ class accounts{
 
     void yearsPassed(){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
     // for jay
-        int daysDifferent = getDifference(openedDate, getCurrentTime());
+        int daysDifferent = t.getDifference(openedDate, t.getCurrentTime());
         int yearsPassed = daysDifferent/365;
         if(yearsPassed>1&&yearsPassed>maturity){
             maturity = yearsPassed-maturity;
@@ -152,7 +153,7 @@ class accounts{
 
     //this function is strictly for testing for jay so that he can pass in future dates to test his interest
     void yearsPassedTester(Date newDate){ 
-        int daysDifferent = getDifference(openedDate, newDate);
+        int daysDifferent = t.getDifference(openedDate, newDate);
         int yearsPassed = daysDifferent/365;
         if(yearsPassed>1&&yearsPassed>maturity){
             maturity = yearsPassed-maturity;
