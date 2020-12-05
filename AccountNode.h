@@ -119,9 +119,9 @@ class AllAccounts
             check.deposit(d);
         }
 
-        void CDDeposit(int d)
+        void CDDeposit(double d)
         {
-            cd.setOgAmount = d;
+            cd.setOgAmount(d);
             cd.deposit(d);
         }
 
