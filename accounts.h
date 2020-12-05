@@ -22,6 +22,7 @@ class accounts{
         string timeOpened;
         int maturity;
         bool closed;
+        vector <string> transactionHistory;
 
 
         Date openedDate;
@@ -43,6 +44,9 @@ class accounts{
         }
 
         //getters
+        vector <string> getTransactionHistory(){
+            return transactionHistory;
+        }
         string getAccountNumber(){
             return accountNumber;
         }
