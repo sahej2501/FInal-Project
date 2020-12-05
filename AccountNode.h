@@ -36,14 +36,30 @@ class AllAccounts
             return key;
         }
 
-        vector<string> getTransactionHst()
+        vector< vector<string> > getTransactionHst()
         {
-            return check.getTransactionHistory();
+            vector< vector<string> > trans;
+            trans.push_back(save.getTransactionHistory());
+            trans.push_back(check.getTransactionHistory());
+            trans.push_back(cd.getTransactionHistory());
+            return trans;
         }
 
-        void printName()
+        string getAddress()
         {
-            cout<<firstName<<" "<<lastName<<endl;
+            return address;
+        }
+
+        string getPhone()
+        {
+            return phoneNum;
+        }
+
+        string getName()
+        {
+            string name;
+            name = firstName + " " + lastName;
+            return name;
         }
 
         string getAccountNumber()

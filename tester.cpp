@@ -16,14 +16,16 @@ int main(){
     string actN=account1.getAccountNumber();
     //cout<<"Account number: "<<actN<<endl;
     d.createFiles(account1.getAccountNumber());
-    vector <string> transactions;
+    vector< vector<string> > transactions;
     account1.savingsDeposit(100);
     account1.savingsDeposit(20);
     account1.checkingDeposit(50);
     transactions= account1.getTransactionHst();
-    cout<<"\nTransactions size: "<<transactions.size()<<endl;
-    for(int i =0; i <transactions.size();i++){
-        d.writeToFile(actN,'t',transactions[i]);
-    }
+    for(int i=0; i<transactions.size();i++){
+        for(int j=0;j<transactions[i].size();j++){
+            d.writeToFile(actN,'t',transactions[i][j]);
+        }
+    }       
+    
     return 0;
 }
