@@ -13,6 +13,7 @@ class Savings : public accounts{
         string status;                      //a way to see if the account is active or inactive 
         double serviceCharge;           //if the account is inactive(balance is below 50) a service charge of 5 dollars is applied
         double dailyInterest;
+        Date lastOpendDate;
     public:
 
         timeHandler t;
@@ -24,6 +25,8 @@ class Savings : public accounts{
                 status = "Active";
             else if(accountBalance < 50)
                 status = "Inactive";
+
+            lastOpendDate = t.getCurrentTime();
         }
         //returns the status
         string getStatus()
@@ -41,6 +44,13 @@ class Savings : public accounts{
         {
 
             dailyInterest = dI;
+        }
+
+        double getAccountBalance()
+        {
+            addInterest(lastOpendDate, t.getCurrentTime());
+            lastOpendDate = t.getCurrentTime();
+            return accountBalance;
         }
 
         double withdraw(double amount)

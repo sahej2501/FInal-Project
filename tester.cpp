@@ -5,26 +5,22 @@
 #include "AccountNode.h"
 #include "Bank.h"
 #include <ctime>
-#include "directoryHandler.h"
-#include <string>
 using namespace std;
 
 int key=3000;
 
-
 string generateAC(int keyPassed);
-void saveTransactions(vector< vector<string> > transactions,string actN);
-timeHandler t;
-directory d;
-int main(){
 
+int main(){
+    timeHandler t;
+    directory d;
     Date d1 = t.getCurrentTime();
     Date d2;
     BankTree tree;
     AllAccounts account1;
     account1.setAccountNumber("ae87");
     string actN=account1.getAccountNumber();
-    cout<<"Account number: "<<actN<<endl;
+    //cout<<"Account number: "<<actN<<endl;
     d.createFiles(account1.getAccountNumber());
     vector< vector<string> > transactions;
     account1.savingsDeposit(100);
@@ -37,11 +33,10 @@ int main(){
     int shift=1;
     string encrypted= d.encrypt(test,shift);
     string decrypted = d.decrypt(encrypted,shift);
-
-    cout<<"Encrypted: "<<encrypted<<endl;
-    cout<<"Decrypted: "<<decrypted<<endl;
-
-
+    
+    
+    cout<<generateAC(key)<<endl;
+    cout<<d.getKey(generateAC(key))<<endl;
     return 0;
 }
 
@@ -56,7 +51,6 @@ string generateAC(int keyPassed){
     for(int i =0; i<=10;i++){
         actN+=alphanum[rand()%len];
     }
-    key++;
     return actN;
-    
+    key++;
 }
