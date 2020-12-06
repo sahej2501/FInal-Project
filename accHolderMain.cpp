@@ -7,6 +7,7 @@
 #include "Bank.h"
 #include "regex"
 #include "AccountNode.h"
+#include "directoryHandler.h"
 #include "timeHandler.h"
 
 using namespace std;
@@ -28,6 +29,7 @@ vector<User> usersVec;
 int key = 0;
 BankTree tree;
 timeHandler t;
+directory d;
 vector<string> closedAccounts;
 
 
@@ -60,8 +62,7 @@ int main()
     case 1:
         cin.ignore();
         openAccount(newAccount);
-        newAccount.setKey(001);
-        tree.insertAcc(newAccount);
+        //tree.insertAcc(newAccount);
         break;
     case 2:
         cin.ignore();
@@ -109,6 +110,7 @@ void openAccount(AllAccounts &a)
     
     //generating a new account num
     accNum = generateAC(key);
+    a.setKey(getKey(accNum));
     a.setAccountNumber(accNum);
 
     //Entering Name for new user
@@ -209,14 +211,18 @@ void depOrWidth()
         }
     }
 
-    int tempKey = getKey(accountNum);
+    int tempKey = d.getKey(accountNum);
+    //cout<<tempKey<<" "<<accountNum<<endl;
     tree.searchAcc(tempKey);
+    //cout<<tree.currAccount.acc->getName()<<endl;
     tree.modifi(currAcount);
     cout<<currAcount.getAccountNumber()<<endl;
     
 
     bool deprun = true;
-    bool run1, run2, run3 = true;
+    bool run1 = true;
+    bool run2 = true;
+    bool run3 = true;
     while(deprun)
     {
         cout<<"[1] Savings"<<'\n'<<"[2] Checkings"<<'\n'<<"[3] CD"<<'\n'<<"[4] Quit"<<endl;
@@ -238,7 +244,8 @@ void depOrWidth()
                     cout<<"Enter deposit ammount"<<endl;
                     cin>>dep;
                     currAcount.savingsDeposit(dep);
-                    cout<<"Done1"<<endl;
+                    //cout<<"Done1"<<endl;
+                    run1 = false;
                 }
                 else if(check1 == 2)
                 {
@@ -246,11 +253,13 @@ void depOrWidth()
                     cout<<"Enter withdraw ammount"<<endl;
                     cin>>dep;
                     currAcount.savingsWithdraw(dep);
-                    cout<<"Done"<<endl;
+                    //cout<<"Done"<<endl;
+                    run1 = false;
                 }
                 else if (check1 == 3)
                 {
-                    cout<<currAcount.getSavingsBalance()<<endl;;
+                    cout<<currAcount.getSavingsBalance()<<endl;
+                    run1 = false;
                 }
                 else if(check1 == 4)
                 {
@@ -274,6 +283,7 @@ void depOrWidth()
                     cin>>dep;
                     currAcount.checkingDeposit(dep);
                     cout<<"Done"<<endl;
+                    run2 = false;
                 }
                 else if(check2 == 2)
                 {
@@ -282,10 +292,12 @@ void depOrWidth()
                     cin>>dep;
                     currAcount.checkingWithdraw(dep);
                     cout<<"Done"<<endl;
+                    run2 = false;
                 }
                 else if (check2 == 3)
                 {
-                    cout<<currAcount.getCheckingBalance()<<endl;;
+                    cout<<currAcount.getCheckingBalance()<<endl;
+                    run2 = false;
                 }
                 else if(check2 == 4)
                 {
@@ -309,6 +321,7 @@ void depOrWidth()
                     cin>>dep;
                     currAcount.CDDeposit(dep);
                     cout<<"Done"<<endl;
+                    run3 = false;
                 }
                 else if(check3 == 2)
                 {
@@ -317,15 +330,18 @@ void depOrWidth()
                     cin>>dep;
                     currAcount.savingsWithdraw(dep);
                     cout<<"Done"<<endl;
+                    run3 = false;
                 }
                 else if (check3 == 3)
                 {
                     cout<<currAcount.getCDBalance()<<endl;
+                    run3 = false;
                 }
                 else if(check3 == 4)
                 {
                     currAcount.cdCancel();
                     cout<<"Done"<<endl;
+                    run3 = false;
                 }
                 else if(check3 == 5)
                 {
