@@ -4,28 +4,22 @@
 #include "Bank.h"
 #include "directoryHandler.h"
 #include <ctime>
-#include <string>
 using namespace std;
 
 int key=3000;
-const int a=17;
-const int b=20;
 
 string generateAC(int keyPassed);
-string encrypt(string msg, int shift);
-string decrypt(string msg, int shift);
-void saveTransactions(vector< vector<string> > transactions,string actN);
-timeHandler t;
-directory d;
-int main(){
 
+int main(){
+    timeHandler t;
+    directory d;
     Date d1 = t.getCurrentTime();
     Date d2;
     BankTree tree;
     AllAccounts account1;
     account1.setAccountNumber("ae87");
     string actN=account1.getAccountNumber();
-    cout<<"Account number: "<<actN<<endl;
+    //cout<<"Account number: "<<actN<<endl;
     d.createFiles(account1.getAccountNumber());
     vector< vector<string> > transactions;
     account1.savingsDeposit(100);
@@ -33,20 +27,21 @@ int main(){
     account1.checkingDeposit(50);
     account1.CDDeposit(200);
     transactions= account1.getTransactionHst();
-    d.saveTransactions(transactions,actN);
+    for(int i=0; i<transactions.size();i++){
+        for(int j=0;j<transactions[i].size();j++){
+            d.writeToFile(actN,'t',transactions[i][j]);
+        }
+    }       
     
-    string test="Mike Gegg";
-    int shift=1;
-    string encrypted= encrypt(test,shift);
-    string decrypted = decrypt(encrypted,shift);
-
-    cout<<"Encrypted: "<<encrypted<<endl;
-    cout<<"Decrypted: "<<decrypted<<endl;
-
-
+    cout<<generateAC(key)<<endl;
+    cout<<d.getKey(generateAC(key))<<endl;
     return 0;
 }
 
+void encrypt(string line){
+
+
+}
 
 
 string generateAC(int keyPassed){
@@ -58,7 +53,6 @@ string generateAC(int keyPassed){
     for(int i =0; i<=10;i++){
         actN+=alphanum[rand()%len];
     }
-    key++;
     return actN;
-    
+    key++;
 }

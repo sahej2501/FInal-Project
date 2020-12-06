@@ -239,7 +239,6 @@ bool BankTree::search(bankAcc *&nodePtr, int num, bankAcc &currAccount)
    }
    else if (nodePtr->acc->getKey() == num)
    {
-      cout<<"Found"<<endl;
       currAccount = *nodePtr;
       return true;
    }

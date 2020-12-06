@@ -22,7 +22,6 @@ class directory{
 
 public:
 
-
     const string basePath= getCurrentDir();
     const string accountsPath = basePath+"/accounts";
     int accountCount=0;

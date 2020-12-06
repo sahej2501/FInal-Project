@@ -40,7 +40,7 @@ class accounts{
             accountType=aT;
             closed = close;
             maturity=mat;
-            openedDate;
+            openedDate = t.getCurrentTime();
         }
 
         //getters
@@ -51,12 +51,8 @@ class accounts{
             return accountNumber;
         }
 
-        double getAccountBalance(){
+        virtual double getAccountBalance(){
             return accountBalance;
-        }
-
-        Date getOpenedDate(){
-            return openedDate;
         }
 
         bool getOpenStatus(){
@@ -98,10 +94,6 @@ class accounts{
 
         void setAccountBalance(double aB){
             accountBalance=aB;
-        }
-
-        void setOpenedDate(Date openDate){
-            openedDate = openDate;
         }
 
         void setOpenStatus(bool o){
@@ -153,7 +145,7 @@ class accounts{
 
 
 
-    void yearsPassed(Date openedDate){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
+    void yearsPassed(){ //gets the difference of the two dates and if its greater than 365 it returns the difference of the amount of years to maturity as an int
     // for jay
         int daysDifferent = t.getDifference(openedDate, t.getCurrentTime());
         int yearsPassed = daysDifferent/365;
