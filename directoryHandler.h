@@ -61,7 +61,8 @@ public:
     }
 
     void writeToFile(string accountNumber, char fileType, string info){
-        ofstream outFile;
+        fstream outFile;
+        ifstream inFile;
         chdir(basePath.data());
         chdir(accountsPath.data());
         string slice = "/";
@@ -69,24 +70,29 @@ public:
         if(chdir(newPath.data())==0){
             switch(fileType){
                 case 's':
-                    outFile.open("savings.txt",ios::app);
+                    outFile.open("savings.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 case 'i':
-                    outFile.open("info.txt",ios::app);
+                    outFile.open("info.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 case 'c':
-                    outFile.open("checking.txt",ios::app);
+                    outFile.open("checking.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 case 't':
-                    outFile.open("transactions.txt",ios::app|ios::out);
+                    outFile.open("transactions.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 case 'd':
-                    outFile.open("cd.txt",ios::app);
+                    outFile.open("cd.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 default:
                     cout<<"File not found error!"<<endl;
@@ -136,6 +142,14 @@ public:
         return encrypt(msg,26-shift%26);
     }
 
+    void clearFile(string accountNumber,string file){
+        string folder = accountsPath+"/"+accountNumber;
+        chdir(folder.data());
+        ofstream outFile2;
+        outFile2.open(file);
+        file.clear();
 
+        
+    }
 
 };
