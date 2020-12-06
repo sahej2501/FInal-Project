@@ -1,10 +1,8 @@
-
+#pragma once
 #include <string>
 #include <iostream>
 #include "accounts.h"
 #include "directoryHandler.h"
-#include <directoryHandler.h>
-
 #include "timeHandler.h"
 using namespace std;
 
@@ -125,4 +123,3 @@ class Savings : public accounts{
         }
 
 };
-#endif

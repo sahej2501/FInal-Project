@@ -1,6 +1,6 @@
+#pragma once
 #ifndef ALLACCOUNTS_H
 #define ALLACCOUNTS_H
-
 #include <string>
 #include <iostream>
 #include <vector>
