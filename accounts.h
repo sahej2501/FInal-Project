@@ -51,7 +51,7 @@ class accounts{
         //     return accountNumber;
         // }
 
-        virtual double getAccountBalance(){
+        double getAccountBalance(){
             return accountBalance;
         }
 

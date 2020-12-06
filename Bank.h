@@ -41,7 +41,7 @@ class BankTree
       AllAccounts currAccount;
 
       void insertAcc(AllAccounts);
-      void searchAcc(int);
+      bool searchAcc(int);
       void removeAcc(int);
       void upadteAcc(int, AllAccounts);
 
@@ -113,7 +113,7 @@ void BankTree::modifi(AllAccounts &temp)
 void BankTree::upadteAcc(int k, AllAccounts c)
 {
    upadte(root, k, c);
-   cout<<"Done"<<endl;
+   // cout<<"Done"<<endl;
 }
 
 //************************************************************
@@ -128,7 +128,7 @@ bool BankTree::upadte(bankAcc *&nodePtr, int num, AllAccounts temp)
    }
    else if (nodePtr->acc.getKey() == num)
    {
-      cout<<"Found"<<endl;
+      // cout<<"Found"<<endl;
       nodePtr->acc.setBalance(temp.getSavingsBalance(), temp.getCheckingBalance(), temp.getCDBalance());
       return true;
    }
@@ -223,16 +223,20 @@ void BankTree::insert(bankAcc *&nodePtr, bankAcc *&newNode)
 // it to the search function.                              *
 //**********************************************************
 
-void BankTree::searchAcc(int num)
+bool BankTree::searchAcc(int num)
 { 
+   bool found;
    if (search(root, num))
    {
       cout<<"Found"<<endl;   //prints out Not Found when search funtion returns false
+      found = true;
    }
    else
    {
       cout<<"Not Found"<<endl;
+      found = false;
    }
+   return found;
 }
 
 //**************************************************
