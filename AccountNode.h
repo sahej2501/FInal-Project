@@ -1,6 +1,6 @@
-#ifndef ALLACCOUNTS_H
-#define ALLACCOUNTS_H
-
+// #ifndef ALLACCOUNTS_H
+// #define ALLACCOUNTS_H
+#pragma once
 #include <string>
 #include <iostream>
 #include <vector>
@@ -20,14 +20,17 @@ class AllAccounts
         Savings save;
         Checking check;
         CD cd;
-        string accountNumber, firstName, lastName, phoneNum, address;
+        string accountNumber;
+        string firstName;
+        string lastName; 
+        string phoneNum;
+        string address;
 
     public:
         //constructors
         AllAccounts()
         {
-            key = 000;
-            accountNumber = "0000000000";
+            accountNumber = "";
         }
 
         //getters
@@ -173,4 +176,4 @@ class AllAccounts
 
 
 };
-#endif
+//#endif
