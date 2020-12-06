@@ -1,8 +1,9 @@
+
+
 #include <iostream>
 #include "timeHandler.h"
 #include "AccountNode.h"
 #include "Bank.h"
-#include "directoryHandler.h"
 #include <ctime>
 using namespace std;
 
@@ -27,21 +28,18 @@ int main(){
     account1.checkingDeposit(50);
     account1.CDDeposit(200);
     transactions= account1.getTransactionHst();
-    for(int i=0; i<transactions.size();i++){
-        for(int j=0;j<transactions[i].size();j++){
-            d.writeToFile(actN,'t',transactions[i][j]);
-        }
-    }       
+    d.saveTransactions(transactions,actN);
+    string test="Mike Gegg";
+    int shift=1;
+    string encrypted= d.encrypt(test,shift);
+    string decrypted = d.decrypt(encrypted,shift);
+    
     
     cout<<generateAC(key)<<endl;
     cout<<d.getKey(generateAC(key))<<endl;
     return 0;
 }
 
-void encrypt(string line){
-
-
-}
 
 
 string generateAC(int keyPassed){

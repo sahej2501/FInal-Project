@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ACCOUNTS_H
 #define ACCOUNTS_H
 #include <string>
