@@ -1,9 +1,14 @@
+
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
+
 #pragma once
 #include <iostream>
 #include <string>
 #include <stdlib.h>
 #include <time.h>
-#include <mach-o/dyld.h>
+
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fstream>
@@ -17,12 +22,11 @@ class directory{
 
 public:
 
+    string getCurrentDir();
     const string basePath= getCurrentDir();
     const string accountsPath = basePath+"/accounts";
     int accountCount=0;
 
-    const int a=17;
-    const int b=20;
 
     void changePath(string actN){
         string newPath;
