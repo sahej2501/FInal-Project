@@ -1,19 +1,18 @@
+
+
 #include <iostream>
 #include "timeHandler.h"
 #include "AccountNode.h"
 #include "Bank.h"
-#include "directoryHandler.h"
 #include <ctime>
+#include "directoryHandler.h"
 #include <string>
 using namespace std;
 
 int key=3000;
-const int a=17;
-const int b=20;
+
 
 string generateAC(int keyPassed);
-string encrypt(string msg, int shift);
-string decrypt(string msg, int shift);
 void saveTransactions(vector< vector<string> > transactions,string actN);
 timeHandler t;
 directory d;
@@ -34,11 +33,10 @@ int main(){
     account1.CDDeposit(200);
     transactions= account1.getTransactionHst();
     d.saveTransactions(transactions,actN);
-    
     string test="Mike Gegg";
     int shift=1;
-    string encrypted= encrypt(test,shift);
-    string decrypted = decrypt(encrypted,shift);
+    string encrypted= d.encrypt(test,shift);
+    string decrypted = d.decrypt(encrypted,shift);
 
     cout<<"Encrypted: "<<encrypted<<endl;
     cout<<"Decrypted: "<<decrypted<<endl;
