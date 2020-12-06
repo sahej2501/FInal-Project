@@ -81,7 +81,7 @@ public:
                     outFile << info << endl;
                     break;
                 case 't':
-                    outFile.open("transactions.txt",ios::app);
+                    outFile.open("transactions.txt",ios::out | ios::trunc);
                     outFile << info << endl;
                     break;
                 case 'd':
@@ -136,6 +136,7 @@ public:
         return encrypt(msg,26-shift%26);
     }
 
+    
 
 
 };
