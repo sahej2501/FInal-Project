@@ -82,7 +82,16 @@ class AllAccounts
             return cd.getAccountBalance();
         }
 
+
         //setters
+
+        void setBalance(double s, double c, double f)
+        {
+            save.setAccountBalance(s);
+            check.setAccountBalance(c);
+            cd.setAccountBalance(f);
+        }
+
         void setKey(int k)
         {
             key = k;
@@ -119,9 +128,9 @@ class AllAccounts
             check.deposit(d);
         }
 
-        void CDDeposit(double d)
+        void CDDeposit(int d)
         {
-            cd.setOgAmount(d);
+            //cd.setOgAmount = d;
             cd.deposit(d);
         }
 
