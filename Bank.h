@@ -79,7 +79,7 @@ BankTree::~BankTree()
 void BankTree::modifi(AllAccounts &temp)
 {
    string name, fName, lName;
-   AllAccounts temp;
+   //AllAccounts temp;
    //messes up interest
    temp.setBalance(currAccount.acc->getSavingsBalance(), currAccount.acc->getCheckingBalance(), currAccount.acc->getCDBalance());
    name = currAccount.acc->getName();
