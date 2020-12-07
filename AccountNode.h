@@ -183,6 +183,11 @@ class AllAccounts
             cd.cancellation();
         }
 
+        void setOGAmount(double a)
+        {
+            cd.setOgAmount(a);
+        }
+
         //functions for bank officials
         void openOrCloseSavings(bool n)
         {
