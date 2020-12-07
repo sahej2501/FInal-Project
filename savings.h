@@ -65,7 +65,6 @@ class Savings : public accounts{
                     else
                     {
                         accountBalance-=amount;
-                        cout<<"A $"<<amount<<" Withdraw successful! Current Balance: "<< accountBalance<<'\n';
                         if(accountBalance < 50)
                         {
                             status = "Inactive";
@@ -99,7 +98,6 @@ class Savings : public accounts{
             if(open == true)
             {
                 accountBalance = accountBalance + amount;
-                cout<<"A $"<<amount<<" Deposit successful! Current balance: "<< accountBalance<<'\n';
                 if(accountBalance >= 50)
                 {
                     status = "Active";
