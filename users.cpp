@@ -799,7 +799,7 @@ void usersOptions(string accountNum)
                         }
                         break;
                     case 4:
-                        userRun = false;
+                        //userRun = false;
                         break;
                     default:
                         cout<<"Invalid Input, try again"<<endl;
