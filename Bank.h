@@ -31,6 +31,7 @@ class BankTree
         void displayAllAccounts(bankAcc *&) const;
         bool upadte(bankAcc *&, int num, AllAccounts);
         void setCurrentAccout(bankAcc *);
+        void displayAllAccounts(bankAcc *&);
 
     public:
       BankTree();
@@ -58,10 +59,10 @@ class BankTree
 
       void setCurrNode(AllAccounts &, bankAcc *&);
 
-      //   void displayAllTenants()
-      //   {
-      //       displayAllTenants(root);
-      //   }
+      void displayAllAccounts()
+      {
+         displayAllAccounts(root);
+      }
 };
 
 BankTree::BankTree()
@@ -142,20 +143,15 @@ bool BankTree::upadte(bankAcc *&nodePtr, int num, AllAccounts temp)
    //recur on right allows overall return booleen variable, avoids errors
    return rightFind;
 }
-
-// void BankTree::displayAllAccounts(bankAcc *&nodePtr) const
-// {
-//    if (nodePtr)
-//    {
-//       if(nodePtr->acc.getKey() != -1)
-//       {
-         
-//          displayAllAccounts(nodePtr->left);
-//          cout<<nodePtr->acc.getKey()<<endl;
-//          displayAllAccounts(nodePtr->right);
-//       }
-//    }
-// }
+void BankTree::displayAllAccounts(bankAcc *&nodePtr)
+{
+   if (nodePtr != nullptr)
+   {
+         displayAllAccounts(nodePtr->left);
+         cout<<nodePtr->acc.getKey()<<endl;
+         displayAllAccounts(nodePtr->right);
+   }
+}
 
 //*********************************************
 // returns string of all closing information to
