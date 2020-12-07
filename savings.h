@@ -49,6 +49,7 @@ class Savings : public accounts{
         double getAccountBalance()
         {
             addInterest(lastOpendDate, t.getCurrentTime());
+            lastOpendDate = t.getCurrentTime();
             return accountBalance;
         }
 
@@ -88,13 +89,13 @@ class Savings : public accounts{
             {
                 cout<<"Account not open, cannot withdraw at this time"<<endl;
             }
-            string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Saving";
+            string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Savings";
             transactionHistory.push_back(info);
-            addInterest(lastOpendDate, t.getCurrentTime());
             return accountBalance;
         }
 
         double deposit(double amount){
+            directory d;
             if(open == true)
             {
                 accountBalance = accountBalance + amount;
@@ -108,7 +109,6 @@ class Savings : public accounts{
             }
             string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime())+" Savings";
             transactionHistory.push_back(info);
-            addInterest(lastOpendDate, t.getCurrentTime());
             return accountBalance;
         }
 
@@ -120,7 +120,6 @@ class Savings : public accounts{
                 dailyInterestRate = accountBalance * dailyInterestRate;
                 accountBalance += dailyInterestRate;
             }
-            lastOpendDate = t.getCurrentTime();
             
         }
 
