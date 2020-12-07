@@ -102,6 +102,11 @@ class AllAccounts
             cd.addInterest();
         }
 
+        double getOGAmount()
+        {
+            return cd.getOgAmount();
+        }
+
 
         //setters
         void setOpenDate(Date d)
