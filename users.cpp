@@ -80,10 +80,12 @@ int main()
     AllAccounts newAccount;
     bankAcc currAcc;
     //read txt files into vecs
-    readAccounts();
+    
     readUserLogins(usersVec);
     readAdminLogin(adminsVec);
     readOfficialLogins(officialsVec);
+    readAccounts();
+    
     for(int i = 0; i < adminsVec.size(); i++)
     {
         cout << adminsVec[i].username << " " << adminsVec[i].password << endl;
@@ -472,12 +474,12 @@ string generateAC(int keyPassed){
     for(int i =0; i<=9;i++){
         actN+=alphanum[rand()%len];
     }
-    key++;
     return actN;
 }
 
 void openAccount()
 {
+    key++;
     AllAccounts a;
     string accNum, login, password, name, firstName, lastName, phone, address;
 
@@ -497,8 +499,10 @@ void openAccount()
     }
     
     //generating a new account num
+    //cout<<key<<endl;
     accNum = generateAC(key);
-    a.setKey(d.getKey(accNum));
+    a.setKey(key);
+    //cout<<key<<endl;
     a.setAccountNumber(accNum);
 
     //Entering Name for new user
@@ -525,7 +529,7 @@ void openAccount()
     cout << "Congratulations! Your account was sucessfully created.\nYou now have a Checking, Savings and CD account with us!" << endl;
     cout << " " << endl;
     createUser(login, password, accNum, usersVec);
-    key++;
+    
 }
 
 void adminOptions()
@@ -665,6 +669,7 @@ void usersOptions(string accountNum)
     cout<<tree.currAccount.getName()<<endl;
     tree.modifi(currAcount);
     cout<<currAcount.getAccountNumber()<<endl;
+    cout<<currAcount.getSavingsBalance()<<endl;
 
     while(cont)
     {
@@ -1047,83 +1052,104 @@ void shutAcc(string offID)
 
 void saveAccounts(){
 
-    
+    AllAccounts tempAcc;
     //tree.currAccount.get()...
     ofstream outFile;
     chdir(d.basePath.data());
-    string newPath = d.accountsPath+"/"+tree.currAccount.getAccountNumber();
-    chdir(newPath.data());
+    chdir(d.accountsPath.data());
+    for(int i=0;i<usersVec.size();i++){
+        tree.searchAcc(d.getKey(usersVec[i].accntNum));
+        //tree.modifi(tempAcc);
+        cout<<usersVec[i].accntNum<<endl;
+        cout<<tree.currAccount.getAccountNumber()<<endl;
+        string newPath = d.accountsPath+"/"+usersVec[i].accntNum;
+        cout<<"new path in saveAccounts: "<<newPath<<endl;
+        chdir(newPath.data());
 
-    //saving to checkings
-    outFile.open("checkings.txt");
-    if(outFile){
-        cout<<"file opened"<<endl;
+        //saving to checkings
+        outFile.open("checkings.txt");
+        if(outFile){
+            cout<<"file opened"<<endl;
+        }
+        outFile << to_string(tree.currAccount.getCheckingBalance())<<endl;
+        outFile.close();
+    
+        //saving to savings
+        outFile.open("savings.txt",ios::out);
+        outFile << to_string(tree.currAccount.getSavingsBalance())<<endl;
+        outFile.close();
+
+            //saving to info
+        outFile.open("info.txt");
+        outFile << tree.currAccount.getFirstName() <<endl;
+        outFile << tree.currAccount.getLastName() <<endl;
+        outFile << tree.currAccount.getPhone() <<endl;
+        outFile <<tree.currAccount.getAddress() <<endl;
+        outFile<< t.formatDate(tree.currAccount.getOpenDate())<<endl;
+        outFile <<tree.currAccount.getAccountNumber()<<endl;
+        outFile.close();
+        
+        //saving to cd
+        outFile.open("cd.txt");
+        outFile<<to_string(tree.currAccount.getOGAmount())<<endl;
+        outFile<<t.formatDate(tree.currAccount.getOpenDate())<<endl;
+        outFile<<to_string(tree.currAccount.getCDBalance())<<endl;
+        outFile.close();
+
+        //saving transaction history
+        d.saveTransactions(tree.currAccount.getTransactionHst(),tree.currAccount.getAccountNumber());
+
     }
-    outFile << to_string(tree.currAccount.getCheckingBalance())<<endl;
-    outFile.close();
     
-    //saving to savings
-    outFile.open("savings.txt",ios::out);
-    outFile << to_string(tree.currAccount.getSavingsBalance())<<endl;
-    outFile.close();
-
-    //saving to info
-    outFile.open("info.txt");
-    outFile << tree.currAccount.getFirstName() <<endl;
-    outFile << tree.currAccount.getLastName() <<endl;
-    outFile << tree.currAccount.getPhone() <<endl;
-    outFile <<tree.currAccount.getAddress() <<endl;
-    outFile<< t.formatDate(tree.currAccount.getOpenDate())<<endl;
-    outFile<<tree.currAccount.getAccountNumber()<<endl;
-    outFile<<tree.currAccount.getSavingsBalance()<<endl;
-    outFile<<tree.currAccount.getCheckingBalance()<<endl;
-    outFile<<tree.currAccount.getCDBalance()<<endl;
-    outFile.close();
-    
-    //saving to cd
-    outFile.open("cd.txt");
-    outFile<<to_string(tree.currAccount.getOGAmount())<<endl;
-    outFile<<t.formatDate(tree.currAccount.getOpenDate())<<endl;
-    outFile<<to_string(tree.currAccount.getCDBalance())<<endl;
-    outFile.close();
-
-    //saving transaction history
-    d.saveTransactions(tree.currAccount.getTransactionHst(),tree.currAccount.getAccountNumber());
-
 
 }
 
 void readAccounts(){
+    cout<<"Reading the fucking file line 1098"<<endl;
+    string keyGetter;
+    cout<<"userVec size: "<<usersVec.size()<<endl;
+    keyGetter = usersVec[usersVec.size() - 1].accntNum;
+    cout<<"Key getter: "<<keyGetter<<endl;
+    key = d.getKey(keyGetter);
     //directory d;
     AllAccounts temp;
     Date tempDate;
     ifstream inFile;
+    inFile.close();
     string line, fname, lname;
     double checkB, saveB, cdB;
     vector <string> lines;
     vector <string> date;
     char delim = '/';
+    for(int i =0;i<usersVec.size();i++){
+        cout<<usersVec[i].accntNum<<endl;
+    }
     for (int i =0; i<usersVec.size();i++){
         string accNum=usersVec[i].accntNum;
         string newPath = d.accountsPath+"/"+accNum;
-        chdir(newPath.data());
+        cout<<"new path: "<<newPath<<endl;
+        if(chdir(newPath.data())==-1){
+            cout<<"Couldnt change path!"<<endl;
+        }
+        cout<<"current path: "<<d.getCurrentDir()<<endl;
         inFile.open("info.txt");
         while(getline(inFile,line)){
             lines.push_back(line);
         }
-        saveB=stoi(lines[6]);
-        checkB=stoi(lines[7]);
-        cdB=stoi(lines[8]);
-        temp.setBalance(saveB,checkB,cdB);
         cout<<lines.size()<<endl;
         fname=lines[0];
         lname=lines[1];
         temp.setFirstLastName(fname, lname);
+        cout<<temp.getName()<<endl;
         temp.setPhone(lines[2]);
+        cout<<temp.getPhone()<<endl;
         temp.setAddress(lines[3]);
+        cout<<temp.getAddress()<<endl;
         temp.setAccountNumber(lines[5]);
+        temp.getAccountNumber();
         temp.setKey(d.getKey(temp.getAccountNumber()));
         cout<<temp.getKey()<<endl;
+        cout<<"lines[4]"<<lines[4]<<endl;
         string stringDate=lines[4];
         stringstream ss(stringDate);
         string s;
@@ -1134,25 +1160,26 @@ void readAccounts(){
         tempDate.m=stoi(date[2]);
         tempDate.y=stoi(date[3]);
         temp.setOpenDate(tempDate);
+        cout<<"Open date: "<<t.formatDate(temp.getOpenDate())<<endl;
         inFile.close();
         lines.clear();
 
-        // inFile.open("checkings.txt");
-        // while(getline(inFile,line)){
-        //     lines.push_back(line);
-        // }
-        // checkB=stod(lines[0]);
-        // lines.clear();
-        // inFile.close();
+        inFile.open("checkings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        checkB=stod(lines[0]);
+        lines.clear();
+        inFile.close();
 
-        // inFile.open("savings.txt");
-        // while(getline(inFile,line)){
-        //     lines.push_back(line);
-        // }
-        // cout<<"Savings balance: "<<lines[0]<<endl;
-        // saveB=stod(lines[0]);
-        // lines.clear();
-        // inFile.close();
+        inFile.open("savings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        cout<<"Savings balance: "<<lines[0]<<endl;
+        saveB=stod(lines[0]);
+        lines.clear();
+        inFile.close();
 
         inFile.open("cd.txt");
         while(getline(inFile,line)){
@@ -1160,6 +1187,7 @@ void readAccounts(){
         }
         inFile.close();
         temp.setOGAmount(stod(lines[0]));
+        cout<<"OG amount: "<<temp.getOGAmount()<<endl;
         stringDate = lines[1];
         stringstream sb(stringDate);
         string b;
@@ -1171,8 +1199,13 @@ void readAccounts(){
         tempDate.m=stoi(date[2]);
         tempDate.y=stoi(date[3]);
         temp.setCDCreationDate(tempDate);
-        //cdB=stod(lines[2]);
-        //temp.setBalance(saveB, checkB, cdB);
+        cout<<"CD creation date: "<<t.formatDate(temp.getCDCreationDate())<<endl;
+        cdB=stod(lines[2]);
+        temp.setBalance(saveB, checkB, cdB);
+        cout<<"saveB "<<temp.getSavingsBalance()<<endl;
+        cout<<"Savings balance: "<<temp.getSavingsBalance()<<endl;
+        cout<<"Checkings balance: "<<temp.getCheckingBalance()<<endl;
+        cout<<"CD balance: "<<temp.getCDBalance()<<endl;
         inFile.close();
         
         inFile.open("transactions.txt");
@@ -1190,7 +1223,7 @@ void readAccounts(){
 
         }
 
-
+        cout<<temp.getKey()<<" "<<temp.getAccountNumber()<<endl;
         tree.insertAcc(temp);
     }
 }

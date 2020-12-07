@@ -95,7 +95,6 @@ class Savings : public accounts{
         }
 
         double deposit(double amount){
-            directory d;
             if(open == true)
             {
                 accountBalance = accountBalance + amount;
