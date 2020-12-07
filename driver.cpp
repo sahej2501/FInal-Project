@@ -29,6 +29,9 @@ struct User
 vector<Official> officialsVec;
 vector<Admin> adminsVec;
 vector<User> usersVec;
+vector<AllAccounts> ogAccounts;
+vector<AllAccounts> balancedAccounts;
+vector<string> closedAccounts;
 
 //Added by Sahej
 BankTree tree;
@@ -61,6 +64,8 @@ int main()
     int select;
     string login;
     string psswd;
+    AllAccounts newAccount;
+    bankAcc currAcc;
 
     while(cont){
         cout<<"Welcome to Bear Bank Systems, would you like to: \n[1] Open an account\n[2] Login\n[3] exit\nOption:";
@@ -72,7 +77,7 @@ int main()
             switch(choice)
             {
                 case 1:
-                    //createAccount();
+                    openAccount(newAccount);
                     break;
                 case 2:
                     cout << "Login as: \n[1] System Administrator\n[2] Bank Official\n[3] Customer\n[4] Back\nOption:";
@@ -154,6 +159,8 @@ int main()
 
     return 0;
 }
+
+//Login & password stuff added by Jay
 
 bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec)
 {

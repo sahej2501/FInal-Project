@@ -12,6 +12,7 @@ int key=3000;
 string generateAC(int keyPassed);
 
 int main(){
+    cout<<"its been updated3"<<endl;
     timeHandler t;
     directory d;
     Date d1 = t.getCurrentTime();
