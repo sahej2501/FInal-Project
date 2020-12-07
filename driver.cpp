@@ -618,7 +618,26 @@ void readAccounts(){
         tempDate.m=stoi(date[2]);
         tempDate.y=stoi(date[3]);
         temp.setOpenDate(tempDate);
+
         inFile.close();
+        lines.clear();
+
+        inFile.open("checkings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        inFile.close();
+
+        inFile.open("savings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        inFile.close();
+        
+
+
+
+        
     }
 }
 
