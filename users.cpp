@@ -1115,15 +1115,14 @@ void readAccounts(){
     AllAccounts temp;
     Date tempDate;
     ifstream inFile;
-    inFile.close();
     string line, fname, lname;
     double checkB, saveB, cdB;
     vector <string> lines;
     vector <string> date;
     char delim = '/';
-    for(int i =0;i<usersVec.size();i++){
-        cout<<usersVec[i].accntNum<<endl;
-    }
+    // for(int i =0;i<usersVec.size();i++){
+    //     cout<<usersVec[i].accntNum<<endl;
+    // }
     for (int i =0; i<usersVec.size();i++){
         string accNum=usersVec[i].accntNum;
         string newPath = d.accountsPath+"/"+accNum;
@@ -1131,8 +1130,10 @@ void readAccounts(){
         if(chdir(newPath.data())==-1){
             cout<<"Couldnt change path!"<<endl;
         }
-        cout<<"current path: "<<d.getCurrentDir()<<endl;
         inFile.open("info.txt");
+        if(!inFile){
+            cout<<"file didnt open"<<endl;
+        }
         while(getline(inFile,line)){
             lines.push_back(line);
         }
