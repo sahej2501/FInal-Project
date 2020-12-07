@@ -81,7 +81,7 @@ void readAccounts(){
     string line, fname, lname;
     double checkB, saveB, cdB;
     vector <string> lines;
-    vector <string> date;
+    vector <string> date,sT,cT,cdT,allT;
     char delim = '/';
     for (int i =0; i<usersVec.size();i++){
         string accNum=usersVec[i].accntNum;
@@ -150,6 +150,21 @@ void readAccounts(){
         cdB=stod(lines[2]);
         temp.setBalance(saveB, checkB, cdB);
         inFile.close();
+
+        inFile.open("transactions.txt");
+        int indexOfSpace;
+        while(getline(inFile,line)){
+            for(int i=line.length()-1;i>=0;i--){
+                if(line[i]==' '){
+                    indexOfSpace=i;
+                    break;
+                }   
+            }
+            if(line.substr(indexOfSpace,line.length()).compare("Checkings")){
+                
+            }
+
+        }
         
         cout<<temp.getName()<<endl;
         tree.insertAcc(temp);

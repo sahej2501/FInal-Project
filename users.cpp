@@ -238,7 +238,10 @@ int main()
                     }
                     break;
                 case 3:
+                    chdir(d.basePath.data());
                     writeToLogins(adminsVec, officialsVec, usersVec);
+                    setCurrAccount();
+                    saveAccounts();
                     cout << "Goodbye!" << endl;
                     cont = false;
                     break;
@@ -797,7 +800,7 @@ void usersOptions(string accountNum)
                         }
                         break;
                     case 4:
-                        userRun = false;
+                        //userRun = false;
                         break;
                     default:
                         cout<<"Invalid Input, try again"<<endl;
