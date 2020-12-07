@@ -106,7 +106,7 @@ public:
                     break;
                 case 'i':
                     outFile.open("info.txt",fstream::app|fstream::out);
-                    outFile << encrypt(info,4) << endl;
+                    outFile << info << endl;
                     outFile.close();
                     break;
                 case 'c':
@@ -152,6 +152,7 @@ public:
         }   
     }
 
+    
 
     
 

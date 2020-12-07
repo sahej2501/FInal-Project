@@ -26,20 +26,14 @@ struct User
     string password;
     string accntNum;
 };
-struct ClosedAccounts
-{
-    string AccNum;
-    string info;
-};
 
 vector<Official> officialsVec;
 vector<Admin> adminsVec;
 vector<User> usersVec;
-vector<ClosedAccounts> cAccounts;
 //Added by Sahej
 BankTree tree;
 int key;
-timeHandler t;
+
 directory d;
 
 void createOfficial(string, string, vector<Official> &officialsVec);
@@ -588,6 +582,7 @@ string generateAC(int keyPassed){
 //read files by mike gegg
 
 void readAccounts(){
+    timeHandler t;
     AllAccounts temp;
     Date tempDate;
     ifstream inFile;
@@ -601,8 +596,13 @@ void readAccounts(){
         chdir(newPath.data());
         inFile.open("info.txt");
         while(getline(inFile,line)){
-            lines.push_back(d.decrypt(line,4));
+            lines.push_back(line);
         }
+
+        // for(int i=0;i<lines.size();i++){
+        //     cout<<"Lines @ "<< i <<" : "<<lines[i]<<endl;
+        // }
+        // cout<<"lines size"<<line.size()<<endl;
         fname=lines[0];
         lname=lines[1];
         temp.setFirstLastName(fname, lname);
@@ -634,43 +634,37 @@ void readAccounts(){
         }
         inFile.close();
         
-
-
-
-        
-    }
-}
-
-void shutAcc()
-{
-    string accNumBO, currInfo;
-    ClosedAccounts c;
-    cout<<"Please Enter Bank Account Number: "<<endl;
-    cin>>accNumBO;
-    tree.removeAcc(d.getKey(accNumBO));
-    tree.searchAcc(d.getKey(accNumBO));
-
-    currInfo = tree.currAccount.getName() + " " + tree.currAccount.getPhone() + tree.currAccount.getAddress() + 
-    t.formatDate(t.getCurrentTime());
-
-    c.AccNum = accNumBO;
-    c.info = currInfo;
-    cAccounts.push_back(c);
-
-    //closedAccounts.push_back(tree.closeInfo + t.formatDate(t.getCurrentTime()));
-    int erasePos;
-    for(int i = 0; i < usersVec.size(); i++)
-    { 
-        if(usersVec[i].accntNum == accNumBO)
-        {
-            usersVec[i].accntNum = "";
-            usersVec[i].username = "";
-            usersVec[i].password = "";
+        inFile.open("cd.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
         }
-    }
-    //Checking to see if close info was updated
-    for(int i = 0; i < cAccounts.size(); i++)
-    {
-        cout<<cAccounts[i].info<<endl;
+        inFile.close();
+
+        temp.setBalance(stod(lines[1]),stod(lines[0]),stod(lines[4]));
+
+        temp.setOGAmount(stod(lines[2]));
+        stringDate = lines[3];
+        stringstream sb(stringDate);
+        string b;
+        date.clear();
+        while(getline(sb,b,delim)){
+            date.push_back(b);
+        }
+        tempDate.d=stoi(date[1]);
+        tempDate.m=stoi(date[2]);
+        tempDate.y=stoi(date[3]);
+        temp.setCDCreationDate(tempDate);
+        inFile.close();
+        tree.insertAcc(temp);
+        chdir(d.basePath.data());
+
+        cout<<temp.getName()<<endl;
+        cout<<t.formatDate(temp.getOpenDate())<<endl;
+        cout<<temp.getPhone()<<endl;
+        cout<<temp.getCDBalance()<<endl;
+        cout<<t.formatDate(temp.getCDCreationDate())<<endl;
+        cout<<temp.getCheckingBalance()<<endl;
+        cout<<temp.getSavingsBalance()<<endl;
+        cout<<temp.getOGAmount()<<endl;
     }
 }
