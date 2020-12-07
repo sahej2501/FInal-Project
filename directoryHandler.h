@@ -100,7 +100,7 @@ public:
         if(chdir(newPath.data())==0){
             switch(fileType){
                 case 's':
-                    outFile.open("savings.txt",fstream::app|fstream::out);
+                    outFile.open("savings.txt",fstream::out|fstream::app);
                     outFile << info << endl;
                     outFile.close();
                     break;
@@ -149,7 +149,8 @@ public:
             for(int j=0;j<transactions[i].size();j++){
                 writeToFile(actN,'t',transactions[i][j]);
             }
-        }   
+        }
+        chdir(basePath.data());   
     }
 
     
