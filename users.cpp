@@ -1,87 +1,279 @@
 #include<iostream>
 #include<vector>
+#include<string>
 #include<fstream>
 #include "AccountNode.h"
-#include "accounts.h"
+#include "Bank.h"
 #include "timeHandler.h"
+#include "directoryHandler.h"
+#include <sstream>
 using namespace std;
-
 
 struct Official
 {
     string username;
     string password;
 };
-
 struct Admin
 {
     string username;
     string password;
 };
-
 struct User
 {
     string username;
     string password;
     string accntNum;
 };
+struct ClosedAccounts
+{
+    string AccNum;
+    string info;
+};
 
 vector<Official> officialsVec;
 vector<Admin> adminsVec;
 vector<User> usersVec;
+vector<AllAccounts> ogAccounts;
+vector<AllAccounts> balancedAccounts;
+vector<ClosedAccounts> cAccounts;
 
+int key = 0;
+BankTree tree;
+timeHandler t;
+directory d;
+
+string generateAC(int keyPassed);
 void createOfficial(string, string, vector<Official> &officialsVec);
 void createUser(string, string, string, vector<User> &usersVec);
 bool LoginPasswordMatch(string, string, vector<User> &usersVec);
+bool OfficialPasswordMatch(string, string, vector<Official> &officialsVec);
 void enableOfficial(string, vector<Official> &officialsVec);
 void disableOfficial(string, vector<Official> &officialsVec);
+
 void readAdminLogin(vector<Admin> &adminsVec);
+void adminOptions();
+void officialsOptions(string);
+void usersOptions(string);
 void readOfficialLogins(vector<Official> &officialsVec);
 void readUserLogins(vector<User> &usersVec);
 void writeToLogins(vector<Admin> &adminsVec, vector<Official> &officialsVec, vector<User> &usersVec);
 void changePassword(string, string, vector<User> &usersVec);
 
-    /*
-    To disable an official's profile, we add an asterisk to their ID name, and
-    whenever they try to login, it wont be found.
-    */
+//Sahej added
+void depOrWidth();
+void openAccount();
+void shutAcc(string);
 
 int main()
 {
-    
-    string Id = "JabezNuetey";
-    string pswd = "asdfejh";
-    string sus = "Jay";
-
-    readOfficialLogins(officialsVec);
-    readAdminLogin(adminsVec);
+    bool cont = true;
+    int choice;
+    int select;
+    string login;
+    string psswd;
+    AllAccounts newAccount;
+    bankAcc currAcc;
+    //read txt files into vecs
     readUserLogins(usersVec);
-    createOfficial(Id, pswd, officialsVec);
-    //disableOfficial(sus, officialsVec);
-    //enableOfficial(sus, officialsVec);
-    changePassword("John", "asdf56456", usersVec);
+    readAdminLogin(adminsVec);
+    readOfficialLogins(officialsVec);
+    for(int i = 0; i < adminsVec.size(); i++)
+    {
+        cout << adminsVec[i].username << " " << adminsVec[i].password << endl;
+    }
+    while(cont){
+        cout<<"Welcome to Bear Bank Systems, would you like to: \n[1] Open an account\n[2] Login\n[3] exit\nOption:";
+        cin >> choice;
+        cout << " " << endl;
+        
+        if(choice == 1 || choice == 2 || choice == 3)
+        {
+            switch(choice)
+            {
+                case 1:
+                    openAccount();
+                    break;
+                case 2:
+                    cout << "Login as: \n[1] System Administrator\n[2] Bank Official\n[3] Customer\n[4] Back\nOption:";
+                    cin >> select;
+                    cout << " " << endl;
+                    if(select == 1 || select == 2 || select == 3 || select == 4)
+                    {
+                        switch (select)
+                        {
+                        case 1:
+                            bool run;
+                            run = false;
+                            while(!run)
+                            {
+                                cout << "Enter Admin ID: ";
+                                cin >> login;
+                                cout << "Enter Password: ";
+                                cin >> psswd;
+                                for (int i = 0; i < adminsVec.size(); i++)
+                                {
+                                    if(login == adminsVec[i].username)
+                                    {
+                                        if(psswd == adminsVec[i].password)
+                                        {
+                                            adminOptions();
+                                            run = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        run = false;
+                                    } 
+                                }
+                                if(!run)
+                                {
+                                    cout<<"No login or password match, try again"<<endl;
+                                }
+                            }
+                            break;
+                        case 2:
+                            for (int j = 0; j < officialsVec.size(); j++)
+                            {
+                                cout << officialsVec[j].username << " " << officialsVec[j].password << endl;
+                            }
+                            bool keepUp;
+                            keepUp = false;
+                            while(keepUp == false)
+                            {
+                                cout << "Enter Official ID: ";
+                                cin >> login;
+                                cout << "Enter Password: ";
+                                cin >> psswd;
+                                for (int k = 0; k < officialsVec.size(); k++)
+                                {
+                                    cout << login << "=" <<officialsVec[k].username << endl;
+                                    cout << psswd << "=" <<officialsVec[k].password << endl;
+                                    if(login == officialsVec[k].username)
+                                    {
+                                        cout << "sia" << endl;
+                                        if(psswd == officialsVec[k].password)
+                                        {
+                                            cout << "sia2" << endl;
+                                            officialsOptions(officialsVec[k].username);
+                                            keepUp = true;
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        cout << "fail" << endl;
+                                        keepUp = false;
+                                    }
+                                }
+                                if(keepUp == false)
+                                {
+                                    cout<<"No login or password match, try again"<<endl;
+                                }
+                            }
+                            /*options for officials are; 
+                            1. open or close an account (store closed accnts in a file fro retrieval)
+                            2. deposit or withdraw money w/ customer permission (ask for user's login & password to prove permission's granted)
+                            3. search accounts by account num, customer name or phone number (dont know if its either one or all methods should be valid)
+                            */
+                            break;
+                        case 3:
+                            for (int i = 0; i < usersVec.size(); i++)
+                            {
+                                cout << usersVec[i].username << " " << usersVec[i].password << " " << usersVec[i].accntNum << endl;
+                            }
+                            bool running;
+                            running = false;
+                            while(!running)
+                            {
+                                cout<<"Please enter customer ID: ";
+                                cin>>login;
+                                cout<<"Please enter customer Password: ";
+                                cin>>psswd;
+                                for(int i = 0; i < usersVec.size(); i++)
+                                {
+                                    if(login == usersVec[i].username)
+                                    {
+                                        if(psswd == usersVec[i].password)
+                                        {
+                                            usersOptions(usersVec[i].accntNum);
+                                            running = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        running = false;
+                                    }
+                                }
+                                if(!running)
+                                {
+                                    cout<<"No login or password match, try again"<<endl;
+                                }
+                            }
+                            /*options for customer are; 
+                            1. create new account
+                            2. Login to accnts (we'd still have to use the C/S/CD to begin accnt types to know which accnt they are accessing)
+                            3. Change id and password
+                            4. Check all account transactions within day/date range (we would provide a given format to follow, we would use date range to save time bullshit) 
+                            */
+                            break;
+                        case 4:
+                            cont = true;
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        cout << "Invalid Input! Please choose valid option" << endl;
+                        cout << " " << endl;
+                        cont = true;
+                        continue;
+                    }
+                    break;
+                case 3:
+                    writeToLogins(adminsVec, officialsVec, usersVec);
+                    cout << "Goodbye!" << endl;
+                    cont = false;
+                    break;
+            }
+        }
+        else
+        {
+            cout << "Invalid Input! Please choose valid option" << endl;
+            cout << " " << endl;
+            cont = true;
+            continue;
+        }
+    }
 
+    return 0;
+}
+
+bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec)
+{
+    bool present = true;
+    for(int i = 0; i < usersVec.size(); i++)
+    {
+        if(id == usersVec[i].username || pswd == usersVec[i].password)
+            return present;
+        else
+            present = false;
+    }
+    return present;
+}
+
+bool OfficialPasswordMatch(string id, string pswd, vector<Official> &officialsVec)
+{
+    bool present = true;
     for(int i = 0; i < officialsVec.size(); i++)
     {
-        cout << officialsVec[i].username << " " << officialsVec[i].password << endl;
+        if(id == officialsVec[i].username || pswd == officialsVec[i].password)
+            return present;
+        else
+            present = false;
     }
-    cout << " " << endl;
-
-    for(int j = 0; j < usersVec.size(); j++)
-    {
-        cout << usersVec[j].username << " " << usersVec[j].password << " " << usersVec[j].accntNum << endl;
-    }
-    cout << " " << endl;
-
-    for(int k = 0; k < adminsVec.size(); k++)
-    {
-        cout << adminsVec[k].username << " " << adminsVec[k].password << endl;
-    }
-
-    writeToLogins(adminsVec, officialsVec, usersVec);
-    return 0;
-}   
-
+    return present;
+}
 
 void createOfficial(string id, string pswd, vector<Official> &officialsVec)
 {
@@ -98,17 +290,6 @@ void createUser(string id, string pswd, string accntNum, vector<User> &usersVec)
     newUser.password = pswd;
     newUser.accntNum = accntNum;
     usersVec.push_back(newUser);
-}
-
-bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec)
-{
-    for(int i = 0; i < usersVec.size(); i++)
-    {
-        if(id == usersVec[i].username || pswd == usersVec[i].password)
-            return true;
-        else
-            return false;
-    }
 }
 
 void enableOfficial(string id, vector<Official> &officialsVec)
@@ -130,7 +311,7 @@ void enableOfficial(string id, vector<Official> &officialsVec)
         }  
     }
     if(present == false)
-        cout << "official's profile does not exist" << endl;
+        cout << "Official's profile does not exist or is already enabled" << endl;
 }
 
 void disableOfficial(string id, vector<Official> &officialsVec)
@@ -152,7 +333,7 @@ void disableOfficial(string id, vector<Official> &officialsVec)
         }  
     }
     if(present == false)
-        cout << "official's profile does not exist" << endl;
+        cout << "Official's profile does not exist or is already disabled" << endl;
 }
 
 void readOfficialLogins(vector<Official> &officialsVec)
@@ -207,6 +388,7 @@ void readUserLogins(vector<User> &usersVec)
 
 void readAdminLogin(vector<Admin> &adminsVec)
 {
+    directory d1;
     string text;
     ifstream inFile;
     Admin systemAdmin;
@@ -217,8 +399,8 @@ void readAdminLogin(vector<Admin> &adminsVec)
     {
         while (getline(inFile, text))
         {
-            systemAdmin.username = text.substr(0, text.find(" "));
-            systemAdmin.password = text.substr(text.find(" ") + 1, text.length());
+            systemAdmin.username = d1.decrypt(text.substr(0, text.find(" ")), 4);
+            systemAdmin.password = d1.decrypt(text.substr(text.find(" ") + 1, text.length()), 4);
             adminsVec.push_back(systemAdmin);
         }
     }
@@ -231,6 +413,7 @@ void readAdminLogin(vector<Admin> &adminsVec)
 
 void writeToLogins(vector<Admin> &adminsVec, vector<Official> &officialsVec, vector<User> &usersVec)
 {
+    directory d1;
     ofstream writeAdmin;
     writeAdmin.open("admins.txt");
     ofstream writeOfficial;
@@ -239,12 +422,11 @@ void writeToLogins(vector<Admin> &adminsVec, vector<Official> &officialsVec, vec
     writeUser.open("users.txt");
 
     for (int i = 0; i < adminsVec.size(); i++)
-        writeAdmin << adminsVec[i].username << " " << adminsVec[i].password << endl;
+        writeAdmin << d1.encrypt(adminsVec[i].username, 4) << " " << d1.encrypt(adminsVec[i].password, 4) << endl;
     for (int j = 0; j < officialsVec.size(); j++)
         writeOfficial << officialsVec[j].username << " " << officialsVec[j].password << endl;
     for (int k = 0; k < usersVec.size(); k++)
         writeUser << usersVec[k].username << " " << usersVec[k].password << " " << usersVec[k].accntNum <<endl;
-
 }
 
 void changePassword(string id, string newPswd, vector<User> &usersVec)
@@ -257,6 +439,7 @@ void changePassword(string id, string newPswd, vector<User> &usersVec)
         {
             usersVec[i].password = newPswd;
             present = true;
+            cout << "Password change successful" << endl;
             break;
         }
         else
@@ -266,5 +449,586 @@ void changePassword(string id, string newPswd, vector<User> &usersVec)
         }  
     }
     if(present == false)
-        cout << "user's profile does not exist" << endl;
+        cout << "Customer ID was not found" << endl;
+}
+
+string generateAC(int keyPassed){
+    srand(time(0));
+    const char alphanum[] = "0123456789" "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int len = sizeof(alphanum) - 1;
+    string actN;
+    actN+=to_string(keyPassed);
+    actN+="N";
+    for(int i =0; i<=9;i++){
+        actN+=alphanum[rand()%len];
+    }
+    key++;
+    return actN;
+}
+
+void openAccount()
+{
+    AllAccounts a;
+    string accNum, login, password, name, firstName, lastName, phone, address;
+
+    //New login and password for user
+    bool run = true;
+    while(run)
+    {
+        cout<<"Please choose a login Username: ";
+        cin >> login;
+        cout<<"Please choose a password: ";
+        cin >> password;
+        run = LoginPasswordMatch(login, password, usersVec);
+        if(run)
+        {
+            cout<<"Login or Password already exist, try again"<<endl;
+        }
+    }
+    
+    //generating a new account num
+    accNum = generateAC(key);
+    a.setKey(d.getKey(accNum));
+    a.setAccountNumber(accNum);
+
+    //Entering Name for new user
+    cin.ignore();
+    cout<<"Please Enter Your Full Name: ";
+    getline(cin, name);
+    firstName = name.substr(0, name.find(" "));
+    lastName = name.substr(name.find(" "), name.length());
+    a.setFirstLastName(firstName, lastName);
+
+    //Entering Phone number
+    cout<<"Please Enter a Phone Number for the Account (format: xxx-xxx-xxxx): ";
+    getline(cin, phone);
+    a.setPhone(phone);
+
+    //Entering Address
+    cout<<"Enter an Address for the account: ";
+    getline(cin, address);
+    a.setAddress(address);
+
+    tree.insertAcc(a);
+    cout << " " << endl;
+    cout << "Congratulations! Your account was sucessfully created.\nYou now have a Checking, Savings and CD account with us!" << endl;
+    cout << " " << endl;
+    createUser(login, password, accNum, usersVec);
+}
+
+void adminOptions()
+{
+    int choice;
+    bool cont;
+    cont = true;
+    string ID;
+    string password;
+    string newPsswd;
+    while(cont)
+    {
+        cout << "What would you like to do today? \n[1] Create bank official login profile\n[2] Disable bank official login profile\n[3] Enable bank official login profile\n[4] Retrieve customer login ID\n[5] Change customer password\n[6] Back\nOption:";
+        cin >> choice;
+        switch(choice)
+        {
+            case 1:
+                bool run;
+                run = true;
+                while(run)
+                {
+                    cout << "Enter ID: ";
+                    cin >> ID;
+                    cout << "Enter password: ";
+                    cin >> password;
+                    run = OfficialPasswordMatch(ID, password, officialsVec);
+                    if(run)
+                    {
+                        cout<<"Login or Password already exist, try again"<<endl;
+                    }
+                }
+                createOfficial(ID, password, officialsVec);
+                break;
+            case 2:
+                cout << "Enter bank official's ID: ";
+                cin >> ID;
+                disableOfficial(ID, officialsVec);
+                break;
+            case 3:
+                cout << "Enter bank official's ID: ";
+                cin >> ID;
+                enableOfficial(ID, officialsVec);
+                break;
+            case 4:
+                bool present;
+                present = true;
+                cout << "Enter customer ID you want to retrieve: ";
+                cin >> ID;
+                for(int i = 0; i < usersVec.size(); i++)
+                {
+                    if(ID == usersVec[i].username)
+                    {
+                        cout << "The customer ID is " << usersVec[i].username << endl;
+                        present = true;
+                        break;
+                    }
+                    else
+                    {
+                        present = false;
+                        continue;
+                    }
+                }
+                if (present == false)
+                    cout << "The customer ID was not found." << endl;
+                break;
+            case 5:
+                cout << "Enter customer ID: ";
+                cin >> ID;
+                cout << "Enter new password: ";
+                cin >> newPsswd;
+                changePassword(ID, newPsswd, usersVec);
+                break;
+            case 6:
+                cont = false;
+                break;
+            default:
+                cout << "Invalid option choice" << endl;
+        }
+    }  
+}
+
+void officialsOptions(string officialID)
+{
+    bool run;
+    run = true;
+    int choice;
+    string accNumBO;
+    while(run)
+    {
+        cout << "What would you like to do today? \n[1] Create an account for customer\n[2] Close an account\n[3] Act on a customer's account\n[4] Search for account using Account number\n[5] Back\nOption:";
+        cin >> choice;
+        switch(choice)
+        {
+            case 1:
+                openAccount();
+                break;
+            case 2:
+                shutAcc(officialID);
+                break;
+            case 3:
+                depOrWidth();
+                break;
+            case 4:
+                bool isThere;
+                
+                cout<<"Please Enter Bank Account Number: "<<endl;
+                cin>>accNumBO;
+                isThere = tree.searchAcc(d.getKey(accNumBO));
+                if(isThere)
+                {
+                    cout<<tree.currAccount.getAccountNumber()<<'\n'<<tree.currAccount.getName()<<'\n'<<tree.currAccount.getPhone()<<'\n'
+                    <<tree.currAccount.getAddress()<<endl;
+                }
+                break;
+            case 5:
+                run = false;
+                break;
+            default:
+                cout<<"Invalid Input, try again"<<endl;
+                break;
+        }
+    }
+}
+
+void usersOptions(string accountNum)
+{
+    AllAccounts currAcount;
+    int choice;
+    string ID;
+    string newPsswd;
+    bool cont;
+    cont = true;
+
+    int tempKey = d.getKey(accountNum);
+    cout<<tempKey<<" "<<accountNum<<endl;
+    tree.searchAcc(tempKey);
+    cout<<tree.currAccount.getName()<<endl;
+    tree.modifi(currAcount);
+    cout<<currAcount.getAccountNumber()<<endl;
+
+    while(cont)
+    {
+        cout << "What would you like to do today? \n[1] Login to accounts\n[2] Change password\n[3] Check Transactions\n[4] Back\nOption:";
+        cin >> choice;
+        switch(choice)
+        {
+            case 1:
+                bool userRun;
+                userRun = true;
+                while(userRun)
+                {
+                    int selection;
+                    cout<<"[1] Login to Savings"<<'\n'<<"[2] Login to Checkings"<<'\n'<<"[3] Login to CD (This is a 5 year certificate deposit account)"<<'\n'<<"[4] Back to Homescreen\nOption:";
+                    cin>>selection;
+                    switch (selection)
+                    {
+                    case 1:
+                        cin.ignore();
+                        int depChoice; 
+                        cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+                        "[3] Check Balance"<<'\n'<<"[4] Back\nOption:";
+                        cin>>depChoice;
+                        switch (depChoice)
+                        {
+                        case 1:
+                            cin.ignore();
+                            int dep;
+                            cout<<"Enter deposit amount: ";
+                            cin>>dep;
+                            currAcount.savingsDeposit(dep);
+                            cout<<"A $"<<dep<<" deposit has been made, "<<"current Balance is: $"<<currAcount.getSavingsBalance()<<endl;
+                            break;
+                        case 2:
+                            cin.ignore();
+                            //int dep;
+                            cout<<"Enter widthdraw amount: ";
+                            cin>>dep;
+                            currAcount.savingsWithdraw(dep);
+                            cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getSavingsBalance()<<endl;
+                            break;
+                        case 3:
+                            cin.ignore();
+                            cout<<"Current Balance is: $"<<currAcount.getSavingsBalance()<<endl;
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            cout<<"Invalid Input, try again"<<endl;
+                            break;
+                        }
+                        break;
+                    case 2:
+                        cin.ignore();
+                        //int depChoice; 
+                        cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+                        "[3] Check Balance"<<'\n'<<"[4] Back\nOption:";
+                        cin>>depChoice;
+                        switch (depChoice)
+                        {
+                        case 1:
+                            cin.ignore();
+                            int dep;
+                            cout<<"Enter deposit amount: ";
+                            cin>>dep;
+                            currAcount.checkingDeposit(dep);
+                            cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: $"<<currAcount.getCheckingBalance()<<endl;
+                            break;
+                        case 2:
+                            cin.ignore();
+                            //int dep;
+                            cout<<"Enter widthdraw amount: ";
+                            cin>>dep;
+                            currAcount.checkingWithdraw(dep);
+                            cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getCheckingBalance()<<endl;
+                            break;
+                        case 3:
+                            cin.ignore();
+                            cout<<"Current Balance is: $"<<currAcount.getCheckingBalance()<<endl;
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            cout<<"Invalid Input, try again"<<endl;
+                            break;
+                        }
+                        break;
+                    case 3:
+                        cin.ignore();
+                        //int depChoice; 
+                        cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+                        "[3] Check Balance"<<'\n'<<"[4] Cancel CD"<<'\n'<<"[5] Back\nOption:";
+                        cin>>depChoice;
+                        switch (depChoice)
+                        {
+                        case 1:
+                            cin.ignore();
+                            int dep;
+                            cout<<"Enter deposit amount: ";
+                            cin>>dep;
+                            if(currAcount.getCDBalance() > 0)
+                            {
+                                cout << "Unfortunately you can only deposit once into a CD account" << endl;
+                            }
+                            else
+                            {
+                                currAcount.CDDeposit(dep);
+                                currAcount.setCDCreationDate(t.getCurrentTime());
+                                cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
+                                cout << t.formatDate(currAcount.getCDCreationDate()) << endl;
+                            }
+                            break;
+                        case 2:
+                            cin.ignore();
+                            //int dep;
+                            cout<<"Enter widthdraw amount: ";
+                            cin>>dep;
+                            currAcount.CDWithdraw(dep);
+                            cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
+                            break;
+                        case 3:
+                            cin.ignore();
+                            cout<<"Current Balance is: $"<<currAcount.getCDBalance()<<endl;
+                            break;
+                        case 4:
+                            cin.ignore();
+                            currAcount.cdCancel();
+                            break;
+                        case 5:
+                            break;
+                        default:
+                            cout<<"Invalid Input, try again"<<endl;
+                            break;
+                        }
+                        break;
+                    case 4:
+                        userRun = false;
+                        break;
+                    default:
+                        cout<<"Invalid Input, try again"<<endl;
+                        break;
+                    }
+                }
+                tree.upadteAcc(currAcount.getKey(), currAcount);
+                tree.searchAcc(currAcount.getKey());
+                break;
+            case 2:
+                cout << "Enter ID: ";
+                cin >> ID;
+                cout << "Enter new password: ";
+                cin >> newPsswd;
+                changePassword(ID, newPsswd, usersVec);
+                break;
+            case 3:
+                cout << "Transactions under construction" << endl;
+                break;
+            case 4:
+                cont = false;
+                break;
+            default:
+                cout << "Invalid option choice" << endl;
+                break;
+        }
+    }           
+}
+
+void depOrWidth()
+{
+    AllAccounts currAcount;
+    string login, password, accountNum;
+    bool run = false;
+
+    while(!run)
+    {
+        cout<<"Please enter Login for Customer: ";
+        cin>>login;
+        cout<<"Please enter customer Password: ";
+        cin>>password;
+        for(int i = 0; i < usersVec.size(); i++)
+        {
+            if(login == usersVec[i].username) //&& password == usersVec[i].password)
+            {
+                if(password == usersVec[i].password)
+                {
+                    accountNum = usersVec[i].accntNum;
+                    cout << usersVec[i].accntNum << endl;
+                    run = true;
+                }
+            }
+            else
+            {
+                run = false;
+            }
+        }
+        if(!run)
+        {
+            cout<<"No login or password match, try again"<<endl;
+        }
+    }
+
+    int tempKey = d.getKey(accountNum);
+    cout<<tempKey<<" "<<accountNum<<endl;
+    tree.searchAcc(tempKey);
+    cout<<tree.currAccount.getName()<<endl;
+    tree.modifi(currAcount);
+    cout<<currAcount.getAccountNumber()<<endl;
+    
+
+    bool userRun = true;
+    while(userRun)
+    {
+        int choice;
+        cout<<"[1] Login to Savings"<<'\n'<<"[2] Login to Checkings"<<'\n'<<"[3] Login to CD (This is a 5 year certificate deposit account)"<<'\n'<<"[4] Back to Homescreen\nOption:";
+        cin>>choice;
+        switch (choice)
+        {
+        case 1:
+            cin.ignore();
+            int depChoice; 
+            cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+            "[3] Check Balance"<<'\n'<<"[4] Back\nOption:";
+            cin>>depChoice;
+            switch (depChoice)
+            {
+            case 1:
+                cin.ignore();
+                int dep;
+                cout<<"Enter deposit amount: ";
+                cin>>dep;
+                currAcount.savingsDeposit(dep);
+                cout<<"A $"<<dep<<" deposit has been made, "<<"current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                break;
+            case 2:
+                cin.ignore();
+                //int dep;
+                cout<<"Enter widthdraw amount: ";
+                cin>>dep;
+                currAcount.savingsWithdraw(dep);
+                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                break;
+            case 3:
+                cin.ignore();
+                cout<<"Current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                break;
+            case 4:
+                break;
+            default:
+                cout<<"Invalid Input, try again"<<endl;
+                break;
+            }
+            break;
+        case 2:
+            cin.ignore();
+            //int depChoice; 
+            cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+            "[3] Check Balance"<<'\n'<<"[4] Back\nOption:";
+            cin>>depChoice;
+            switch (depChoice)
+            {
+            case 1:
+                cin.ignore();
+                int dep;
+                cout<<"Enter deposit amount: ";
+                cin>>dep;
+                currAcount.checkingDeposit(dep);
+                cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                break;
+            case 2:
+                cin.ignore();
+                //int dep;
+                cout<<"Enter widthdraw amount: ";
+                cin>>dep;
+                currAcount.checkingWithdraw(dep);
+                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                break;
+            case 3:
+                cin.ignore();
+                cout<<"Current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                break;
+            case 4:
+                break;
+            default:
+                cout<<"Invalid Input, try again"<<endl;
+                break;
+            }
+            break;
+        case 3:
+            cin.ignore();
+            //int depChoice; 
+            cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
+            "[3] Check Balance"<<'\n'<<"[4] Cancel CD"<<'\n'<<"[5] Back\nOption:";
+            cin>>depChoice;
+            switch (depChoice)
+            {
+            case 1:
+                cin.ignore();
+                int dep;
+                cout<<"Enter deposit amount: ";
+                cin>>dep;
+                if(currAcount.getCDBalance() > 0)
+                {
+                    cout << "Unfortunately you can only deposit once into a CD account" << endl;
+                }
+                else
+                {
+                    currAcount.CDDeposit(dep);
+                    currAcount.setCDCreationDate(t.getCurrentTime());
+                    cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: "<<currAcount.getCDBalance()<<endl;
+                    cout << t.formatDate(currAcount.getCDCreationDate()) << endl;
+                }
+                break;
+            case 2:
+                cin.ignore();
+                //int dep;
+                cout<<"Enter widthdraw amount: ";
+                cin>>dep;
+                currAcount.CDWithdraw(dep);
+                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getCDBalance()<<endl;
+                break;
+            case 3:
+                cin.ignore();
+                cout<<"Current Balance is: "<<currAcount.getCDBalance()<<endl;
+                break;
+            case 4:
+                cin.ignore();
+                currAcount.cdCancel();
+                break;
+            case 5:
+                break;
+            default:
+                cout<<"Invalid Input, try again"<<endl;
+                break;
+            }
+            break;
+        case 4:
+            userRun = false;
+            break;
+        default:
+            cout<<"Invalid Input, try again"<<endl;
+            break;
+            }
+    }
+    tree.upadteAcc(currAcount.getKey(), currAcount);
+    tree.searchAcc(currAcount.getKey());
+}
+
+void shutAcc(string offID)
+{
+    string accNumBO, currInfo;
+    ClosedAccounts c;
+    cout<<"Please Enter Bank Account Number: "<<endl;
+    cin>>accNumBO;
+    tree.removeAcc(d.getKey(accNumBO));
+    tree.searchAcc(d.getKey(accNumBO));
+
+    currInfo = tree.currAccount.getName() + " " + tree.currAccount.getPhone() + tree.currAccount.getAddress() + 
+    t.formatDate(t.getCurrentTime()) + " " + offID;
+
+    c.AccNum = accNumBO;
+    c.info = currInfo;
+    cAccounts.push_back(c);
+
+    //closedAccounts.push_back(tree.closeInfo + t.formatDate(t.getCurrentTime()));
+    int erasePos;
+    for(int i = 0; i < usersVec.size(); i++)
+    { 
+        if(usersVec[i].accntNum == accNumBO)
+        {
+            usersVec[i].accntNum = "";
+            usersVec[i].username = "";
+            usersVec[i].password = "";
+        }
+    }
+    //Checking to see if close info was updated
+    for(int i = 0; i < cAccounts.size(); i++)
+    {
+        cout<<cAccounts[i].info<<endl;
+    }
 }
