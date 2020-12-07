@@ -27,6 +27,7 @@ class AllAccounts
         string phoneNum;
         string address;
         Date openDate;
+        vector< vector<string> > transactions;
 
     public:
         //constructors
@@ -53,6 +54,10 @@ class AllAccounts
             trans.push_back(check.getTransactionHistory());
             trans.push_back(cd.getTransactionHistory());
             return trans;
+        }
+
+        void setTransactionHst(vector< vector<string> > t){
+            transactions=t;
         }
 
         string getAddress()

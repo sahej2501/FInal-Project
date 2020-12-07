@@ -190,7 +190,7 @@ int main()
                             }
                             bool running;
                             running = false;
-                            while(!running)
+                            while(running == false)
                             {
                                 cout<<"Please enter customer ID: ";
                                 cin>>login;
@@ -204,6 +204,7 @@ int main()
                                         {
                                             usersOptions(usersVec[i].accntNum);
                                             running = true;
+                                            break;
                                         }
                                     }
                                     else
@@ -211,7 +212,7 @@ int main()
                                         running = false;
                                     }
                                 }
-                                if(!running)
+                                if(running == false)
                                 {
                                     cout<<"No login or password match, try again"<<endl;
                                 }
@@ -893,7 +894,7 @@ void depOrWidth()
                 cout<<"Enter deposit amount: ";
                 cin>>dep;
                 currAcount.savingsDeposit(dep);
-                cout<<"A $"<<dep<<" deposit has been made, "<<"current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                cout<<"A $"<<dep<<" deposit has been made, "<<"current Balance is: $"<<currAcount.getSavingsBalance()<<endl;
                 break;
             case 2:
                 cin.ignore();
@@ -901,11 +902,11 @@ void depOrWidth()
                 cout<<"Enter widthdraw amount: ";
                 cin>>dep;
                 currAcount.savingsWithdraw(dep);
-                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getSavingsBalance()<<endl;
                 break;
             case 3:
                 cin.ignore();
-                cout<<"Current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                cout<<"Current Balance is: $"<<currAcount.getSavingsBalance()<<endl;
                 break;
             case 4:
                 break;
@@ -928,7 +929,7 @@ void depOrWidth()
                 cout<<"Enter deposit amount: ";
                 cin>>dep;
                 currAcount.checkingDeposit(dep);
-                cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: $"<<currAcount.getCheckingBalance()<<endl;
                 break;
             case 2:
                 cin.ignore();
@@ -936,11 +937,11 @@ void depOrWidth()
                 cout<<"Enter widthdraw amount: ";
                 cin>>dep;
                 currAcount.checkingWithdraw(dep);
-                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getCheckingBalance()<<endl;
                 break;
             case 3:
                 cin.ignore();
-                cout<<"Current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                cout<<"Current Balance is: $"<<currAcount.getCheckingBalance()<<endl;
                 break;
             case 4:
                 break;
@@ -970,7 +971,7 @@ void depOrWidth()
                 {
                     currAcount.CDDeposit(dep);
                     currAcount.setCDCreationDate(t.getCurrentTime());
-                    cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: "<<currAcount.getCDBalance()<<endl;
+                    cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
                     cout << t.formatDate(currAcount.getCDCreationDate()) << endl;
                 }
                 break;
@@ -980,11 +981,11 @@ void depOrWidth()
                 cout<<"Enter widthdraw amount: ";
                 cin>>dep;
                 currAcount.CDWithdraw(dep);
-                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getCDBalance()<<endl;
+                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
                 break;
             case 3:
                 cin.ignore();
-                cout<<"Current Balance is: "<<currAcount.getCDBalance()<<endl;
+                cout<<"Current Balance is: $"<<currAcount.getCDBalance()<<endl;
                 break;
             case 4:
                 cin.ignore();
