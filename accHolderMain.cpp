@@ -7,6 +7,7 @@
 #include "Bank.h"
 #include "regex"
 #include "AccountNode.h"
+#include "directoryHandler.h"
 #include "timeHandler.h"
 
 using namespace std;
@@ -28,6 +29,7 @@ vector<User> usersVec;
 int key = 0;
 BankTree tree;
 timeHandler t;
+directory d;
 vector<string> closedAccounts;
 
 
@@ -48,25 +50,47 @@ int main()
     // cout<<"[1] Open a account"<<'\n'<<"[2] Close account"<<'\n'<<"[3] Search for a account"<<
     // '\n'<<"[4] Withdraw or Deposit to an account"<<endl;
     bool run = true;
+    //testUser
+    // User u;
+    // u.username = "sahej";
+    // u.password = "j";
+    // u.accntNum = generateAC(0);
+    // usersVec.push_back(u);
+    // AllAccounts test;
+    // test.setAccountNumber(u.accntNum);
+    // tree.insertAcc(test);
+    /////////////////////////
     // cin>>selection;
     while (run)
     {
     int selection;
+    string accNumBO;
     cout<<"[1] Open a account"<<'\n'<<"[2] Close account"<<'\n'<<"[3] Search for a account"<<
-    '\n'<<"[4] Withdraw or Deposit to an account"<<endl;
+    '\n'<<"[4] Withdraw or Deposit to an account"<<'\n'<<"[5] Exit"<<endl;
     cin>>selection;
     switch (selection)
     {
     case 1:
         cin.ignore();
         openAccount(newAccount);
-        newAccount.setKey(001);
-        tree.insertAcc(newAccount);
+        //tree.insertAcc(newAccount);
         break;
     case 2:
         cin.ignore();
-        tree.removeAcc(002);
+        cout<<"Please Enter Bank Account Number: "<<endl;
+        cin>>accNumBO;
+        tree.removeAcc(d.getKey(accNumBO));
         closedAccounts.push_back(tree.closeInfo + t.formatDate(t.getCurrentTime()));
+        int erasePos;
+        for(int i = 0; i < usersVec.size(); i++)
+        { 
+            if(usersVec[i].accntNum == accNumBO)
+            {
+                usersVec[i].accntNum = "";
+                usersVec[i].username = "";
+                usersVec[i].password = "";
+            }
+        }
         //Checking to see if close info was updated
         for(int i = 0; i < closedAccounts.size(); i++)
         {
@@ -74,13 +98,25 @@ int main()
         }
         break;
     case 3:
-        tree.searchAcc(001);
+        cin.ignore();
+        bool isThere;
+        cout<<"Please Enter Bank Account Number: "<<endl;
+        cin>>accNumBO;
+        isThere = tree.searchAcc(d.getKey(accNumBO));
+        if(isThere)
+        {
+            cout<<tree.currAccount.getAccountNumber()<<'\n'<<tree.currAccount.getName()<<'\n'<<tree.currAccount.getPhone()<<'\n'
+            <<tree.currAccount.getAddress()<<endl;
+        }
         break;
     case 4:
+        cin.ignore();
         depOrWidth();
         break;
     case 5:
         run = false;
+        break;
+    default:
         cout<<"Error, invalid Selection"<<endl;
         break;
     }
@@ -109,28 +145,33 @@ void openAccount(AllAccounts &a)
     
     //generating a new account num
     accNum = generateAC(key);
+    a.setKey(getKey(accNum));
     a.setAccountNumber(accNum);
 
     //Entering Name for new user
-    // cout<<"Please Enter Your Full Name"<<endl;
-    // getline(cin, name);
-    // firstName = name.substr(0, name.find(" "));
-    // lastName = name.substr(name.find(" "), name.length());
-    // a.setFirstLastName(firstName, lastName);
-    // //cin.ignore();
+    cin.clear();
+    cout<<"Please Enter Your Full Name"<<endl;
+    getline(cin, name);
+    firstName = name.substr(0, name.find(" "));
+    lastName = name.substr(name.find(" "), name.length());
+    a.setFirstLastName(firstName, lastName);
+    //cin.ignore();
 
     // //Entering Phone number
-    // cout<<"Please Enter a Phone Number for the Account (format: xxx-xxx-xxxx): "<<endl;
-    // getline(cin, phone);
-    // a.setPhone(phone);
-    // //cin.ignore();
+    cin.clear();
+    cout<<"Please Enter a Phone Number for the Account (format: xxx-xxx-xxxx): "<<endl;
+    getline(cin, phone);
+    a.setPhone(phone);
+    //cin.ignore();
 
-    // //Entering Address
-    // cout<<"Enter a Address for the account: "<<endl;
-    // getline(cin, address);
-    // a.setAddress(address);
+    //Entering Address
+    cin.clear();
+    cout<<"Enter a Address for the account: "<<endl;
+    getline(cin, address);
+    a.setAddress(address);
+
     tree.insertAcc(a);
-
+    //tree.searchAcc(a.getKey());
     createUser(login, password, accNum, usersVec);
 }
 
@@ -194,9 +235,11 @@ void depOrWidth()
         {
             if(login == usersVec[i].username) //&& password == usersVec[i].password)
             {
-                accountNum = usersVec[i].accntNum;
-                cout<<"found username"<<endl;
-                run = true;
+                if(password == usersVec[i].password)
+                {
+                    accountNum = usersVec[i].accntNum;
+                    run = true;
+                }
             }
             else
             {
@@ -209,150 +252,142 @@ void depOrWidth()
         }
     }
 
-    int tempKey = getKey(accountNum);
+    int tempKey = d.getKey(accountNum);
+    //cout<<tempKey<<" "<<accountNum<<endl;
     tree.searchAcc(tempKey);
+    //cout<<tree.currAccount.acc->getName()<<endl;
     tree.modifi(currAcount);
     cout<<currAcount.getAccountNumber()<<endl;
     
 
-    bool deprun = true;
-    bool run1, run2, run3 = true;
-    while(deprun)
+    bool userRun = true;
+    while(userRun)
     {
+        int choice;
         cout<<"[1] Savings"<<'\n'<<"[2] Checkings"<<'\n'<<"[3] CD"<<'\n'<<"[4] Quit"<<endl;
-        int choose;
-        cin>>choose;
-        switch(choose)
+        cin>>choice;
+        switch (choice)
         {
         case 1:
+            cin.ignore();
+            int depChoice; 
             cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
             "[3] Check Balance"<<'\n'<<"[4] Back"<<endl;
-            int check1;
-            //bool run1 = true;
-            cin>>check1;
-            while(run1)
+            cin>>depChoice;
+            switch (depChoice)
             {
-                 if(check1 == 1)
-                {
-                    int dep;
-                    cout<<"Enter deposit ammount"<<endl;
-                    cin>>dep;
-                    currAcount.savingsDeposit(dep);
-                    cout<<"Done1"<<endl;
-                }
-                else if(check1 == 2)
-                {
-                    int dep;
-                    cout<<"Enter withdraw ammount"<<endl;
-                    cin>>dep;
-                    currAcount.savingsWithdraw(dep);
-                    cout<<"Done"<<endl;
-                }
-                else if (check1 == 3)
-                {
-                    cout<<currAcount.getSavingsBalance()<<endl;;
-                }
-                else if(check1 == 4)
-                {
-                    run1 = false;
-                    break;
-                }
+            case 1:
+                cin.ignore();
+                int dep;
+                cout<<"Enter deposit ammount"<<endl;
+                cin>>dep;
+                currAcount.savingsDeposit(dep);
+                cout<<"Current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                break;
+            case 2:
+                cin.ignore();
+                //int dep;
+                cout<<"Enter widthdraw ammount"<<endl;
+                cin>>dep;
+                currAcount.savingsWithdraw(dep);
+                cout<<"Current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                break;
+            case 3:
+                cin.ignore();
+                cout<<"Current Balance is: "<<currAcount.getSavingsBalance()<<endl;
+                break;
+            case 4:
+                break;
+            default:
+                cout<<"Invalid Input, try again"<<endl;
+                break;
             }
             break;
         case 2:
+            cin.ignore();
+            //int depChoice; 
             cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
             "[3] Check Balance"<<'\n'<<"[4] Back"<<endl;
-            int check2;
-            //bool run2 = true;
-            cin>>check2;
-            while(run2)
+            cin>>depChoice;
+            switch (depChoice)
             {
-                 if(check2 == 1)
-                {
-                    int dep;
-                    cout<<"Enter deposit ammount"<<endl;
-                    cin>>dep;
-                    currAcount.checkingDeposit(dep);
-                    cout<<"Done"<<endl;
-                }
-                else if(check2 == 2)
-                {
-                    int dep;
-                    cout<<"Enter withdraw ammount"<<endl;
-                    cin>>dep;
-                    currAcount.checkingWithdraw(dep);
-                    cout<<"Done"<<endl;
-                }
-                else if (check2 == 3)
-                {
-                    cout<<currAcount.getCheckingBalance()<<endl;;
-                }
-                else if(check2 == 4)
-                {
-                    run2 = false;
-                    break;
-                }
+            case 1:
+                cin.ignore();
+                int dep;
+                cout<<"Enter deposit ammount"<<endl;
+                cin>>dep;
+                currAcount.checkingDeposit(dep);
+                cout<<"Current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                break;
+            case 2:
+                cin.ignore();
+                //int dep;
+                cout<<"Enter widthdraw ammount"<<endl;
+                cin>>dep;
+                currAcount.checkingWithdraw(dep);
+                cout<<"Current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                break;
+            case 3:
+                cin.ignore();
+                cout<<"Current Balance is: "<<currAcount.getCheckingBalance()<<endl;
+                break;
+            case 4:
+                break;
+            default:
+                cout<<"Invalid Input, try again"<<endl;
+                break;
             }
             break;
         case 3:
+            cin.ignore();
+            //int depChoice; 
             cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
-            "[3] Check Balance"<<'\n'<<"[4] Cancel"<<'\n'<<"[5] Back"<<endl;
-            int check3;
-            //bool run3 = true;
-            cin>>check3;
-            while(run3)
+            "[3] Check Balance"<<'\n'<<"[4] Cancel CD"<<'\n'<<"[5] Back"<<endl;
+            cin>>depChoice;
+            switch (depChoice)
             {
-                 if(check3 == 1)
-                {
-                    int dep;
-                    cout<<"Enter deposit ammount"<<endl;
-                    cin>>dep;
-                    currAcount.CDDeposit(dep);
-                    cout<<"Done"<<endl;
-                }
-                else if(check3 == 2)
-                {
-                    int dep;
-                    cout<<"Enter withdraw ammount"<<endl;
-                    cin>>dep;
-                    currAcount.savingsWithdraw(dep);
-                    cout<<"Done"<<endl;
-                }
-                else if (check3 == 3)
-                {
-                    cout<<currAcount.getCDBalance()<<endl;
-                }
-                else if(check3 == 4)
-                {
-                    currAcount.cdCancel();
-                    cout<<"Done"<<endl;
-                }
-                else if(check3 == 5)
-                {
-                    run3 = false;
-                    break;
-                }
+            case 1:
+                cin.ignore();
+                int dep;
+                cout<<"Enter deposit ammount"<<endl;
+                cin>>dep;
+                currAcount.CDDeposit(dep);
+                cout<<"Current Balance is: "<<currAcount.getCDBalance()<<endl;
+                break;
+            case 2:
+                cin.ignore();
+                //int dep;
+                cout<<"Enter widthdraw ammount"<<endl;
+                cin>>dep;
+                currAcount.CDWithdraw(dep);
+                cout<<"Current Balance is: "<<currAcount.getCDBalance()<<endl;
+                break;
+            case 3:
+                cin.ignore();
+                cout<<"Current Balance is: "<<currAcount.getCDBalance()<<endl;
+                break;
+            case 4:
+                cin.ignore();
+                currAcount.cdCancel();
+                break;
+            case 5:
+                break;
+            default:
+                cout<<"Invalid Input, try again"<<endl;
+                break;
             }
             break;
         case 4:
-            deprun = false;
+            userRun = false;
             break;
-        // default:
-        //     cout<<"Please Enter a Valid choice"<<endl;
-        //     break;
-        }
+        default:
+            cout<<"Invalid Input, try again"<<endl;
+            break;
+            }
+
+    }
     tree.upadteAcc(currAcount.getKey(), currAcount);
-}
-   
-
-
-
-    
-
-
-
-
-
+    tree.searchAcc(currAcount.getKey());
 }
 
 void createUser(string id, string pswd, string accntNum, vector<User> &usersVec)
@@ -361,11 +396,12 @@ void createUser(string id, string pswd, string accntNum, vector<User> &usersVec)
     newUser.username = id;
     newUser.password = pswd;
     newUser.accntNum = accntNum;
+    cout<<"Account Number is: "<<accntNum<<endl;
     usersVec.push_back(newUser);
-    for(int i = 0; i < usersVec.size(); i++)
-    {
-        cout<<usersVec[i].username<<" "<<usersVec[i].password<<endl;
-    }
+    // for(int i = 0; i < usersVec.size(); i++)
+    // {
+    //     cout<<usersVec[i].username<<" "<<usersVec[i].password<<endl;
+    // }
 }
 
 string generateAC(int keyPassed){

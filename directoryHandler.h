@@ -8,7 +8,6 @@
 #include <string>
 #include <stdlib.h>
 #include <time.h>
-
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fstream>
@@ -18,14 +17,45 @@
 #define GetCurrentDir getcwd
 using namespace std;
 
+
 class directory{
 
 public:
-
     const string basePath= getCurrentDir();
     const string accountsPath = basePath+"/accounts";
     int accountCount=0;
 
+
+
+    string encrypt(string msg, int shift){
+        shift = ((shift%26)+26)%26;
+
+        string final;
+
+        for(int i =0;i<msg.length();i++){
+            if(msg[i]>='a' && msg[i]<='z')
+                final+=((msg[i]-'a'+shift)%26+'a');
+            else if(msg[i]>='A' && msg[i]<='Z')
+                final+=((msg[i]-'A'+shift)%26+'A');
+            else
+                final+=msg[i];
+        }
+        return final;
+    }
+
+    string decrypt(string msg, int shift){
+        return encrypt(msg,26-shift%26);
+    }
+
+    void clearFile(string accountNumber,string file){
+        string folder = accountsPath+"/"+accountNumber;
+        chdir(folder.data());
+        ofstream outFile2;
+        outFile2.open(file);
+        file.clear();
+
+        
+    }
 
     void changePath(string actN){
         string newPath;
@@ -61,7 +91,8 @@ public:
     }
 
     void writeToFile(string accountNumber, char fileType, string info){
-        ofstream outFile;
+        fstream outFile;
+        ifstream inFile;
         chdir(basePath.data());
         chdir(accountsPath.data());
         string slice = "/";
@@ -69,24 +100,29 @@ public:
         if(chdir(newPath.data())==0){
             switch(fileType){
                 case 's':
-                    outFile.open("savings.txt",ios::app);
+                    outFile.open("savings.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 case 'i':
-                    outFile.open("info.txt",ios::app);
-                    outFile << info << endl;
+                    outFile.open("info.txt",fstream::app|fstream::out);
+                    outFile << encrypt(info,4) << endl;
+                    outFile.close();
                     break;
                 case 'c':
-                    outFile.open("checking.txt",ios::app);
+                    outFile.open("checking.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 case 't':
-                    outFile.open("transactions.txt",ios::app);
+                    outFile.open("transactions.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 case 'd':
-                    outFile.open("cd.txt",ios::app);
+                    outFile.open("cd.txt",fstream::app|fstream::out);
                     outFile << info << endl;
+                    outFile.close();
                     break;
                 default:
                     cout<<"File not found error!"<<endl;
@@ -95,6 +131,15 @@ public:
         else{
             cout<<"writing to file failed"<<endl;
         }
+    }
+
+    void readInfo(string accountNumber, AllAccounts account){
+        fstream inFile;
+        string newPath = accountsPath+"/"+accountNumber;
+        chdir(newPath.data());
+        inFile.open("Info.txt");
+        
+
     }
 
     //gets a line passed in and returns the key aka the first n digits
@@ -116,26 +161,6 @@ public:
     }
 
 
-    string encrypt(string msg, int shift){
-        shift = ((shift%26)+26)%26;
-
-        string final;
-
-        for(int i =0;i<msg.length();i++){
-            if(msg[i]>='a' && msg[i]<='z')
-                final+=((msg[i]-'a'+shift)%26+'a');
-            else if(msg[i]>='A' && msg[i]<='Z')
-                final+=((msg[i]-'A'+shift)%26+'A');
-            else
-                final+=msg[i];
-        }
-        return final;
-    }
-
-    string decrypt(string msg, int shift){
-        return encrypt(msg,26-shift%26);
-    }
-
-
+    
 
 };
