@@ -190,7 +190,7 @@ int main()
                             }
                             bool running;
                             running = false;
-                            while(!running)
+                            while(running == false)
                             {
                                 cout<<"Please enter customer ID: ";
                                 cin>>login;
@@ -204,6 +204,7 @@ int main()
                                         {
                                             usersOptions(usersVec[i].accntNum);
                                             running = true;
+                                            break;
                                         }
                                     }
                                     else
@@ -211,7 +212,7 @@ int main()
                                         running = false;
                                     }
                                 }
-                                if(!running)
+                                if(running == false)
                                 {
                                     cout<<"No login or password match, try again"<<endl;
                                 }
