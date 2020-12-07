@@ -160,6 +160,8 @@ int main()
     return 0;
 }
 
+//Login & password stuff added by Jay
+
 bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec)
 {
     for(int i = 0; i < usersVec.size(); i++)
