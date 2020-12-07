@@ -36,6 +36,8 @@ BankTree tree;
 timeHandler t;
 directory d;
 vector<ClosedAccounts> cAccounts;
+vector<AllAccounts> balanced;
+vector<AllAccounts> og;
 
 
 string generateAC(int keyPassed);
@@ -47,70 +49,104 @@ void depOrWidth();
 void createUser(string, string, string, vector<User> &usersVec);
 bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec);
 void shutAcc();
+void balanceTree(vector<AllAccounts> og, vector<AllAccounts> &balanced, int start, int end);
+
 
 int main()
 {
 
-    AllAccounts newAccount;
+    //AllAccounts newAccount;
     bankAcc currAcc;
-    // cout<<"[1] Open a account"<<'\n'<<"[2] Close account"<<'\n'<<"[3] Search for a account"<<
-    // '\n'<<"[4] Withdraw or Deposit to an account"<<endl;
+    int key = 0;
+
     bool run = true;
-    //testUser
-    // User u;
-    // u.username = "sahej";
-    // u.password = "j";
-    // u.accntNum = generateAC(0);
-    // usersVec.push_back(u);
-    // AllAccounts test;
-    // test.setAccountNumber(u.accntNum);
-    // tree.insertAcc(test);
-    /////////////////////////
+
+    //test for balance
+    AllAccounts a1;
+    AllAccounts a2;
+    AllAccounts a3;
+    AllAccounts a4;
+    AllAccounts a5;
+    AllAccounts a6;
+    AllAccounts a7;
+
+    og.push_back(a1);
+    og.push_back(a2);
+    og.push_back(a3);
+    og.push_back(a4);
+    og.push_back(a5);
+    og.push_back(a6);
+    og.push_back(a7);
+    
+
+    for(int i = 0; i < og.size(); i++)
+    {
+        og[i].setKey(key);
+        key++;
+    }
+
+    balanceTree(og, balanced, 0, og.size() - 1);
+
+    for(int i = 0; i < og.size(); i++)
+    {
+        //cout<<og[i].getKey()<<" ";
+    }
+
+    for(int i = 0; i < balanced.size(); i++)
+    {
+        //cout<<'\n'<<balanced[i].getKey()<<" ";
+        tree.insertAcc(balanced[i]);
+    }
+
+    tree.displayAllAccounts();
+    
+
+
+    
+    // while (run)
+    // {
+    // int selection;
+    // string accNumBO;
+    // cout<<"[1] Open a account"<<'\n'<<"[2] Close account"<<'\n'<<"[3] Search for a account"<<
+    // '\n'<<"[4] Withdraw or Deposit to an account"<<'\n'<<"[5] Exit"<<endl;
     // cin>>selection;
-    while (run)
-    {
-    int selection;
-    //string accNumBO;
-    cout<<"[1] Open a account"<<'\n'<<"[2] Close account"<<'\n'<<"[3] Search for a account"<<
-    '\n'<<"[4] Withdraw or Deposit to an account"<<'\n'<<"[5] Exit"<<endl;
-    cin>>selection;
-    switch (selection)
-    {
-    case 1:
-        cin.ignore();
-        openAccount(newAccount);
-        //tree.insertAcc(newAccount);
-        break;
-    case 2:
-        cin.ignore();
-        shutAcc();
-        break;
-    case 3:
-        cin.ignore();
-        bool isThere;
-        string accNumBO;
-        cout<<"Please Enter Bank Account Number: "<<endl;
-        cin>>accNumBO;
-        isThere = tree.searchAcc(d.getKey(accNumBO));
-        if(isThere)
-        {
-            cout<<tree.currAccount.getAccountNumber()<<'\n'<<tree.currAccount.getName()<<'\n'<<tree.currAccount.getPhone()<<'\n'
-            <<tree.currAccount.getAddress()<<endl;
-        }
-        break;
-    case 4:
-        cin.ignore();
-        depOrWidth();
-        break;
-    case 5:
-        run = false;
-        break;
-    default:
-        cout<<"Error, invalid Selection"<<endl;
-        break;
-    }
-    //cin.ignore();
-    }
+    // switch (selection)
+    // {
+    // case 1:
+    //     cin.ignore();
+    //     openAccount(newAccount);
+    //     //tree.insertAcc(newAccount);
+    //     break;
+    // case 2:
+    //     cin.ignore();
+    //     shutAcc();
+    //     break;
+    // case 3:
+    //     cin.ignore();
+    //     bool isThere;
+    //     //string accNumBO;
+    //     cout<<"Please Enter Bank Account Number: "<<endl;
+    //     cin>>accNumBO;
+    //     isThere = tree.searchAcc(d.getKey(accNumBO));
+    //     if(isThere)
+    //     {
+    //         cout<<tree.currAccount.getAccountNumber()<<'\n'<<tree.currAccount.getName()<<'\n'<<tree.currAccount.getPhone()<<'\n'
+    //         <<tree.currAccount.getAddress()<<endl;
+    //     }
+    //     break;
+    // case 4:
+    //     cin.ignore();
+    //     depOrWidth();
+    //     break;
+    // case 5:
+    //     run = false;
+    //     break;
+    // default:
+    //     cout<<"Error, invalid Selection"<<endl;
+    //     break;
+    // }
+    // //cin.ignore();
+    // }
 }
 
 void openAccount(AllAccounts &a)
@@ -458,4 +494,17 @@ void shutAcc()
     {
         cout<<cAccounts[i].info<<endl;
     }
+}
+
+void balanceTree(vector<AllAccounts> og, vector<AllAccounts> &balanced, int start, int end)
+{
+    if(start > end)
+        return;
+
+    int mid = (start+end)/2;
+    AllAccounts curr = og[mid];
+    balanced.push_back(curr);
+
+    balanceTree(og, balanced, start, mid - 1);
+    balanceTree(og, balanced, mid + 1, end);
 }
