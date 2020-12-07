@@ -49,7 +49,6 @@ class Savings : public accounts{
         double getAccountBalance()
         {
             addInterest(lastOpendDate, t.getCurrentTime());
-            lastOpendDate = t.getCurrentTime();
             return accountBalance;
         }
 
@@ -92,6 +91,7 @@ class Savings : public accounts{
             }
             string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Saving";
             transactionHistory.push_back(info);
+            addInterest(lastOpendDate, t.getCurrentTime());
             return accountBalance;
         }
 
@@ -110,6 +110,7 @@ class Savings : public accounts{
             }
             string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime())+" Savings";
             transactionHistory.push_back(info);
+            addInterest(lastOpendDate, t.getCurrentTime());
             return accountBalance;
         }
 
@@ -121,6 +122,7 @@ class Savings : public accounts{
                 dailyInterestRate = accountBalance * dailyInterestRate;
                 accountBalance += dailyInterestRate;
             }
+            lastOpendDate = t.getCurrentTime();
             
         }
 
