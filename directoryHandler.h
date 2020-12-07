@@ -133,14 +133,6 @@ public:
         }
     }
 
-    void readInfo(string accountNumber, AllAccounts account){
-        fstream inFile;
-        string newPath = accountsPath+"/"+accountNumber;
-        chdir(newPath.data());
-        inFile.open("Info.txt");
-        
-
-    }
 
     //gets a line passed in and returns the key aka the first n digits
     int getKey(string line){
