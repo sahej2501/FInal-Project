@@ -237,7 +237,10 @@ int main()
                     }
                     break;
                 case 3:
+                    chdir(d.basePath.data());
                     writeToLogins(adminsVec, officialsVec, usersVec);
+                    setCurrAccount();
+                    saveAccounts();
                     cout << "Goodbye!" << endl;
                     cont = false;
                     break;
