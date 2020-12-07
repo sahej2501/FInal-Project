@@ -40,7 +40,7 @@ public:
             cout << "Account not open!";
         }
         //
-        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Checking";
+        string info ="-" + to_string(amount) + t.formatDate(t.getCurrentTime())+" Checkings";
         transactionHistory.push_back(info);
         
         return accountBalance;
@@ -57,7 +57,7 @@ public:
         {
             cout << "Account not open!";
         }
-        string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime())+" Checking";
+        string info ="+" + to_string(amount) +" "+ t.formatDate(t.getCurrentTime())+" Checkings";
         transactionHistory.push_back(info);
     }
 };
