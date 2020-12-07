@@ -59,7 +59,6 @@ void readOfficialLogins(vector<Official> &officialsVec);
 void readUserLogins(vector<User> &usersVec);
 void writeToLogins(vector<Admin> &adminsVec, vector<Official> &officialsVec, vector<User> &usersVec);
 void changePassword(string, string, vector<User> &usersVec);
-int yearsPassed(Date);
 
 //Sahej added
 void depOrWidth();
@@ -375,7 +374,6 @@ void readOfficialLogins(vector<Official> &officialsVec)
 
 void readUserLogins(vector<User> &usersVec)
 {
-    directory d1;
     string text;
     ifstream inFile;
     User customer;
@@ -386,10 +384,10 @@ void readUserLogins(vector<User> &usersVec)
     {
         while (getline(inFile, text))
         {
-            customer.username = d1.decrypt(text.substr(0, text.find(" ")), 4);
+            customer.username = text.substr(0, text.find(" "));
             text = text.substr(text.find(" ") + 1, text.length());
-            customer.password = d1.decrypt(text.substr(0, text.find(" ")), 4);
-            customer.accntNum = d1.decrypt(text.substr(text.find(" ") + 1, text.length()), 4);
+            customer.password = text.substr(0, text.find(" "));
+            customer.accntNum = text.substr(text.find(" ") + 1, text.length());
             usersVec.push_back(customer);
         }
     }
@@ -440,7 +438,7 @@ void writeToLogins(vector<Admin> &adminsVec, vector<Official> &officialsVec, vec
     for (int j = 0; j < officialsVec.size(); j++)
         writeOfficial << officialsVec[j].username << " " << officialsVec[j].password << endl;
     for (int k = 0; k < usersVec.size(); k++)
-        writeUser << usersVec[k].username << " " << usersVec[k].password << " " << d1.encrypt(usersVec[k].accntNum, 4) <<endl;
+        writeUser << usersVec[k].username << " " << usersVec[k].password << " " << usersVec[k].accntNum <<endl;
 }
 
 void changePassword(string id, string newPswd, vector<User> &usersVec)
@@ -760,10 +758,6 @@ void usersOptions(string accountNum)
                         }
                         break;
                     case 3:
-                        int maturity;
-                        maturity = yearsPassed(t.getCurrentTime());
-                        for (int times = 0; times < maturity; times++)
-                            currAcount.cdAddIntrest();
                         cin.ignore();
                         //int depChoice; 
                         cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
@@ -783,7 +777,6 @@ void usersOptions(string accountNum)
                             else
                             {
                                 currAcount.CDDeposit(dep);
-                                currAcount.setOGAmount(dep);
                                 currAcount.setCDCreationDate(t.getCurrentTime());
                                 cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
                                 cout << t.formatDate(currAcount.getCDCreationDate()) << endl;
@@ -792,17 +785,10 @@ void usersOptions(string accountNum)
                         case 2:
                             cin.ignore();
                             //int dep;
-                            if (maturity == 5)
-                            {
-                                cout<<"Enter widthdraw amount: ";
-                                cin>>dep;
-                                currAcount.CDWithdraw(dep);
-                                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getCDBalance()<<endl;
-                            }
-                            else
-                            {
-                                cout << "Cannot withdraw now, term length isn't met!" << endl;
-                            }
+                            cout<<"Enter widthdraw amount: ";
+                            cin>>dep;
+                            currAcount.CDWithdraw(dep);
+                            cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
                             break;
                         case 3:
                             cin.ignore();
@@ -810,14 +796,7 @@ void usersOptions(string accountNum)
                             break;
                         case 4:
                             cin.ignore();
-                            if(maturity >= 5)
-                                cout << "Your CD length is met. You can withdraw you balance with interest" << endl;
-                            else if(maturity <= 2)
-                                currAcount.cdCancel(0.25);
-                            else if (maturity == 3)
-                                currAcount.cdCancel(0.2);
-                            else
-                                currAcount.cdCancel(0.15);
+                            currAcount.cdCancel();
                             break;
                         case 5:
                             break;
@@ -978,10 +957,6 @@ void depOrWidth()
             }
             break;
         case 3:
-            int maturity;
-            maturity = yearsPassed(t.getCurrentTime());
-            for (int times = 0; times < maturity; times++)
-                    currAcount.cdAddIntrest();
             cin.ignore();
             //int depChoice; 
             cout<<"[1] Deposit"<<'\n'<<"[2] Withdraw"<<'\n'<<
@@ -1001,7 +976,6 @@ void depOrWidth()
                 else
                 {
                     currAcount.CDDeposit(dep);
-                    currAcount.setOGAmount(dep);
                     currAcount.setCDCreationDate(t.getCurrentTime());
                     cout<<"A $"<<dep<< " deposit has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
                     cout << t.formatDate(currAcount.getCDCreationDate()) << endl;
@@ -1010,17 +984,10 @@ void depOrWidth()
             case 2:
                 cin.ignore();
                 //int dep;
-                if (maturity == 5)
-                {
-                    cout<<"Enter widthdraw amount: ";
-                    cin>>dep;
-                    currAcount.CDWithdraw(dep);
-                    cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: "<<currAcount.getCDBalance()<<endl;
-                }
-                else
-                {
-                    cout << "Cannot withdraw now, term length isn't met!" << endl;
-                }
+                cout<<"Enter widthdraw amount: ";
+                cin>>dep;
+                currAcount.CDWithdraw(dep);
+                cout<<"A $"<<dep<< " withdrawal has been made, "<<"current Balance is: $"<<currAcount.getCDBalance()<<endl;
                 break;
             case 3:
                 cin.ignore();
@@ -1028,14 +995,7 @@ void depOrWidth()
                 break;
             case 4:
                 cin.ignore();
-                if(maturity >= 5)
-                    cout << "Your CD length is met. You can withdraw you balance with interest" << endl;
-                else if(maturity <= 2)
-                    currAcount.cdCancel(0.25);
-                else if (maturity == 3)
-                    currAcount.cdCancel(0.2);
-                else
-                    currAcount.cdCancel(0.15);
+                currAcount.cdCancel();
                 break;
             case 5:
                 break;
@@ -1276,21 +1236,4 @@ void setCurrAccount(){
         }
     }
 
-}
-
-/*
-gets the difference of the two dates and if its greater than 365 it returns
-the difference of the amount of years to maturity as an int
-for jay
-*/
-int yearsPassed(Date openedDate)
-{
-    int maturity;
-    int daysDifferent = t.getDifference(t.getCurrentTime(), openedDate);
-    int yearsPassed = daysDifferent/365;
-    if(yearsPassed>0&&yearsPassed>maturity){
-        maturity = yearsPassed-maturity;
-    }
-    cout << maturity << endl;
-    return maturity;
 }
