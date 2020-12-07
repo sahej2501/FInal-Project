@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "timeHandler.h"
 #include "accounts.h"
 #include "savings.h"
 #include "checking.h"
@@ -25,6 +26,7 @@ class AllAccounts
         string lastName; 
         string phoneNum;
         string address;
+        Date openDate;
 
     public:
         //constructors
@@ -34,6 +36,11 @@ class AllAccounts
         }
 
         //getters
+        Date getOpenDate()
+        {
+            return openDate;
+        }
+
         int getKey()
         {
             return key;
@@ -85,8 +92,22 @@ class AllAccounts
             return cd.getAccountBalance();
         }
 
+        Date getCDCreationDate()
+        {
+            return cd.getCreationDate();
+        }
+
+        void cdAddIntrest()
+        {
+            cd.addInterest();
+        }
+
 
         //setters
+        void setOpenDate(Date d)
+        {
+            openDate = d;
+        }
 
         void setBalance(double s, double c, double f)
         {
