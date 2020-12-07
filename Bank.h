@@ -12,7 +12,7 @@
 
 struct bankAcc
 {
-    AllAccounts *acc;
+    AllAccounts acc;
     bankAcc *left;
     bankAcc *right;
 };
@@ -25,11 +25,12 @@ class BankTree
         //functions methods for public method manipulation 
         void insert(bankAcc *&, bankAcc *&);
         void deleteNode(AllAccounts, bankAcc *&);
-        bool search(bankAcc *&, int, bankAcc &);
+        bool search(bankAcc *&, int);
         bankAcc* removeTraversal(bankAcc *&, int);       //function that removes a given key
         bankAcc* minimumKey(bankAcc* curr);
         void displayAllAccounts(bankAcc *&) const;
         bool upadte(bankAcc *&, int num, AllAccounts);
+        void setCurrentAccout(bankAcc *);
 
     public:
       BankTree();
@@ -37,18 +38,18 @@ class BankTree
 
       timeHandler t;
       string closeInfo;
-      bankAcc currAccount;
+      AllAccounts currAccount;
 
       void insertAcc(AllAccounts);
-      void searchAcc(int);
+      bool searchAcc(int);
       void removeAcc(int);
       void upadteAcc(int, AllAccounts);
 
       void closeAccount(bankAcc *&nodePtr)
       {
          string close;
-         close = nodePtr->acc->getAccountNumber() + " " + nodePtr->acc->getName() + " " + 
-         nodePtr->acc->getPhone() + " " + nodePtr->acc->getAddress() + " ";
+         close = nodePtr->acc.getAccountNumber() + " " + nodePtr->acc.getName() + " " + 
+         nodePtr->acc.getPhone() + " " + nodePtr->acc.getAddress() + " ";
          closeInfo = close;
       }
 
@@ -81,15 +82,27 @@ void BankTree::modifi(AllAccounts &temp)
    string name, fName, lName;
    //AllAccounts temp;
    //messes up interest
-   temp.setBalance(currAccount.acc->getSavingsBalance(), currAccount.acc->getCheckingBalance(), currAccount.acc->getCDBalance());
-   name = currAccount.acc->getName();
+   // temp.setBalance(currAccount.acc.getSavingsBalance(), currAccount.acc.getCheckingBalance(), currAccount.acc.getCDBalance());
+   // name = currAccount.acc.getName();
+   // fName = name.substr(0, name.find(" "));
+   // lName = name.substr(name.find(" ") + 1, name.length());
+   // temp.setFirstLastName(fName, lName);
+   // temp.setAccountNumber(currAccount.acc.getAccountNumber());
+   // temp.setAddress(currAccount.acc.getAddress());
+   // temp.setPhone(currAccount.acc.getPhone());
+   // temp.setKey(currAccount.acc.getKey());
+   //cout<<currAccount.getAccountNumber()<<endl;
+
+   temp.setBalance(currAccount.getSavingsBalance(), currAccount.getCheckingBalance(), currAccount.getCDBalance());
+   name = currAccount.getName();
    fName = name.substr(0, name.find(" "));
    lName = name.substr(name.find(" ") + 1, name.length());
    temp.setFirstLastName(fName, lName);
-   temp.setAccountNumber(currAccount.acc->getAccountNumber());
-   temp.setAddress(currAccount.acc->getAddress());
-   temp.setPhone(currAccount.acc->getPhone());
-   temp.setKey(currAccount.acc->getKey());
+   temp.setAccountNumber(currAccount.getAccountNumber());
+   //cout<<temp.getAccountNumber()<<endl;
+   temp.setAddress(currAccount.getAddress());
+   temp.setPhone(currAccount.getPhone());
+   temp.setKey(currAccount.getKey());
 
 }
 
@@ -100,7 +113,7 @@ void BankTree::modifi(AllAccounts &temp)
 void BankTree::upadteAcc(int k, AllAccounts c)
 {
    upadte(root, k, c);
-   cout<<"Done"<<endl;
+   // cout<<"Done"<<endl;
 }
 
 //************************************************************
@@ -113,10 +126,10 @@ bool BankTree::upadte(bankAcc *&nodePtr, int num, AllAccounts temp)
    {
       return false;
    }
-   else if (nodePtr->acc->getKey() == num)
+   else if (nodePtr->acc.getKey() == num)
    {
-      cout<<"Found"<<endl;
-      nodePtr->acc->setBalance(temp.getSavingsBalance(), temp.getCheckingBalance(), temp.getCDBalance());
+      // cout<<"Found"<<endl;
+      nodePtr->acc.setBalance(temp.getSavingsBalance(), temp.getCheckingBalance(), temp.getCDBalance());
       return true;
    }
    // recur on left subtree
@@ -134,11 +147,11 @@ bool BankTree::upadte(bankAcc *&nodePtr, int num, AllAccounts temp)
 // {
 //    if (nodePtr)
 //    {
-//       if(nodePtr->acc->getKey() != -1)
+//       if(nodePtr->acc.getKey() != -1)
 //       {
          
 //          displayAllAccounts(nodePtr->left);
-//          cout<<nodePtr->acc->getKey()<<endl;
+//          cout<<nodePtr->acc.getKey()<<endl;
 //          displayAllAccounts(nodePtr->right);
 //       }
 //    }
@@ -152,8 +165,8 @@ bool BankTree::upadte(bankAcc *&nodePtr, int num, AllAccounts temp)
 // void closeAccount(bankAcc *&nodePtr)
 // {
 //    string close;
-//    close = nodePtr->acc->getAccountNumber() + " " + nodePtr->acc->getName() + " " + 
-//    nodePtr->acc->getPhone() + " " + nodePtr->acc->getAddress() + " ";
+//    close = nodePtr->acc.getAccountNumber() + " " + nodePtr->acc.getName() + " " + 
+//    nodePtr->acc.getPhone() + " " + nodePtr->acc.getAddress() + " ";
 //    closeInfo = close;
 // }
 
@@ -164,9 +177,22 @@ bool BankTree::upadte(bankAcc *&nodePtr, int num, AllAccounts temp)
 
 void BankTree::insertAcc(AllAccounts newAcc)
 {
+   string name, fName, lName;
    bankAcc *newNode = new bankAcc; // Pointer to a new node.
    // Store num in new node.
-   newNode->acc = &newAcc;
+   //cout<<newAcc.getAccountNumber()<<endl;
+   newNode->acc.setBalance(newAcc.getSavingsBalance(), newAcc.getCheckingBalance(), newAcc.getCDBalance());
+   name = newAcc.getName();
+   fName = name.substr(0, name.find(" "));
+   lName = name.substr(name.find(" ") + 1, name.length());
+   newNode->acc.setFirstLastName(fName, lName);
+   newNode->acc.setAccountNumber(newAcc.getAccountNumber());
+   // cout<<newNode->acc.getAccountNumber()<<endl;
+   newNode->acc.setAddress(newAcc.getAddress());
+   newNode->acc.setPhone(newAcc.getPhone());
+   newNode->acc.setKey(newAcc.getKey());
+
+   // newNode->acc = &newAcc;
    newNode->left = nullptr;
    newNode->right = nullptr;
    
@@ -184,9 +210,9 @@ void BankTree::insert(bankAcc *&nodePtr, bankAcc *&newNode)
 {
    if (nodePtr == nullptr)
       nodePtr = newNode; // Insert the node.
-   else if (newNode->acc->getKey() < nodePtr->acc->getKey())
+   else if (newNode->acc.getKey() < nodePtr->acc.getKey())
       insert(nodePtr->left, newNode); // Search the left branch
-   else if (newNode->acc->getKey() > nodePtr->acc->getKey())
+   else if (newNode->acc.getKey() > nodePtr->acc.getKey())
       insert(nodePtr->right, newNode); // Search the right branch
    else
       cout<<"key already has in use"<<endl;
@@ -197,16 +223,20 @@ void BankTree::insert(bankAcc *&nodePtr, bankAcc *&newNode)
 // it to the search function.                              *
 //**********************************************************
 
-void BankTree::searchAcc(int num)
+bool BankTree::searchAcc(int num)
 { 
-   if (search(root, num, currAccount))
+   bool found;
+   if (search(root, num))
    {
       cout<<"Found"<<endl;   //prints out Not Found when search funtion returns false
+      found = true;
    }
    else
    {
       cout<<"Not Found"<<endl;
+      found = false;
    }
+   return found;
 }
 
 //**************************************************
@@ -215,10 +245,10 @@ void BankTree::searchAcc(int num)
 
 // void BankTree::getCurrentAcc(AllAccounts &curr, bankAcc *&nodePtr)
 // {
-//    currAccount.setFirstLastName(nodePtr->acc->getName());
-//    currAccount.setAccountNumber(nodePtr->acc->getAccountNumber());
-//    currAccount.setKey(nodePtr->acc->getKey());
-//    currAccount.setAddress(nodePtr->acc->getAddress());
+//    currAccount.setFirstLastName(nodePtr->acc.getName());
+//    currAccount.setAccountNumber(nodePtr->acc.getAccountNumber());
+//    currAccount.setKey(nodePtr->acc.getKey());
+//    currAccount.setAddress(nodePtr->acc.getAddress());
 
 // }
 
@@ -231,23 +261,24 @@ void BankTree::searchAcc(int num)
 // when the key number cannot be found in the Tree          *
 //*************************************************************
 
-bool BankTree::search(bankAcc *&nodePtr, int num, bankAcc &currAccount)
+bool BankTree::search(bankAcc *&nodePtr, int num)
 {
    if (nodePtr == nullptr)
    {
       return false;
    }
-   else if (nodePtr->acc->getKey() == num)
+   else if (nodePtr->acc.getKey() == num)
    {
-      currAccount = *nodePtr;
+      //cout<<nodePtr->acc.getAccountNumber()<<endl;
+      setCurrentAccout(nodePtr);
       return true;
    }
    // recur on left subtree
-   if (search(nodePtr->left, num, currAccount))
+   if (search(nodePtr->left, num))
       return true;
    
    //recur on right subtree
-   bool rightFind = search(nodePtr->right, num, currAccount);
+   bool rightFind = search(nodePtr->right, num);
 
    //recur on right allows overall return booleen variable, avoids errors
    return rightFind;
@@ -291,15 +322,15 @@ bankAcc* BankTree::removeTraversal(bankAcc *&nodePtr, int num)
    }
 
    //recursivly searchs for the given key num
-   if (num < nodePtr->acc->getKey())
+   if (num < nodePtr->acc.getKey())
    {
       nodePtr->left = removeTraversal(nodePtr->left, num);
    }
-   else if(num > nodePtr->acc->getKey())
+   else if(num > nodePtr->acc.getKey())
    {
       nodePtr->right = removeTraversal(nodePtr->right, num);
    }
-   else if(num == nodePtr->acc->getKey())
+   else if(num == nodePtr->acc.getKey())
    {
       closeAccount(nodePtr);
       //case 1: deleting node does not have any children
@@ -327,10 +358,28 @@ bankAcc* BankTree::removeTraversal(bankAcc *&nodePtr, int num)
       else
       {
          bankAcc *temp = minimumKey(nodePtr->right);
-         nodePtr->acc->setKey(temp->acc->getKey()); //sets the min value in right tree for deleting node
-         nodePtr->right = removeTraversal(nodePtr->right, temp->acc->getKey());
+         nodePtr->acc.setKey(temp->acc.getKey()); //sets the min value in right tree for deleting node
+         nodePtr->right = removeTraversal(nodePtr->right, temp->acc.getKey());
       }
    }
    return nodePtr; 
+}
+
+void BankTree::setCurrentAccout(bankAcc *nodePtr)
+{
+   string name, fName, lName;
+   //AllAccounts temp;
+   //messes up interest
+   //cout<<nodePtr->acc.getAccountNumber()<<endl;
+   currAccount.setBalance(nodePtr->acc.getSavingsBalance(), nodePtr->acc.getCheckingBalance(), nodePtr->acc.getCDBalance());
+   name  = nodePtr->acc.getName();
+   fName = name.substr(0, name.find(" "));
+   lName = name.substr(name.find(" ") + 1, name.length());
+   currAccount.setFirstLastName(fName, lName);
+   currAccount.setAccountNumber(nodePtr->acc.getAccountNumber());
+   currAccount.setAddress(nodePtr->acc.getAddress());
+   currAccount.setPhone(nodePtr->acc.getPhone());
+   currAccount.setKey(nodePtr->acc.getKey());
+   //cout<<currAccount.getAccountNumber()<<endl;
 }
 #endif

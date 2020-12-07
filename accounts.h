@@ -12,7 +12,7 @@ using namespace std;
 class accounts{
     protected:
         timeHandler t;
-        string accountNumber;
+        //string accountNumber;
         double accountBalance;
         bool open; //bool to see if the account is accessible 
         double annualInterestRate;
@@ -33,7 +33,7 @@ class accounts{
         accounts(string aN="0000000000", double aB=0.0, bool o=true, double aI=0.0, double aS=0.0, string aT="0001", string uN = "N/A", string pW = "N/A",int mat=0.0, bool close=false){
             //default Number is 0000000, account Balance is 0, its closed, 0.0 interest rate, 0.0 annual charge
             //it starts at a low risk, it has N for none account type, and 0 annual service charge.
-            accountNumber=aN;
+            //accountNumber=aN;
             accountBalance=aB;
             open=o;
             annualInterestRate=aI;
@@ -48,11 +48,11 @@ class accounts{
         vector <string> getTransactionHistory(){
             return transactionHistory;
         }
-        string getAccountNumber(){
-            return accountNumber;
-        }
+        // string getAccountNumber(){
+        //     return accountNumber;
+        // }
 
-        virtual double getAccountBalance(){
+        double getAccountBalance(){
             return accountBalance;
         }
 
@@ -89,9 +89,9 @@ class accounts{
             username=user;
         }
 
-        void setAccountNumber(string aN){
-            accountNumber=aN;
-        }
+        // void setAccountNumber(string aN){
+        //     accountNumber=aN;
+        // }
 
         void setAccountBalance(double aB){
             accountBalance=aB;

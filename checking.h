@@ -32,7 +32,7 @@ public:
             else
             {
                 accountBalance -= amount;
-                cout <<"A $" <<amount << " Withdraw Successful! Your account balance is " <<accountBalance <<endl;
+                //cout <<"A $" <<amount << " Withdraw Successful! Your account balance is " <<accountBalance <<endl;
             }
         }
         else
@@ -51,7 +51,7 @@ public:
         if(open == true)
         {
             accountBalance += amount;
-            cout << "A $" << amount << " deposit has been made, the current balance is: " << accountBalance << endl;
+            //cout << "A $" << amount << " deposit has been made, the current balance is: " << accountBalance << endl;
         }
         else
         {
