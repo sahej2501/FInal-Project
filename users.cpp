@@ -80,6 +80,7 @@ int main()
     AllAccounts newAccount;
     bankAcc currAcc;
     //read txt files into vecs
+    readAccounts();
     readUserLogins(usersVec);
     readAdminLogin(adminsVec);
     readOfficialLogins(officialsVec);
@@ -1084,7 +1085,7 @@ void saveAccounts(){
 }
 
 void readAccounts(){
-    directory d;
+    //directory d;
     AllAccounts temp;
     Date tempDate;
     ifstream inFile;
