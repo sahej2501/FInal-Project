@@ -4,54 +4,202 @@
 #include "timeHandler.h"
 #include "AccountNode.h"
 #include "Bank.h"
+#include <string>
+#include <sstream>
+#include <fstream>
+#include "directoryHandler.h"
+#include "timeHandler.h"
+
 #include <ctime>
 using namespace std;
 
 int key=3000;
+directory d;
+timeHandler t;
+BankTree tree;
 
-string generateAC(int keyPassed);
+struct User
+{
+    string username;
+    string password;
+    string accntNum;
+};
+
+vector<User> usersVec;
+
+
+void saveAccounts(){
+
+    
+    //tree.currAccount.get()...
+    ofstream outFile;
+    chdir(d.basePath.data());
+    string newPath = d.accountsPath+"/"+tree.currAccount.getAccountNumber();
+    chdir(newPath.data());
+
+    cout<<"Name: "<<tree.currAccount.getName()<<endl;
+    //saving to checkings
+    outFile.open("checkings.txt");
+    if(outFile){
+        cout<<"file opened"<<endl;
+    }
+    outFile << to_string(tree.currAccount.getCheckingBalance())<<endl;
+    outFile.close();
+    
+    //saving to savings
+    outFile.open("savings.txt");
+    outFile << to_string(tree.currAccount.getSavingsBalance())<<endl;
+    outFile.close();
+
+    //saving to info
+    outFile.open("info.txt");
+    outFile << tree.currAccount.getFirstName() <<endl;
+    outFile << tree.currAccount.getLastName() <<endl;
+    outFile << tree.currAccount.getPhone() <<endl;
+    outFile <<tree.currAccount.getAddress() <<endl;
+    outFile<< t.formatDate(tree.currAccount.getOpenDate())<<endl;
+    outFile<<tree.currAccount.getAccountNumber()<<endl;
+    outFile.close();
+    
+    //saving to cd
+    outFile.open("cd.txt");
+    outFile<<to_string(tree.currAccount.getOGAmount())<<endl;
+    outFile<<t.formatDate(tree.currAccount.getOpenDate())<<endl;
+    outFile<<to_string(tree.currAccount.getCDBalance())<<endl;
+    outFile.close();
+
+    //saving transaction history
+    d.saveTransactions(tree.currAccount.getTransactionHst(),tree.currAccount.getAccountNumber());
+
+
+}
+
+void readAccounts(){
+    directory d;
+    AllAccounts temp;
+    Date tempDate;
+    ifstream inFile;
+    string line, fname, lname, accNum;
+    double checkB, saveB, cdB;
+    vector <string> lines;
+    vector <string> date;
+    char delim = '/';
+    for (int i =0; i<usersVec.size();i++){
+        accNum=usersVec[i].accntNum;
+        string newPath = d.accountsPath+"/"+accNum;
+        chdir(newPath.data());
+        inFile.open("info.txt");
+        if(!inFile)
+            cout<<"File failed to open"<<endl;
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        cout<<lines.size()<<endl;
+        fname=lines[0];
+        lname=lines[1];
+        temp.setFirstLastName(fname, lname);
+        temp.setPhone(lines[2]);
+        temp.setAddress(lines[3]);
+        temp.setAccountNumber(lines[5]);
+        temp.setKey(d.getKey(temp.getAccountNumber()));
+        cout<<temp.getKey()<<endl;
+        string stringDate=lines[4];
+        stringstream ss(stringDate);
+        string s;
+        while(getline(ss,s,delim)){
+            date.push_back(s);
+        }
+        tempDate.d=stoi(date[1]);
+        tempDate.m=stoi(date[2]);
+        tempDate.y=stoi(date[3]);
+        temp.setOpenDate(tempDate);
+        inFile.close();
+        lines.clear();
+
+        inFile.open("checkings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        checkB=stod(lines[0]);
+        lines.clear();
+        inFile.close();
+
+        inFile.open("savings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        cout<<"Savings balance: "<<lines[0]<<endl;
+        saveB=stod(lines[0]);
+        lines.clear();
+        inFile.close();
+
+        inFile.open("cd.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        inFile.close();
+        temp.setOGAmount(stod(lines[0]));
+        stringDate = lines[1];
+        stringstream sb(stringDate);
+        string b;
+        date.clear();
+        while(getline(sb,b,delim)){
+            date.push_back(b);
+        }
+        tempDate.d=stoi(date[1]);
+        tempDate.m=stoi(date[2]);
+        tempDate.y=stoi(date[3]);
+        temp.setCDCreationDate(tempDate);
+        cdB=stod(lines[2]);
+        temp.setBalance(saveB, checkB, cdB);
+        inFile.close();
+        
+        cout<<temp.getName()<<endl;
+        tree.insertAcc(temp);
+        chdir(d.basePath.data());
+    }
+}
+
+void setCurrAccount(){
+    for(int i =0; i < usersVec.size();i++){
+        cout<<"usersVec[i].accountN: "<<usersVec[i].accntNum<<endl;
+        if(usersVec[i].accntNum!=""){
+            tree.searchAcc(d.getKey(usersVec[i].accntNum));
+            saveAccounts();
+        }
+    }
+
+}
+
 
 int main(){
-    cout<<"its been updated3"<<endl;
+    User u1;
+    u1.username="mike";
+    u1.password="gegg";
+    u1.accntNum="000ae87";
+    usersVec.push_back(u1);
+    cout<<"UsersvecSize: "<<usersVec.size()<<endl;
     timeHandler t;
     directory d;
     Date d1 = t.getCurrentTime();
     Date d2;
     BankTree tree;
     AllAccounts account1;
-    account1.setAccountNumber("ae87");
+    account1.setAccountNumber("000ae87");
     string actN=account1.getAccountNumber();
     //cout<<"Account number: "<<actN<<endl;
-    d.createFiles(account1.getAccountNumber());
+    //d.createFiles(account1.getAccountNumber());
     vector< vector<string> > transactions;
-    account1.savingsDeposit(100);
-    account1.savingsDeposit(20);
-    account1.checkingDeposit(50);
-    account1.CDDeposit(200);
-    transactions= account1.getTransactionHst();
-    d.saveTransactions(transactions,actN);
-    string test="Mike Gegg";
-    int shift=1;
-    string encrypted= d.encrypt(test,shift);
-    string decrypted = d.decrypt(encrypted,shift);
+
+    account1.savingsDeposit(200.0);
+    account1.CDDeposit(100.0);
+    cout<<"Account 1 savings balance: "<<account1.getSavingsBalance()<<endl;
+    readAccounts();
+    setCurrAccount();
     
     
-    cout<<generateAC(key)<<endl;
-    cout<<d.getKey(generateAC(key))<<endl;
     return 0;
 }
 
 
 
-string generateAC(int keyPassed){
-    srand(time(0));
-    const char alphanum[] = "0123456789" "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    int len = sizeof(alphanum) - 1;
-    string actN;
-    actN+=to_string(keyPassed);
-    for(int i =0; i<=10;i++){
-        actN+=alphanum[rand()%len];
-    }
-    return actN;
-    key++;
-}
