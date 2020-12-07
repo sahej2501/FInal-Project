@@ -6,6 +6,7 @@
 #include "Bank.h"
 #include "timeHandler.h"
 #include "directoryHandler.h"
+#include <sstream>
 using namespace std;
 
 
@@ -29,10 +30,6 @@ struct User
 vector<Official> officialsVec;
 vector<Admin> adminsVec;
 vector<User> usersVec;
-vector<AllAccounts> ogAccounts;
-vector<AllAccounts> balancedAccounts;
-vector<string> closedAccounts;
-
 //Added by Sahej
 BankTree tree;
 int key;
@@ -64,8 +61,6 @@ int main()
     int select;
     string login;
     string psswd;
-    AllAccounts newAccount;
-    bankAcc currAcc;
 
     while(cont){
         cout<<"Welcome to Bear Bank Systems, would you like to: \n[1] Open an account\n[2] Login\n[3] exit\nOption:";
@@ -77,7 +72,7 @@ int main()
             switch(choice)
             {
                 case 1:
-                    openAccount(newAccount);
+                    //createAccount();
                     break;
                 case 2:
                     cout << "Login as: \n[1] System Administrator\n[2] Bank Official\n[3] Customer\n[4] Back\nOption:";
@@ -159,8 +154,6 @@ int main()
 
     return 0;
 }
-
-//Login & password stuff added by Jay
 
 bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec)
 {
@@ -576,10 +569,56 @@ string generateAC(int keyPassed){
     int len = sizeof(alphanum) - 1;
     string actN;
     actN+=to_string(keyPassed);
-    for(int i =0; i<=10;i++){
+    actN+="N";
+    for(int i =0; i<=9;i++){
         actN+=alphanum[rand()%len];
     }
     key++;
     return actN;
 }
 //Added by Sahej
+
+
+//read files by mike gegg
+
+void readAccounts(){
+    AllAccounts temp;
+    Date tempDate;
+    ifstream inFile;
+    string line, fname, lname, accNum;
+    vector <string> lines;
+    vector <string> date;
+    char delim = '/';
+    for (int i =0; i<usersVec.size();i++){
+        accNum=usersVec[i].accntNum;
+        string newPath=d.accountsPath+"/"+accNum;
+        chdir(newPath.data());
+        inFile.open("info.txt");
+        while(getline(inFile,line)){
+            lines.push_back(d.decrypt(line,4));
+        }
+        fname=lines[0];
+        lname=lines[1];
+        temp.setFirstLastName(fname, lname);
+        temp.setPhone(lines[2]);
+        temp.setAddress(lines[3]);
+        string stringDate=lines[4];
+        stringstream ss(stringDate);
+        string s;
+        while(getline(ss,s,delim)){
+            date.push_back(s);
+        }
+        tempDate.d=stoi(date[1]);
+        tempDate.m=stoi(date[2]);
+        tempDate.y=stoi(date[3]);
+        temp.setOpenDate(tempDate);
+        inFile.close();
+
+
+
+
+        
+    }
+
+
+}
