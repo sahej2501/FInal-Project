@@ -65,6 +65,11 @@ void depOrWidth();
 void openAccount();
 void shutAcc(string);
 
+//mikie g
+void setCurrAccount();
+void readAccounts();
+void saveAccounts();
+
 int main()
 {
     bool cont = true;
@@ -1031,4 +1036,142 @@ void shutAcc(string offID)
     {
         cout<<cAccounts[i].info<<endl;
     }
+}
+
+void saveAccounts(){
+
+    
+    //tree.currAccount.get()...
+    ofstream outFile;
+    chdir(d.basePath.data());
+    string newPath = d.accountsPath+"/"+tree.currAccount.getAccountNumber();
+    chdir(newPath.data());
+
+    //saving to checkings
+    outFile.open("checkings.txt");
+    if(outFile){
+        cout<<"file opened"<<endl;
+    }
+    outFile << to_string(tree.currAccount.getCheckingBalance())<<endl;
+    outFile.close();
+    
+    //saving to savings
+    outFile.open("savings.txt");
+    outFile << to_string(tree.currAccount.getSavingsBalance())<<endl;
+    outFile.close();
+
+    //saving to info
+    outFile.open("info.txt");
+    outFile << tree.currAccount.getFirstName() <<endl;
+    outFile << tree.currAccount.getLastName() <<endl;
+    outFile << tree.currAccount.getPhone() <<endl;
+    outFile <<tree.currAccount.getAddress() <<endl;
+    outFile<< t.formatDate(tree.currAccount.getOpenDate())<<endl;
+    outFile<<tree.currAccount.getAccountNumber()<<endl;
+    outFile.close();
+    
+    //saving to cd
+    outFile.open("cd.txt");
+    outFile<<to_string(tree.currAccount.getOGAmount())<<endl;
+    outFile<<t.formatDate(tree.currAccount.getOpenDate())<<endl;
+    outFile<<to_string(tree.currAccount.getCDBalance())<<endl;
+    outFile.close();
+
+    //saving transaction history
+    d.saveTransactions(tree.currAccount.getTransactionHst(),tree.currAccount.getAccountNumber());
+
+
+}
+
+void readAccounts(){
+    directory d;
+    AllAccounts temp;
+    Date tempDate;
+    ifstream inFile;
+    string line, fname, lname;
+    double checkB, saveB, cdB;
+    vector <string> lines;
+    vector <string> date;
+    char delim = '/';
+    for (int i =0; i<usersVec.size();i++){
+        string accNum=usersVec[i].accntNum;
+        string newPath = d.accountsPath+"/"+accNum;
+        chdir(newPath.data());
+        inFile.open("info.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        cout<<lines.size()<<endl;
+        fname=lines[0];
+        lname=lines[1];
+        temp.setFirstLastName(fname, lname);
+        temp.setPhone(lines[2]);
+        temp.setAddress(lines[3]);
+        temp.setAccountNumber(lines[5]);
+        temp.setKey(d.getKey(temp.getAccountNumber()));
+        cout<<temp.getKey()<<endl;
+        string stringDate=lines[4];
+        stringstream ss(stringDate);
+        string s;
+        while(getline(ss,s,delim)){
+            date.push_back(s);
+        }
+        tempDate.d=stoi(date[1]);
+        tempDate.m=stoi(date[2]);
+        tempDate.y=stoi(date[3]);
+        temp.setOpenDate(tempDate);
+        inFile.close();
+        lines.clear();
+
+        inFile.open("checkings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        checkB=stod(lines[0]);
+        lines.clear();
+        inFile.close();
+
+        inFile.open("savings.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        cout<<"Savings balance: "<<lines[0]<<endl;
+        saveB=stod(lines[0]);
+        lines.clear();
+        inFile.close();
+
+        inFile.open("cd.txt");
+        while(getline(inFile,line)){
+            lines.push_back(line);
+        }
+        inFile.close();
+        temp.setOGAmount(stod(lines[0]));
+        stringDate = lines[1];
+        stringstream sb(stringDate);
+        string b;
+        date.clear();
+        while(getline(sb,b,delim)){
+            date.push_back(b);
+        }
+        tempDate.d=stoi(date[1]);
+        tempDate.m=stoi(date[2]);
+        tempDate.y=stoi(date[3]);
+        temp.setCDCreationDate(tempDate);
+        cdB=stod(lines[2]);
+        temp.setBalance(saveB, checkB, cdB);
+        inFile.close();
+        
+        cout<<temp.getName()<<endl;
+        tree.insertAcc(temp);
+    }
+}
+
+void setCurrAccount(){
+    for(int i =0; i < usersVec.size();i++){
+        if(usersVec[i].accntNum!=""){
+            tree.searchAcc(d.getKey(usersVec[i].accntNum));
+            saveAccounts();
+        }
+    }
+
 }
