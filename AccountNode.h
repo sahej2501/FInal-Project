@@ -72,6 +72,14 @@ class AllAccounts
             return name;
         }
 
+        string getFirstName(){
+            return firstName;
+        }
+
+        string getLastName(){
+            return lastName;
+        }
+
         string getAccountNumber()
         {
             return accountNumber;
