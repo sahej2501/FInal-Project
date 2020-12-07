@@ -165,9 +165,10 @@ class AllAccounts
             accountNumber = s;
         }
 
-        void savingsDeposit(int d)
+        void savingsDeposit(int d, string accNum)
         {
             save.deposit(d);
+            save.setAccountNumber(accNum);
         }
 
         void checkingDeposit(int d)

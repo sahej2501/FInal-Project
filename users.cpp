@@ -527,6 +527,7 @@ void openAccount()
     cout << "Congratulations! Your account was sucessfully created.\nYou now have a Checking, Savings and CD account with us!" << endl;
     cout << " " << endl;
     createUser(login, password, accNum, usersVec);
+    key++;
 }
 
 void adminOptions()
@@ -821,7 +822,7 @@ void usersOptions(string accountNum)
                         }
                         break;
                     case 4:
-                        //userRun = false;
+                        userRun = false;
                         break;
                     default:
                         cout<<"Invalid Input, try again"<<endl;
@@ -1102,7 +1103,7 @@ void saveAccounts(){
     outFile.close();
     
     //saving to savings
-    outFile.open("savings.txt");
+    outFile.open("savings.txt",ios::out);
     outFile << to_string(tree.currAccount.getSavingsBalance())<<endl;
     outFile.close();
 
@@ -1114,6 +1115,9 @@ void saveAccounts(){
     outFile <<tree.currAccount.getAddress() <<endl;
     outFile<< t.formatDate(tree.currAccount.getOpenDate())<<endl;
     outFile<<tree.currAccount.getAccountNumber()<<endl;
+    outFile<<tree.currAccount.getSavingsBalance()<<endl;
+    outFile<<tree.currAccount.getCheckingBalance()<<endl;
+    outFile<<tree.currAccount.getCDBalance()<<endl;
     outFile.close();
     
     //saving to cd
@@ -1147,6 +1151,10 @@ void readAccounts(){
         while(getline(inFile,line)){
             lines.push_back(line);
         }
+        saveB=stoi(lines[6]);
+        checkB=stoi(lines[7]);
+        cdB=stoi(lines[8]);
+        temp.setBalance(saveB,checkB,cdB);
         cout<<lines.size()<<endl;
         fname=lines[0];
         lname=lines[1];
@@ -1169,22 +1177,22 @@ void readAccounts(){
         inFile.close();
         lines.clear();
 
-        inFile.open("checkings.txt");
-        while(getline(inFile,line)){
-            lines.push_back(line);
-        }
-        checkB=stod(lines[0]);
-        lines.clear();
-        inFile.close();
+        // inFile.open("checkings.txt");
+        // while(getline(inFile,line)){
+        //     lines.push_back(line);
+        // }
+        // checkB=stod(lines[0]);
+        // lines.clear();
+        // inFile.close();
 
-        inFile.open("savings.txt");
-        while(getline(inFile,line)){
-            lines.push_back(line);
-        }
-        cout<<"Savings balance: "<<lines[0]<<endl;
-        saveB=stod(lines[0]);
-        lines.clear();
-        inFile.close();
+        // inFile.open("savings.txt");
+        // while(getline(inFile,line)){
+        //     lines.push_back(line);
+        // }
+        // cout<<"Savings balance: "<<lines[0]<<endl;
+        // saveB=stod(lines[0]);
+        // lines.clear();
+        // inFile.close();
 
         inFile.open("cd.txt");
         while(getline(inFile,line)){
@@ -1203,11 +1211,26 @@ void readAccounts(){
         tempDate.m=stoi(date[2]);
         tempDate.y=stoi(date[3]);
         temp.setCDCreationDate(tempDate);
-        cdB=stod(lines[2]);
-        temp.setBalance(saveB, checkB, cdB);
+        //cdB=stod(lines[2]);
+        //temp.setBalance(saveB, checkB, cdB);
         inFile.close();
         
-        cout<<temp.getName()<<endl;
+        inFile.open("transactions.txt");
+        int indexOfSpace;
+        while(getline(inFile,line)){
+            for(int i=line.length()-1;i>=0;i--){
+                if(line[i]==' '){
+                    indexOfSpace=i;
+                    break;
+                }   
+            }
+            if(line.substr(indexOfSpace,line.length()).compare("Checkings")){
+                
+            }
+
+        }
+
+
         tree.insertAcc(temp);
     }
 }

@@ -12,7 +12,7 @@ using namespace std;
 class accounts{
     protected:
         timeHandler t;
-        //string accountNumber;
+        string accountNumber;
         double accountBalance;
         bool open; //bool to see if the account is accessible 
         double annualInterestRate;
@@ -48,9 +48,9 @@ class accounts{
         vector <string> getTransactionHistory(){
             return transactionHistory;
         }
-        // string getAccountNumber(){
-        //     return accountNumber;
-        // }
+        string getAccountNumber(){
+            return accountNumber;
+        }
 
         double getAccountBalance(){
             return accountBalance;
@@ -89,9 +89,9 @@ class accounts{
             username=user;
         }
 
-        // void setAccountNumber(string aN){
-        //     accountNumber=aN;
-        // }
+        void setAccountNumber(string aN){
+            accountNumber=aN;
+        }
 
         void setAccountBalance(double aB){
             accountBalance=aB;

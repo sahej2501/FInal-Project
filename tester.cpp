@@ -151,22 +151,8 @@ void readAccounts(){
         temp.setBalance(saveB, checkB, cdB);
         inFile.close();
 
-        inFile.open("transactions.txt");
-        int indexOfSpace;
-        while(getline(inFile,line)){
-            for(int i=line.length()-1;i>=0;i--){
-                if(line[i]==' '){
-                    indexOfSpace=i;
-                    break;
-                }   
-            }
-            if(line.substr(indexOfSpace,line.length()).compare("Checkings")){
-                
-            }
-
-        }
         
-        cout<<temp.getName()<<endl;
+        
         tree.insertAcc(temp);
     }
 }

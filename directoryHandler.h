@@ -100,7 +100,7 @@ public:
         if(chdir(newPath.data())==0){
             switch(fileType){
                 case 's':
-                    outFile.open("savings.txt",fstream::out|fstream::app);
+                    outFile.open("savings.txt",fstream::out);
                     outFile << info << endl;
                     outFile.close();
                     break;
