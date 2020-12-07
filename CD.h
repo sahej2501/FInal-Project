@@ -10,8 +10,8 @@ class CD : public accounts
 {
 private:
     string status;
-    double penalty = 5.0;
-    double ogAmount;
+    double penalty;
+    double ogAmount = 0.0;
     Date creationDate;
 
 public:
@@ -62,6 +62,7 @@ public:
         if (open == true)
         {
             accountBalance -= amount;
+            cout << "$" << accountBalance << " has been withdrawn" << endl;
         }
         else
             cout << "Account not open!";
@@ -70,15 +71,16 @@ public:
      return accountBalance;
     }
 
-    void cancellation()
+    void cancellation(double penalty)
     {
         /*
         Depending on num of days remaining, penalty may change i.e penalty shouldnt be fixed.
         */
+       penalty = penalty * accountBalance;
         ogAmount -= penalty;
         cout << "Due to an early cancellation of your CD account, a penalty has been deducted from your balance, and no interest was added to your initial deposit." << endl;
         withdraw(ogAmount);
-        setAccountBalance(0.0);
+        //setAccountBalance(0.0);
         closeAcc();
     }
 

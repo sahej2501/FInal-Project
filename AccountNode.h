@@ -196,9 +196,9 @@ class AllAccounts
             cd.withdraw(w);
         }
 
-        void cdCancel()
+        void cdCancel(double pen)
         {
-            cd.cancellation();
+            cd.cancellation(pen);
         }
 
         void setOGAmount(double a)
