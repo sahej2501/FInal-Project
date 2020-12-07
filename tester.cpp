@@ -37,7 +37,6 @@ void saveAccounts(){
     string newPath = d.accountsPath+"/"+tree.currAccount.getAccountNumber();
     chdir(newPath.data());
 
-    cout<<"Name: "<<tree.currAccount.getName()<<endl;
     //saving to checkings
     outFile.open("checkings.txt");
     if(outFile){
@@ -79,18 +78,16 @@ void readAccounts(){
     AllAccounts temp;
     Date tempDate;
     ifstream inFile;
-    string line, fname, lname, accNum;
+    string line, fname, lname;
     double checkB, saveB, cdB;
     vector <string> lines;
     vector <string> date;
     char delim = '/';
     for (int i =0; i<usersVec.size();i++){
-        accNum=usersVec[i].accntNum;
+        string accNum=usersVec[i].accntNum;
         string newPath = d.accountsPath+"/"+accNum;
         chdir(newPath.data());
         inFile.open("info.txt");
-        if(!inFile)
-            cout<<"File failed to open"<<endl;
         while(getline(inFile,line)){
             lines.push_back(line);
         }
@@ -156,13 +153,11 @@ void readAccounts(){
         
         cout<<temp.getName()<<endl;
         tree.insertAcc(temp);
-        chdir(d.basePath.data());
     }
 }
 
 void setCurrAccount(){
     for(int i =0; i < usersVec.size();i++){
-        cout<<"usersVec[i].accountN: "<<usersVec[i].accntNum<<endl;
         if(usersVec[i].accntNum!=""){
             tree.searchAcc(d.getKey(usersVec[i].accntNum));
             saveAccounts();
@@ -191,9 +186,9 @@ int main(){
     //d.createFiles(account1.getAccountNumber());
     vector< vector<string> > transactions;
 
-    account1.savingsDeposit(200.0);
+    account1.savingsDeposit(400.0);
+    account1.savingsDeposit(11.0);
     account1.CDDeposit(100.0);
-    cout<<"Account 1 savings balance: "<<account1.getSavingsBalance()<<endl;
     readAccounts();
     setCurrAccount();
     
