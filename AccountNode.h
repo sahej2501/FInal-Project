@@ -109,6 +109,11 @@ class AllAccounts
             openDate = d;
         }
 
+        void setCDCreationDate(Date d)
+        {
+            cd.setCreationDate(d);
+        }
+
         void setBalance(double s, double c, double f)
         {
             save.setAccountBalance(s);
