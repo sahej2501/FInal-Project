@@ -39,7 +39,7 @@ vector<ClosedAccounts> cAccounts;
 //Added by Sahej
 BankTree tree;
 int key;
-
+timeHandler t;
 directory d;
 
 void createOfficial(string, string, vector<Official> &officialsVec);

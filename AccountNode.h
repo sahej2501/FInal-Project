@@ -187,7 +187,7 @@ class AllAccounts
         {
             cd.setOgAmount(a);
         }
-
+        //og     
         //functions for bank officials
         void openOrCloseSavings(bool n)
         {
