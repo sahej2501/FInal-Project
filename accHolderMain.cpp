@@ -24,13 +24,18 @@ struct User
     string password;
     string accntNum;
 };
+struct ClosedAccounts
+{
+    string AccNum;
+    string info;
+};
 
 vector<User> usersVec;
 int key = 0;
 BankTree tree;
 timeHandler t;
 directory d;
-vector<string> closedAccounts;
+vector<ClosedAccounts> cAccounts;
 
 
 string generateAC(int keyPassed);
@@ -41,6 +46,7 @@ int getKey(string line);
 void depOrWidth();
 void createUser(string, string, string, vector<User> &usersVec);
 bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec);
+void shutAcc();
 
 int main()
 {
@@ -64,7 +70,7 @@ int main()
     while (run)
     {
     int selection;
-    string accNumBO;
+    //string accNumBO;
     cout<<"[1] Open a account"<<'\n'<<"[2] Close account"<<'\n'<<"[3] Search for a account"<<
     '\n'<<"[4] Withdraw or Deposit to an account"<<'\n'<<"[5] Exit"<<endl;
     cin>>selection;
@@ -77,29 +83,12 @@ int main()
         break;
     case 2:
         cin.ignore();
-        cout<<"Please Enter Bank Account Number: "<<endl;
-        cin>>accNumBO;
-        tree.removeAcc(d.getKey(accNumBO));
-        closedAccounts.push_back(tree.closeInfo + t.formatDate(t.getCurrentTime()));
-        int erasePos;
-        for(int i = 0; i < usersVec.size(); i++)
-        { 
-            if(usersVec[i].accntNum == accNumBO)
-            {
-                usersVec[i].accntNum = "";
-                usersVec[i].username = "";
-                usersVec[i].password = "";
-            }
-        }
-        //Checking to see if close info was updated
-        for(int i = 0; i < closedAccounts.size(); i++)
-        {
-            cout<<closedAccounts[i]<<endl;
-        }
+        shutAcc();
         break;
     case 3:
         cin.ignore();
         bool isThere;
+        string accNumBO;
         cout<<"Please Enter Bank Account Number: "<<endl;
         cin>>accNumBO;
         isThere = tree.searchAcc(d.getKey(accNumBO));
@@ -434,5 +423,39 @@ bool LoginPasswordMatch(string id, string pswd, vector<User> &usersVec)
             return true;
         else
             return false;
+    }
+}
+
+void shutAcc()
+{
+    string accNumBO, currInfo;
+    ClosedAccounts c;
+    cout<<"Please Enter Bank Account Number: "<<endl;
+    cin>>accNumBO;
+    tree.removeAcc(d.getKey(accNumBO));
+    tree.searchAcc(d.getKey(accNumBO));
+
+    currInfo = tree.currAccount.getName() + " " + tree.currAccount.getPhone() + tree.currAccount.getAddress() + 
+    t.formatDate(t.getCurrentTime());
+
+    c.AccNum = accNumBO;
+    c.info = currInfo;
+    cAccounts.push_back(c);
+
+    //closedAccounts.push_back(tree.closeInfo + t.formatDate(t.getCurrentTime()));
+    int erasePos;
+    for(int i = 0; i < usersVec.size(); i++)
+    { 
+        if(usersVec[i].accntNum == accNumBO)
+        {
+            usersVec[i].accntNum = "";
+            usersVec[i].username = "";
+            usersVec[i].password = "";
+        }
+    }
+    //Checking to see if close info was updated
+    for(int i = 0; i < cAccounts.size(); i++)
+    {
+        cout<<cAccounts[i].info<<endl;
     }
 }

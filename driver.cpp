@@ -26,10 +26,16 @@ struct User
     string password;
     string accntNum;
 };
+struct ClosedAccounts
+{
+    string AccNum;
+    string info;
+};
 
 vector<Official> officialsVec;
 vector<Admin> adminsVec;
 vector<User> usersVec;
+vector<ClosedAccounts> cAccounts;
 //Added by Sahej
 BankTree tree;
 int key;
@@ -613,12 +619,39 @@ void readAccounts(){
         tempDate.y=stoi(date[3]);
         temp.setOpenDate(tempDate);
         inFile.close();
-
-
-
-
-        
     }
+}
 
+void shutAcc()
+{
+    string accNumBO, currInfo;
+    ClosedAccounts c;
+    cout<<"Please Enter Bank Account Number: "<<endl;
+    cin>>accNumBO;
+    tree.removeAcc(d.getKey(accNumBO));
+    tree.searchAcc(d.getKey(accNumBO));
 
+    currInfo = tree.currAccount.getName() + " " + tree.currAccount.getPhone() + tree.currAccount.getAddress() + 
+    t.formatDate(t.getCurrentTime());
+
+    c.AccNum = accNumBO;
+    c.info = currInfo;
+    cAccounts.push_back(c);
+
+    //closedAccounts.push_back(tree.closeInfo + t.formatDate(t.getCurrentTime()));
+    int erasePos;
+    for(int i = 0; i < usersVec.size(); i++)
+    { 
+        if(usersVec[i].accntNum == accNumBO)
+        {
+            usersVec[i].accntNum = "";
+            usersVec[i].username = "";
+            usersVec[i].password = "";
+        }
+    }
+    //Checking to see if close info was updated
+    for(int i = 0; i < cAccounts.size(); i++)
+    {
+        cout<<cAccounts[i].info<<endl;
+    }
 }
