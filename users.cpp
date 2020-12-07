@@ -510,6 +510,7 @@ void openAccount()
     a.setAddress(address);
 
     tree.insertAcc(a);
+    d.createFiles(accNum);
     cout << " " << endl;
     cout << "Congratulations! Your account was sucessfully created.\nYou now have a Checking, Savings and CD account with us!" << endl;
     cout << " " << endl;
