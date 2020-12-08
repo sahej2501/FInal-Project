@@ -86,10 +86,6 @@ int main()
     readOfficialLogins(officialsVec);
     readAccounts();
     
-    for(int i = 0; i < adminsVec.size(); i++)
-    {
-        cout << adminsVec[i].username << " " << adminsVec[i].password << endl;
-    }
     while(cont){
         cout<<"Welcome to Bear Bank Systems, would you like to: \n[1] Open an account\n[2] Login\n[3] exit\nOption:";
         cin >> choice;
@@ -141,10 +137,6 @@ int main()
                             }
                             break;
                         case 2:
-                            for (int j = 0; j < officialsVec.size(); j++)
-                            {
-                                cout << officialsVec[j].username << " " << officialsVec[j].password << endl;
-                            }
                             bool keepUp;
                             keepUp = false;
                             while(keepUp == false)
@@ -153,16 +145,11 @@ int main()
                                 cin >> login;
                                 cout << "Enter Password: ";
                                 cin >> psswd;
-                                for (int k = 0; k < officialsVec.size(); k++)
-                                {
-                                    cout << login << "=" <<officialsVec[k].username << endl;
-                                    cout << psswd << "=" <<officialsVec[k].password << endl;
+ 
                                     if(login == officialsVec[k].username)
                                     {
-                                        cout << "sia" << endl;
                                         if(psswd == officialsVec[k].password)
                                         {
-                                            cout << "sia2" << endl;
                                             officialsOptions(officialsVec[k].username);
                                             keepUp = true;
                                             break;
@@ -186,10 +173,6 @@ int main()
                             */
                             break;
                         case 3:
-                            for (int i = 0; i < usersVec.size(); i++)
-                            {
-                                cout << usersVec[i].username << " " << usersVec[i].password << " " << usersVec[i].accntNum << endl;
-                            }
                             bool running;
                             running = false;
                             while(running == false)
@@ -436,9 +419,9 @@ void writeToLogins(vector<Admin> &adminsVec, vector<Official> &officialsVec, vec
     for (int i = 0; i < adminsVec.size(); i++)
         writeAdmin << d1.encrypt(adminsVec[i].username, 4) << " " << d1.encrypt(adminsVec[i].password, 4) << endl;
     for (int j = 0; j < officialsVec.size(); j++)
-        writeOfficial << officialsVec[j].username << " " << officialsVec[j].password << endl;
+        writeOfficial << d1.encrypt(officialsVec[j].username, 4) << " " << d1.encrypt(officialsVec[j].password, 4) << endl;
     for (int k = 0; k < usersVec.size(); k++)
-        writeUser << usersVec[k].username << " " << usersVec[k].password << " " << usersVec[k].accntNum <<endl;
+        writeUser << d1.encrypt(usersVec[k].username, 4) << " " << d1.encrypt(usersVec[k].password, 4) << " " << d1.encrypt(usersVec[k].accntNum, 4) <<endl;
 }
 
 void changePassword(string id, string newPswd, vector<User> &usersVec)
